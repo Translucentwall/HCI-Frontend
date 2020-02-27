@@ -1,5 +1,8 @@
 <template>
   <div class="hello">
+    <img src="@/assets/logo.png">
+    <br>
+    <el-button type="primary" @click="home()">前往主页</el-button>
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -89,6 +92,11 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    home(){
+      this.$router.push("/home");
     }
   }
 }
