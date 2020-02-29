@@ -1,27 +1,34 @@
 <template>
-  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" fixed>
-    <el-menu-item index="/home">首页</el-menu-item>
+  <el-menu
+    :default-active="activeIndex"
+    class="topBar"
+    mode="horizontal"
+    @select="handleSelect"
+    active-text-color="#b04c50"
+  >
+
+  <el-menu-item class="home" index="/home">Home</el-menu-item>
     <el-submenu index="2">
-      <template slot="title">排行</template>
+      <template  class="submenu-title" slot="title">Rank</template>
       <el-submenu index="/rank">
-        <template slot="title">论文</template>
+        <template slot="title">Paper</template>
         <el-menu-item index="/rank?mode=1">被引用数排行</el-menu-item>
       </el-submenu>
       <el-submenu index="2-2">
-        <template slot="title">作者</template>
+        <template slot="title">Author</template>
         <el-menu-item index="/rank?mode=2">论文数排行</el-menu-item>
         <el-menu-item index="/rank?mode=3">被引用数排行</el-menu-item>
       </el-submenu>
       <el-submenu index="2-3">
-        <template slot="title">机构</template>
+        <template slot="title">Affiliation</template>
         <el-menu-item index="/rank?mode=4">论文数排行</el-menu-item>
       </el-submenu>
       <el-submenu index="2-4">
-        <template slot="title">会议</template>
+        <template slot="title">Publication</template>
         <el-menu-item index="/rank?mode=5">论文数排行</el-menu-item>
       </el-submenu>
       <el-submenu index="2-5">
-        <template slot="title">关键字</template>
+        <template slot="title">Keyword</template>
         <el-menu-item index="/rank?mode=6">论文数排行</el-menu-item>
       </el-submenu>
     </el-submenu>
@@ -67,5 +74,22 @@
 </script>
 
 <style scoped>
+  .topBar{
+    background-color: transparent;
+
+  }
+  .topBar .el-menu-item{
+    line-height: 40px;
+    height: 40px;
+  }
+  .topBar .el-submenu {
+    width: 10%;
+    line-height: 40px;
+    height: 40px;
+  }
+  .home{
+    margin-left: 40%;
+    width: 10%;
+  }
 
 </style>

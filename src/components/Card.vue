@@ -5,9 +5,13 @@
         <span class="title">{{title}}</span>
       </router-link>
     </div>
-    <div class="multiple-wrap">
-      <span class="author">{{author}}</span>
-      <span class="publisher">{{publisher}}</span>
+    <div class="author-affiliation-wrap">
+      <div v-for="i in author.length" class="author-affiliation">
+        <span class="author">{{author[i-1]}},</span>
+        <span class="publisher">{{publisher[i-1]}};</span>
+      </div>
+    </div>
+    <div class="publication-wrap">
       <span class="publication">{{publication}}</span>
     </div>
     <div class="keyword-wrap">
@@ -27,12 +31,12 @@ export default {
             default: 'null'
         },
         author: {
-            type: String,
-            default: 'null'
+            type: Array,
+            default: () => {}
         },
         publisher: {
-            type: String,
-            default: 'null'
+            type: Array,
+            default: () => {}
         },
         publication: {
             type: String,
@@ -52,19 +56,18 @@ export default {
     margin: 10px 50px;
     box-shadow: 0 1px 0 #aaaaaa;
     text-align: left;
-    padding-left: 10px;
-  }
-  .router-link{
-    text-decoration: none;
-  }
-  .router-link:hover{
-    color: black;
-    text-decoration: black;
+    padding: 0 20px 5px 20px;
   }
   .title{
     color: #069;
     /*border-bottom: 1px solid #409eff;*/
     font-size: 24px;
+  }
+  .author-affiliation-wrap{
+    display: flex;
+  }
+  .author-affiliation{
+    margin-right: 10px;
   }
   .author{
 

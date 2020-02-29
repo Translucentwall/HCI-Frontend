@@ -1,0 +1,42 @@
+.router-link{
+  text-decoration: none;
+}
+/*.router-link:hover{*/
+/*  color: black;*/
+/*  text-decoration: black;*/
+/*}*/
+.el-menu.el-menu--horizontal{
+  border-bottom: 0;
+}
+.el-menu--horizontal>.el-submenu .el-submenu__title{
+  line-height: 40px;
+  height: 40px;
+  padding: 0;
+}
+.el-menu-item{
+  padding: 0;
+}
+.el-button{
+  background-color: #b04c50;
+  border: 1px solid #b04c50;
+  padding-left: 0;
+  padding-right: 0;
+}
+.el-button:hover{
+  background-color: #b04c50;
+  border: 1px solid #b04c50;
+}
+.el-button:focus{
+  background-color: #b04c50;
+  border: 1px solid #b04c50;
+}
+.el-input{
+  border: #b04c50;
+}
+.cell{
+  text-align: center;
+}
+.el-table__header-wrapper{
+  text-align: center;
+  display: flex;
+}

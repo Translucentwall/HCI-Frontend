@@ -10,8 +10,8 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to.path);
-  console.log(from.path);
+  // console.log(to.path);
+  // console.log(from.path);
   next();
 });
 
