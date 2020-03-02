@@ -1,7 +1,7 @@
 import HelloWorld from '../components/HelloWorld'
-import Home from '../components/Home'
-import Rank from '../components/Rank'
-import Paper from '../components/Paper'
+import Home from '../views/Home'
+import Rank from '../views/Rank'
+import Paper from '../views/Paper'
 
 export let routes = [
   {

@@ -7,16 +7,16 @@
     </div>
     <div class="author-affiliation-wrap">
       <div v-for="i in author.length" class="author-affiliation">
-        <span class="author">{{author[i-1]}},</span>
-        <span class="publisher">{{publisher[i-1]}};</span>
+        <span class="author" @click="searchItem(author[i-1], '3')">{{author[i-1]}},</span>
+        <span class="affiliation" @click="searchItem(affiliation[i-1], '4')">{{affiliation[i-1]}};</span>
       </div>
     </div>
     <div class="publication-wrap">
-      <span class="publication">{{publication}}</span>
+      <span class="publication" @click="searchItem(publication, '5')">{{publication}}</span>
     </div>
     <div class="keyword-wrap">
-      <span v-for="word in keywords">
-        <span class="keyword">{{word}}</span>
+      <span v-for="(word,index) in keywords" v-if="index < 5">
+        <span class="keyword" @click="searchItem(word, '6')">{{word}}</span>
       </span>
     </div>
   </div>
@@ -34,7 +34,7 @@ export default {
             type: Array,
             default: () => {}
         },
-        publisher: {
+        affiliation: {
             type: Array,
             default: () => {}
         },
@@ -45,6 +45,43 @@ export default {
         keywords: {
             type: Array,
             default: () => {}
+        }
+    },
+    methods: {
+        searchItem: function (item, mode) {
+            sessionStorage.setItem('searchContent', item);
+            switch (mode) {
+                case '1': {
+                    sessionStorage.setItem('searchMode', 'All');
+                    break;
+                }
+                case '2': {
+                    sessionStorage.setItem('searchMode', 'Title');
+                    break;
+                }
+                case '3': {
+                    sessionStorage.setItem('searchMode', 'Author');
+                    break;
+                }
+                case '4': {
+                    sessionStorage.setItem('searchMode', 'Affiliation');
+                    break;
+                }
+                case '5': {
+                    sessionStorage.setItem('searchMode', 'Publication');
+                    break;
+                }
+                case '6': {
+                    sessionStorage.setItem('searchMode', 'Keyword');
+                    break;
+                }
+                default:{
+                    sessionStorage.setItem('searchMode', 'All');
+                    break;
+                }
+            }
+            console.log('a');
+            this.$emit('search');
         }
     }
 }
@@ -72,7 +109,7 @@ export default {
   .author{
 
   }
-  .publisher{
+  .affiliation{
 
   }
   .publication{

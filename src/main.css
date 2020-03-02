@@ -21,12 +21,15 @@
   border: 1px solid #b04c50;
   padding-left: 0;
   padding-right: 0;
+  color: #ffffff;
 }
 .el-button:hover{
+  color: #ffffff;
   background-color: #b04c50;
   border: 1px solid #b04c50;
 }
 .el-button:focus{
+  color: #ffffff;
   background-color: #b04c50;
   border: 1px solid #b04c50;
 }
@@ -35,8 +38,4 @@
 }
 .cell{
   text-align: center;
-}
-.el-table__header-wrapper{
-  text-align: center;
-  display: flex;
 }

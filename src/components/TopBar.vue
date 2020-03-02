@@ -12,24 +12,24 @@
       <template  class="submenu-title" slot="title">Rank</template>
       <el-submenu index="/rank">
         <template slot="title">Paper</template>
-        <el-menu-item index="/rank?mode=1">被引用数排行</el-menu-item>
+        <el-menu-item index="/rank?mode=1">Cited Rank</el-menu-item>
       </el-submenu>
       <el-submenu index="2-2">
         <template slot="title">Author</template>
-        <el-menu-item index="/rank?mode=2">论文数排行</el-menu-item>
-        <el-menu-item index="/rank?mode=3">被引用数排行</el-menu-item>
+        <el-menu-item index="/rank?mode=2">Paper Rank</el-menu-item>
+        <el-menu-item index="/rank?mode=3">Cited Rank</el-menu-item>
       </el-submenu>
       <el-submenu index="2-3">
         <template slot="title">Affiliation</template>
-        <el-menu-item index="/rank?mode=4">论文数排行</el-menu-item>
+        <el-menu-item index="/rank?mode=4">Paper Rank</el-menu-item>
       </el-submenu>
       <el-submenu index="2-4">
         <template slot="title">Publication</template>
-        <el-menu-item index="/rank?mode=5">论文数排行</el-menu-item>
+        <el-menu-item index="/rank?mode=5">Paper Rank</el-menu-item>
       </el-submenu>
       <el-submenu index="2-5">
         <template slot="title">Keyword</template>
-        <el-menu-item index="/rank?mode=6">论文数排行</el-menu-item>
+        <el-menu-item index="/rank?mode=6">Paper Rank</el-menu-item>
       </el-submenu>
     </el-submenu>
   </el-menu>
@@ -66,7 +66,9 @@
         methods: {
             handleSelect(key, keyPath) {
                 let url = keyPath[keyPath.length-1];
-                this.$router.push(url);
+                this.$router.push(url).catch(err =>{
+                    console.log(err);
+                });
             }
         }
 
