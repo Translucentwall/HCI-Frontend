@@ -50,12 +50,13 @@
 
 <script>
     import RankList from "../components/RankList";
-    import {getRank} from "../api/api";
+    import {getRank} from "../api/analogApi";
     export default {
         name: "Rank",
         components: {RankList},
         data(){
             return{
+                href: window.location.href,
                 tableSize: 'large',
                 tableMode: '0',
                 tableData: [],
@@ -71,15 +72,55 @@
             }else{
                 this.tableMode = '1';
             }
-            this.tableData = getRank().rankList;
-            this.totalPage = getRank().totalPage;
+            this.showRank();
+            let that = this;
             setTimeout(function () {
                 let ascending = document.getElementsByClassName('ascending')[0];
-                ascending.addEventListener('click', (e)=>{
-                    console.log(e);
-                }, false)
-                console.log(ascending);
+                let descending = document.getElementsByClassName('descending')[0];
+                ascending.classList.add('ascend');
+                descending.classList.add('descend');
+                ascending.classList.remove('sort-up-positive');
+                ascending.classList.add('sort-up-negative');
+                descending.classList.remove('sort-down-negative');
+                descending.classList.add('sort-down-positive');
+                ascending.addEventListener('click', ()=>{
+                    if(that.tableDescending){
+                        that.tableDescending = !that.tableDescending;
+                        ascending.classList.remove('sort-up-negative');
+                        ascending.classList.add('sort-up-positive');
+                        descending.classList.remove('sort-down-positive');
+                        descending.classList.add('sort-down-negative');
+                        that.showRank();
+                    }
+                }, false);
+                descending.addEventListener('click', ()=>{
+                    if(!that.tableDescending){
+                        that.tableDescending = !that.tableDescending;
+                        ascending.classList.remove('sort-up-positive');
+                        ascending.classList.add('sort-up-negative');
+                        descending.classList.remove('sort-down-negative');
+                        descending.classList.add('sort-down-positive');
+                        that.showRank();
+                    }
+                }, false);
             }, 100);
+        },
+        watch:{
+            $route: function () {
+                this.tableMode = window.location.href.split('mode=')[1][0];
+            },
+            tableMode: function () {
+                this.tableDescending = true;
+                let ascending = document.getElementsByClassName('ascend')[0];
+                let descending = document.getElementsByClassName('descend')[0];
+                if(ascending && descending){
+                    ascending.classList.remove('sort-up-positive');
+                    ascending.classList.add('sort-up-negative');
+                    descending.classList.remove('sort-down-negative');
+                    descending.classList.add('sort-down-positive');
+                }
+                this.showRank();
+            }
         },
         methods: {
             handleSelect: function(key, keyPath) {
@@ -116,9 +157,9 @@
                         break;
                     }
                 }
-                getRank(mode, this.currentPage, this.tableDescending);
-                let ascending = document.getElementsByClassName('ascending')[0];
-                console.log(ascending);
+                let data = getRank(mode, this.currentPage, this.tableDescending, 1999, 2020);
+                this.tableData = data.rankList;
+                this.totalPage = data.totalPage;
             }
         }
       }

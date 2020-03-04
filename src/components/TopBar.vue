@@ -78,18 +78,8 @@
 <style scoped>
   .topBar{
     background-color: transparent;
-
   }
-  .topBar .el-menu-item{
-    line-height: 40px;
-    height: 40px;
-  }
-  .topBar .el-submenu {
-    width: 10%;
-    line-height: 40px;
-    height: 40px;
-  }
-  .home{
+  .topBar .home{
     margin-left: 40%;
     width: 10%;
   }

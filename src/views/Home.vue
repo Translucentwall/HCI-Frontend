@@ -57,6 +57,7 @@
             <Card
               v-for="(item, index) in results"
               :key="index"
+              :id="item.id"
               :title="item.title"
               :author="item.author"
               :affiliation="item.affiliation"
@@ -82,7 +83,7 @@
 
 <script>
   import Card from "../components/Card";
-  import {searchPaper, getRank} from "../api/api"
+  import {searchPaper, getRank} from "../api/analogApi"
   import RankList from "../components/RankList";
   export default {
       components: {RankList, Card},
@@ -155,7 +156,7 @@
                       break;
                   }
               }
-              this.tableData = getRank().rankList;
+              this.tableData = getRank(this.tableMode, 1, true, 1999, 2020).rankList;
               this.displayBottom = true;
               setTimeout(function () {
                   window.scrollTo(100,700);
@@ -165,11 +166,7 @@
   }
 </script>
 
-<style>
-  .background{
-    width: 100%;
-    height: 50%;
-  }
+<style scoped>
   .body-top{
     position: relative;
   }
@@ -203,10 +200,6 @@
   }
   .search-input{
     width: 30vw;
-  }
-  .el-input__inner{
-    border-radius: 0;
-    border: 0;
   }
   .search-enter{
     width: 4vw;

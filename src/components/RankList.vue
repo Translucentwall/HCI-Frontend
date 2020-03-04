@@ -136,7 +136,4 @@
   .rank-list{
     padding-top: 16px;
   }
-  .disappear{
-    display: none;
-  }
 </style>
