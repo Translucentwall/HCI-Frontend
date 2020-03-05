@@ -23,13 +23,14 @@
             <el-menu-item index="6"><div class="rank-select-item">Rank of Keyword by Paper</div><div><i class="el-icon-arrow-right"></i></div></el-menu-item>
           </el-menu>
         </el-col>
-        <el-col :span="17">
+        <el-col :span="18">
           <div class="body-bottom-right">
             <span class="demonstration">
               <RankList
                 :size="tableSize"
                 :mode="tableMode"
                 :data="tableData"
+                @changeYear="changeYear"
               >
               </RankList>
             </span>
@@ -62,7 +63,9 @@
                 tableData: [],
                 tableDescending: true,
                 currentPage: 1,
-                totalPage: 0
+                totalPage: 0,
+                startYear: 2013,
+                endYear: 2019
             }
         },
         mounted() {
@@ -160,6 +163,11 @@
                 let data = getRank(mode, this.currentPage, this.tableDescending, 1999, 2020);
                 this.tableData = data.rankList;
                 this.totalPage = data.totalPage;
+            },
+            changeYear: function (year) {
+                this.startYear = year[0];
+                this.endYear = year[1];
+                console.log(this.startYear + ' ' + this.endYear);
             }
         }
       }
@@ -201,6 +209,6 @@
     margin-bottom: 4px;
   }
   .body-bottom-right{
-    margin:0 0 50px 4vw;
+    margin: 0 5vw 50px 5vw;
   }
 </style>

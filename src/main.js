@@ -6,7 +6,11 @@ import router from './router/router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './main.css'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
 
+
+Vue.component('VueSlider', VueSlider)
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 

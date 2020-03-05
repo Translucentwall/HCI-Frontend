@@ -68,3 +68,6 @@
 .el-table .is-sortable .sort-caret.sort-down-negative{
   border-top-color: #c0c4cc;
 }
+.el-pager li.active{
+  color: #b04c50;
+}

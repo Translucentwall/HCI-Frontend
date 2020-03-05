@@ -30,7 +30,7 @@
             <el-collapse-item title="Abstract" name="1" class="block">
               <div class="abstract">
                 <div class="summary font-medium" v-if="paperVO.summary">
-                  <div class="subtitle">Abstract:</div>
+                  <div class="subtitle">Summary:</div>
                   {{paperVO.summary}}
                 </div>
                 <div class="publication font-medium" v-if="paperVO.publication">
@@ -130,7 +130,7 @@
     margin: 20px 50px;
   }
   .body_bottom_body{
-    margin: 20px 10%;
+    margin: 20px 10% 80px 10%;
     box-shadow: 6px 6px 20px 4px #e4e8ef;
     padding-top: 40px;
   }
