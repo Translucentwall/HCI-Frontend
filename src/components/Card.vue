@@ -2,22 +2,25 @@
   <div class="card">
     <div class="title-wrap">
       <router-link class="router-link" :to="to">
-        <span class="title">{{title}}</span>
+        <span class="title" v-html="title"></span>
       </router-link>
     </div>
-    <div class="author-affiliation-wrap">
-      <div v-for="i in author.length" class="author-affiliation" v-if="i < 4">
-        <span class="author" @click="searchItem(author[i-1], '3')">{{author[i-1]}},</span>
-        <span class="affiliation" @click="searchItem(affiliation[i-1], '4')">{{affiliation[i-1]}};</span>
+    <div class="author-affiliation-wrap" v-if="author_simpleAffiliationVOS&&author_simpleAffiliationVOS[0]&&author_simpleAffiliationVOS[0].author!==''">
+      <div v-for="(item,index) in author_simpleAffiliationVOS" class="author-affiliation" v-if="index < 3">
+        <span class="author" @click="searchItem(item.author, '3')" v-html="item.author"></span>
+        <span v-if="item.affiliation&&item.affiliation!=='NA'">,</span>
+        <span class="affiliation" @click="searchItem(item.affiliation, '4')" v-if="item.affiliation&&item.affiliation!=='NA'" v-html="item.affiliation.split(',')[0]"></span>
+        <span>;</span>
       </div>
-      <div v-if="author.length > 3">...</div>
+      <div v-if="author_simpleAffiliationVOS.length > 3">...</div>
     </div>
-    <div class="publication-wrap">
-      <span class="publication" @click="searchItem(publication, '5')">{{publication}}</span>
+    <div class="publication-wrap" v-if="publication">
+      <span>publication: </span>
+      <span class="publication" @click="searchItem(publication, '5')" v-html="publication"></span>
     </div>
-    <div class="keyword-wrap">
+    <div class="keyword-wrap" v-if="keywords&&keywords[0]">
       <span v-for="(word,index) in keywords" v-if="index < 5">
-        <span class="keyword" @click="searchItem(word, '6')">{{word}}</span>
+        <span class="keyword" @click="searchItem(word, '6')" v-html="word"></span>
       </span>
     </div>
   </div>
@@ -43,11 +46,7 @@ export default {
             type: Number,
             default: 0
         },
-        author: {
-            type: Array,
-            default: () => {}
-        },
-        affiliation: {
+        author_simpleAffiliationVOS: {
             type: Array,
             default: () => {}
         },
@@ -117,7 +116,7 @@ export default {
     color: #409eff;
   }
   .author-affiliation-wrap{
-    display: flex;
+    /*display: flex;*/
     padding: 0 12px;
   }
   .author-affiliation{

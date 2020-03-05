@@ -59,9 +59,8 @@
               :key="index"
               :id="item.id"
               :title="item.title"
-              :author="item.author"
-              :affiliation="item.affiliation"
-              :publication="item.publication"
+              :author_simpleAffiliationVOS="item.author_simpleAffiliationVOS"
+              :publication="item.issue"
               :keywords="item.keywords"
               v-on:search="search"
             >
@@ -83,7 +82,7 @@
 
 <script>
   import Card from "../components/Card";
-  import {searchPaper, getRank} from "../api/analogApi"
+  import {search, getRank} from "../api/api"
   import RankList from "../components/RankList";
   export default {
       components: {RankList, Card},
@@ -123,44 +122,57 @@
                   sessionStorage.removeItem('searchContent');
                   sessionStorage.removeItem('searchMode');
               }
-              this.results = searchPaper(this.searchContent, this.mode, this.currentPage, this.sortMode);
-              this.resultTitleMode = this.mode;
-              this.resultTitleContent = this.searchContent;
-              switch (this.mode) {
-                  case "All": {
-                      this.tableMode = '1';
-                      break;
+              search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+                  this.results = JSON.parse(JSON.stringify(res));
+                  this.resultTitleMode = this.mode;
+                  this.resultTitleContent = this.searchContent;
+                  let tableMode = '';
+                  switch (this.mode) {
+                      case "All": {
+                          this.tableMode = '1';
+                          tableMode = 'Paper-Cited';
+                          break;
+                      }
+                      case "Title": {
+                          this.tableMode = '1';
+                          tableMode = 'Paper-Cited';
+                          break;
+                      }
+                      case "Author": {
+                          this.tableMode = '2';
+                          tableMode = 'Author-Paper';
+                          break;
+                      }
+                      case "Affiliation": {
+                          this.tableMode = '4';
+                          tableMode = 'Affiliation-Paper';
+                          break;
+                      }
+                      case "Publication": {
+                          this.tableMode = '5';
+                          tableMode = 'Publication-Paper';
+                          break;
+                      }
+                      case "Keyword": {
+                          this.tableMode = '6';
+                          tableMode = 'Keyword-Paper';
+                          break;
+                      }
+                      default: {
+                          this.tableMode = '1';
+                          tableMode = 'Paper-Cited';
+                          break;
+                      }
                   }
-                  case "Title": {
-                      this.tableMode = '1';
-                      break;
-                  }
-                  case "Author": {
-                      this.tableMode = '2';
-                      break;
-                  }
-                  case "Affiliation": {
-                      this.tableMode = '4';
-                      break;
-                  }
-                  case "Publication": {
-                      this.tableMode = '5';
-                      break;
-                  }
-                  case "Keyword": {
-                      this.tableMode = '6';
-                      break;
-                  }
-                  default: {
-                      this.tableMode = '1';
-                      break;
-                  }
-              }
-              this.tableData = getRank(this.tableMode, 1, true, 1999, 2020).rankList;
-              this.displayBottom = true;
-              setTimeout(function () {
-                  window.scrollTo(100,700);
-              }, 100);
+                  getRank(tableMode, 1, true, 2013, 2019).then(res => {
+                      this.tableData = res.content.rankList;
+                      this.displayBottom = true;
+                      setTimeout(function () {
+                          window.scrollTo(100,700);
+                      }, 100);
+                  });
+
+              });
           }
       }
   }

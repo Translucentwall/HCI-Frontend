@@ -1,11 +1,3 @@
-import axios from 'axios';
-// import Cookies from 'js-cookie'
-
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
-  ? 'http://localhost:1111'
-  : 'http://localhost:3142';
-
 export const searchPaper = (text, mode, pageNumber, sortMode) => {
   if(text === '1'){
     return [

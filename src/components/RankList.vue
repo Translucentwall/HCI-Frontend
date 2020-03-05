@@ -62,7 +62,7 @@
                 title: '',
                 name: '',
                 rankName: '',
-                column1: 0,
+                column1: 700,
                 column2: 0,
                 sortable: 'custom',
                 year: [2013,2019],

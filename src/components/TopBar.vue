@@ -52,7 +52,7 @@
             this.activeIndex = path;
         },
         watch: {
-            $route(){
+            $route: function () {
                 let path = this.$route.path;
                 if (path!=='/home') {
                     let mode = window.location.href.split('mode=');

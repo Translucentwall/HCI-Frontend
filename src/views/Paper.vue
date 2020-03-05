@@ -33,24 +33,24 @@
                   <div class="subtitle">Summary:</div>
                   {{paperVO.summary}}
                 </div>
-                <div class="publication font-medium" v-if="paperVO.publication">
-                  <div class="subtitle">Publication:</div>{{paperVO.publication}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.year}}
+                <div class="publication font-medium" v-if="paperVO.publicationTitle">
+                  <div class="subtitle">Publication:</div>{{paperVO.ordno}} {{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}
                 </div>
                 <div class="publisher font-medium" v-if="paperVO.publisher">
                   <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
                 </div>
-                <div class="DOI font-medium" v-if="paperVO.DOI">
-                  <span class="subtitle">DOI: </span>{{paperVO.DOI}}
+                <div class="DOI font-medium" v-if="paperVO.doi">
+                  <span class="subtitle">DOI: </span>{{paperVO.doi}}
                 </div>
-                <div class="PDFLink font-medium" v-if="paperVO.PDFLink">
-                  <span class="subtitle">PDF Link: </span><a :href="paperVO.PDFLink">{{paperVO.PDFLink}}</a>
+                <div class="PDFLink font-medium" v-if="paperVO.pdflink">
+                  <span class="subtitle">PDF Link: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
                 </div>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.author_affiliation&&paperVO.author_affiliation[0]">
-              <div class="author_affiliation" v-for="item in paperVO.author_affiliation" v-if="item.author">
+            <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.author_affiliationVOS&&paperVO.author_affiliationVOS[0]">
+              <div class="author_affiliation" v-for="item in paperVO.author_affiliationVOS" v-if="item.author">
                 <span class="author" @click="search('Author', item.author)">{{item.author}}</span>
-                <span class="affiliation" v-if="item.affiliation !== 'NA'">{{item.affiliation}}</span>
+                <span class="affiliation" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</span>
               </div>
             </el-collapse-item>
             <el-collapse-item title="Keywords" name="3" class="block" v-if="paperVO.authorKeywords||paperVO.IEEETerms||paperVO.controlledTerms||paperVO.nonControlledTerms">
@@ -60,10 +60,10 @@
                   <span v-for="keyword in paperVO.authorKeywords" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
                 </div>
               </div>
-              <div class="IEEE_keywords keywords" v-if="paperVO.IEEETerms&&paperVO.IEEETerms[0]">
+              <div class="IEEE_keywords keywords" v-if="paperVO.ieeeterms&&paperVO.ieeeterms[0]">
                 <div class="subtitle">IEEE Keywords</div>
                 <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.IEEETerms" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
+                  <span v-for="keyword in paperVO.ieeeterms" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="controlled_terms keywords" v-if="paperVO.controlledTerms&&paperVO.controlledTerms[0]">
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-    import {getPaper} from "../api/analogApi";
+    import {getPaper} from "../api/api";
 
     export default {
         name: "Paper",
@@ -106,8 +106,14 @@
             }else{
                 this.$router.push('/home');
             }
-            this.paperVO = getPaper(this.id);
-            window.scrollTo(0,0);
+            getPaper(this.id).then(res => {
+                if(res.success){
+                    this.paperVO = res.content;
+                    window.scrollTo(0,0);
+                }else{
+
+                }
+            });
         },
         methods: {
             handleChange: function(val) {

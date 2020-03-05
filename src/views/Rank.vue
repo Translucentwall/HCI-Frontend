@@ -36,7 +36,7 @@
             </span>
             <el-pagination
               @current-change="showRank"
-              :current-page="currentPage"
+              :current-page.sync="currentPage"
               :page-size="1"
               layout="total, prev, pager, next, jumper"
               :total="totalPage">
@@ -51,7 +51,7 @@
 
 <script>
     import RankList from "../components/RankList";
-    import {getRank} from "../api/analogApi";
+    import {getRank} from "../api/api";
     export default {
         name: "Rank",
         components: {RankList},
@@ -122,6 +122,7 @@
                     descending.classList.remove('sort-down-negative');
                     descending.classList.add('sort-down-positive');
                 }
+                this.currentPage = 1;
                 this.showRank();
             }
         },
@@ -133,6 +134,7 @@
                 this.tableMode = key;
             },
             showRank: function(){
+                console.log(this.currentPage)
                 let mode;
                 switch (this.tableMode) {
                     case "1": {
@@ -160,14 +162,19 @@
                         break;
                     }
                 }
-                let data = getRank(mode, this.currentPage, this.tableDescending, 1999, 2020);
-                this.tableData = data.rankList;
-                this.totalPage = data.totalPage;
+                getRank(mode, this.currentPage, this.tableDescending, this.startYear, this.endYear).then(res =>{
+                    if(res.success){
+                        this.tableData = res.content.rankList;
+                        this.totalPage = res.content.totalPage;
+                    }else{
+
+                    }
+                });
             },
             changeYear: function (year) {
                 this.startYear = year[0];
                 this.endYear = year[1];
-                console.log(this.startYear + ' ' + this.endYear);
+                this.showRank();
             }
         }
       }
