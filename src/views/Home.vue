@@ -61,6 +61,7 @@
               :title="item.title"
               :author_simpleAffiliationVOS="item.author_simpleAffiliationVOS"
               :publication="item.issue"
+              :year="item.publicationYear"
               :keywords="item.keywords"
               v-on:search="searchBegin"
             >
@@ -137,62 +138,70 @@
               let pattern = /<b><span style="color: #b04c50; ">/;
               let res = pattern.test(this.searchContent);
               if(res){
-                  let contentTmp = this.searchContent.replace('<b><span style="color: #b04c50; ">', '');
-                  this.searchContent = contentTmp.replace('</span></b>', '');
+                  let contentTmp = this.searchContent.replace(/<b><span style="color: #b04c50; ">/g, '');
+                  this.searchContent = contentTmp.replace(/<\/span><\/b>/g, '');
               }
               this.currentPage = 1;
-
-              search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
-                  this.results = res;
-                  this.resultTitleMode = this.mode;
-                  this.resultTitleContent = this.searchContent;
-                  this.displayBottom = true;
-                  setTimeout(function () {
-                      window.scrollTo(100, 700);
-                  }, 100);
-                  let tableMode = '';
-                  switch (this.mode) {
-                      case "All": {
-                          this.tableMode = '1';
-                          tableMode = 'Paper-Cited';
-                          break;
-                      }
-                      case "Title": {
-                          this.tableMode = '1';
-                          tableMode = 'Paper-Cited';
-                          break;
-                      }
-                      case "Author": {
-                          this.tableMode = '2';
-                          tableMode = 'Author-Paper';
-                          break;
-                      }
-                      case "Affiliation": {
-                          this.tableMode = '4';
-                          tableMode = 'Affiliation-Paper';
-                          break;
-                      }
-                      case "Publication": {
-                          this.tableMode = '5';
-                          tableMode = 'Publication-Paper';
-                          break;
-                      }
-                      case "Keyword": {
-                          this.tableMode = '6';
-                          tableMode = 'Keyword-Paper';
-                          break;
-                      }
-                      default: {
-                          this.tableMode = '1';
-                          tableMode = 'Paper-Cited';
-                          break;
-                      }
-                  }
-                  getRank(tableMode, 1, true, 2013, 2019).then(res => {
-                      this.tableData = res.content.rankList;
+              let blankPattern = /^( )*$/;
+              if(blankPattern.test(this.searchContent)){
+                  this.$message({
+                      message:'请输入有效内容',
+                      type: 'error',
+                      duration: 1500
                   });
+              }else{
+                  search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+                      this.results = res;
+                      this.resultTitleMode = this.mode;
+                      this.resultTitleContent = this.searchContent;
+                      this.displayBottom = true;
+                      setTimeout(function () {
+                          window.scrollTo(100, 700);
+                      }, 100);
+                      let tableMode = '';
+                      switch (this.mode) {
+                          case "All": {
+                              this.tableMode = '1';
+                              tableMode = 'Paper-Cited';
+                              break;
+                          }
+                          case "Title": {
+                              this.tableMode = '1';
+                              tableMode = 'Paper-Cited';
+                              break;
+                          }
+                          case "Author": {
+                              this.tableMode = '2';
+                              tableMode = 'Author-Paper';
+                              break;
+                          }
+                          case "Affiliation": {
+                              this.tableMode = '4';
+                              tableMode = 'Affiliation-Paper';
+                              break;
+                          }
+                          case "Publication": {
+                              this.tableMode = '5';
+                              tableMode = 'Publication-Paper';
+                              break;
+                          }
+                          case "Keyword": {
+                              this.tableMode = '6';
+                              tableMode = 'Keyword-Paper';
+                              break;
+                          }
+                          default: {
+                              this.tableMode = '1';
+                              tableMode = 'Paper-Cited';
+                              break;
+                          }
+                      }
+                      getRank(tableMode, 1, true, 2013, 2019).then(res => {
+                          this.tableData = res.content.rankList;
+                      });
 
-              });
+                  });
+              }
           },
           loadMore: function () {
               this.currentPage += 1;
