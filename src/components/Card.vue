@@ -92,7 +92,6 @@ export default {
                     break;
                 }
             }
-            console.log('a');
             this.$emit('search');
         }
     }
@@ -114,6 +113,7 @@ export default {
   }
   .title:hover{
     color: #409eff;
+    text-decoration: underline;
   }
   .author-affiliation-wrap{
     /*display: flex;*/
@@ -124,15 +124,18 @@ export default {
   }
   .author:hover{
     color: #409eff;
+    text-decoration: underline;
   }
   .affiliation:hover{
     color: #409eff;
+    text-decoration: underline;
   }
   .publication-wrap{
     padding: 0 12px;
   }
   .publication:hover{
     color: #409eff;
+    text-decoration: underline;
   }
   .keyword-wrap{
     padding: 0 12px;
@@ -143,5 +146,6 @@ export default {
   }
   .keyword:hover{
     color: #409eff;
+    text-decoration: underline;
   }
 </style>

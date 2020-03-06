@@ -22,9 +22,9 @@
           class="search-input"
           v-model="searchContent"
           placeholder="Please input the search content..."
-          @keyup.enter.native="search">
+          @keyup.enter.native="searchBegin">
         </el-input>
-        <el-button class="search-enter" @click="search">
+        <el-button class="search-enter" @click="searchBegin">
           <i class="el-icon-search"></i>
         </el-button>
       </div>
@@ -62,13 +62,13 @@
               :author_simpleAffiliationVOS="item.author_simpleAffiliationVOS"
               :publication="item.issue"
               :keywords="item.keywords"
-              v-on:search="search"
+              v-on:search="searchBegin"
             >
             </Card>
           </div>
-          <el-button class="result-more">load more...</el-button>
+          <el-button class="result-more" @click="loadMore">load more...</el-button>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="5" class="body-bottom-right">
           <RankList
             :size="tableSize"
             :mode="tableMode"
@@ -85,6 +85,7 @@
   import {search, getRank} from "../api/api"
   import RankList from "../components/RankList";
   export default {
+      name: 'Home',
       components: {RankList, Card},
       data(){
           return{
@@ -104,7 +105,17 @@
       mounted() {
           let content = sessionStorage.getItem('searchContent');
           if(content !== null){
-              this.search();
+              this.searchBegin();
+          }
+          // window.onbeforeunload = function(e) {
+          //     var dialogText = 'Dialog text here';
+          //     e.returnValue = dialogText;
+          //     return dialogText;
+          // };
+      },
+      watch:{
+          sortMode: function(){
+              this.searchBegin();
           }
       },
       methods: {
@@ -114,18 +125,31 @@
           handleSortMode(command) {
               this.sortMode = command;
           },
-          search(){
+          searchBegin: function () {
               let content = sessionStorage.getItem('searchContent');
-              if(content !== null){
+              if (content !== null) {
                   this.searchContent = content;
                   this.mode = sessionStorage.getItem('searchMode');
                   sessionStorage.removeItem('searchContent');
                   sessionStorage.removeItem('searchMode');
               }
+
+              let pattern = /<b><span style="color: #b04c50; ">/;
+              let res = pattern.test(this.searchContent);
+              if(res){
+                  let contentTmp = this.searchContent.replace('<b><span style="color: #b04c50; ">', '');
+                  this.searchContent = contentTmp.replace('</span></b>', '');
+              }
+              this.currentPage = 1;
+
               search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
-                  this.results = JSON.parse(JSON.stringify(res));
+                  this.results = res;
                   this.resultTitleMode = this.mode;
                   this.resultTitleContent = this.searchContent;
+                  this.displayBottom = true;
+                  setTimeout(function () {
+                      window.scrollTo(100, 700);
+                  }, 100);
                   let tableMode = '';
                   switch (this.mode) {
                       case "All": {
@@ -166,12 +190,16 @@
                   }
                   getRank(tableMode, 1, true, 2013, 2019).then(res => {
                       this.tableData = res.content.rankList;
-                      this.displayBottom = true;
-                      setTimeout(function () {
-                          window.scrollTo(100,700);
-                      }, 100);
                   });
 
+              });
+          },
+          loadMore: function () {
+              this.currentPage += 1;
+              search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+                  for (let result in res){
+                      this.results.push(res[result]);
+                  }
               });
           }
       }
@@ -273,5 +301,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .body-bottom-right{
+    border-left: 1px solid #ebeef5;
+    padding: 0 0 50px 8px;
   }
 </style>

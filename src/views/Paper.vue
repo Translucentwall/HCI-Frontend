@@ -34,7 +34,7 @@
                   {{paperVO.summary}}
                 </div>
                 <div class="publication font-medium" v-if="paperVO.publicationTitle">
-                  <div class="subtitle">Publication:</div>{{paperVO.ordno}} {{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}
+                  <div class="subtitle">Publication:</div>{{paperVO.ordno}} {{publicationFull}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}
                 </div>
                 <div class="publisher font-medium" v-if="paperVO.publisher">
                   <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
@@ -115,6 +115,15 @@
                 }
             });
         },
+        computed: {
+            publicationFull: function () {
+                if(this.paperVO.publicationTitle === 'ASE'){
+                    return 'IEEE/ACM International Conference on Automated Software Engineering (ASE)';
+                }else if(this.paperVO.publicationTitle === 'ICSE'){
+                    return 'IEEE/ACM International Conference on Software Engineering (ICSE)'
+                }
+            }
+        },
         methods: {
             handleChange: function(val) {
                 console.log(val);
@@ -148,7 +157,7 @@
   }
   .citation_wrap{
     height: 60px;
-    margin: 0 50px;
+    margin: 10px 50px 0 0;
   }
   .citation_box{
     width: 80px;

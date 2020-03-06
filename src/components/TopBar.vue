@@ -65,10 +65,10 @@
         },
         methods: {
             handleSelect(key, keyPath) {
-                let url = keyPath[keyPath.length-1];
-                this.$router.push(url).catch(err =>{
-                    console.log(err);
-                });
+                window.location.href = keyPath[keyPath.length - 1];
+                // this.$router.push(url).catch(err =>{
+                //     console.log(err);
+                // });
             }
         }
 

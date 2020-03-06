@@ -134,7 +134,6 @@
                 this.tableMode = key;
             },
             showRank: function(){
-                console.log(this.currentPage)
                 let mode;
                 switch (this.tableMode) {
                     case "1": {
