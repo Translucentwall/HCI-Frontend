@@ -31,6 +31,6 @@ node {
     } catch (ignored) {
       echo('WWW container not created')
     }
-    sh "docker run -d -p 80:80 --link se3 --name se3www se3vue:latest"
+    sh "docker run -d -p 80:80 --link se3:se3 --name se3www se3vue:latest"
   }
 }
