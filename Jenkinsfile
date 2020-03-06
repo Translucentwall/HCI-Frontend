@@ -31,6 +31,6 @@ node {
     } catch (ignored) {
       echo('WWW container not created')
     }
-    sh "docker run -d -p 80:80 --link se3 -v nginx.conf:/etc/nginx/nginx.conf -v ./dist:/usr/share/nginx/html --name se3www nginx:alpine"
+    sh "docker run -d -p 80:80 --link se3 -v nginx.conf:/etc/nginx/nginx.conf -v dist:/usr/share/nginx/html --name se3www nginx:alpine"
   }
 }
