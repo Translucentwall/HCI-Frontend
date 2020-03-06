@@ -17,6 +17,8 @@
     <div class="publication-wrap" v-if="publication">
       <span>publication: </span>
       <span class="publication" @click="searchItem(publication, '5')" v-html="publication"></span>
+      <span v-if="year">, </span>
+      <span class="year" v-html="year" v-if="year"></span>
     </div>
     <div class="keyword-wrap" v-if="keywords&&keywords[0]">
       <span v-for="(word,index) in keywords" v-if="index < 5">
@@ -40,7 +42,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: 'null'
+            default: ''
         },
         id: {
             type: Number,
@@ -52,7 +54,11 @@ export default {
         },
         publication: {
             type: String,
-            default: 'null'
+            default: ''
+        },
+        year: {
+            type: String,
+            default: ''
         },
         keywords: {
             type: Array,
