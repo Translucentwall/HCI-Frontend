@@ -74,7 +74,8 @@
           <RankList
             :size="tableSize"
             :mode="tableMode"
-            :data="tableData">
+            :data="tableData"
+            :page="1">
           </RankList>
         </el-col>
       </el-row>

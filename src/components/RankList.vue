@@ -34,6 +34,7 @@
       <el-table-column
         v-if="size!=='small'"
         type="index"
+        :index="getIndex"
         label="Rank"
         :width="60">
       </el-table-column>
@@ -81,8 +82,11 @@
             data: {
                 type: Array,
                 default: () => {}
+            },
+            page: {
+                type: Number,
+                default: 1
             }
-
         },
         mounted(){
             if(this.size === 'small'){
@@ -151,6 +155,9 @@
                         break;
                     }
                 }
+            },
+            getIndex: function (index) {
+                return index + 1 + 10 * (this.page - 1);
             }
         }
     }

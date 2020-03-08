@@ -30,6 +30,7 @@
                 :size="tableSize"
                 :mode="tableMode"
                 :data="tableData"
+                :page="currentPage"
                 @changeYear="changeYear"
               >
               </RankList>
