@@ -22,7 +22,8 @@
           class="search-input"
           v-model="searchContent"
           placeholder="Please input the search content..."
-          @keyup.enter.native="searchBegin">
+          @keydown.13.native="searchBegin"
+          @keydown.229="handleCN">
         </el-input>
         <el-button class="search-enter" @click="searchBegin">
           <i class="el-icon-search"></i>
@@ -210,6 +211,9 @@
                       this.results.push(res[result]);
                   }
               });
+          },
+          handleCN: function () {
+              console.log('我捕获了');
           }
       }
   }
