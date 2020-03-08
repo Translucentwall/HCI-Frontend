@@ -152,6 +152,7 @@
                       duration: 1500
                   });
               }else{
+                  this.results.length = 0;
                   search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
                       this.results = res;
                       this.resultTitleMode = this.mode;
