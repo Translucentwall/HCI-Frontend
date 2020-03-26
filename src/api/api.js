@@ -18,6 +18,10 @@ export const getRank = (mode, pageNumber, descend, startYear, endYear) =>{
   return axios.get('/rank/' + mode + '?pageNumber=' + pageNumber + '&descend=' + descend + '&startYear=' + startYear + '&endYear=' + endYear).then(res => res.data);
 };
 
+export const login = (username, password) =>{
+  return axios.post('/login',{username:username,password:password}).then(res=>res.data);
+};
+
 function transfer(text) {
   // if('/+/'.test(text)){
     text = text.replace(/%/g, '%25');

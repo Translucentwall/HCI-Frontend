@@ -2,6 +2,7 @@ import HelloWorld from '../components/HelloWorld'
 import Home from '../views/Home'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
+import AdminLogin from "../views/AdminLogin";
 
 export let routes = [
   {
@@ -31,5 +32,10 @@ export let routes = [
     path: '/paper',
     name: 'Paper',
     component: Paper
+  },
+  {
+    path: '/admin',
+    name: 'AdminLogin',
+    component: AdminLogin
   }
   ];
