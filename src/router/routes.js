@@ -34,7 +34,7 @@ export let routes = [
     component: Paper
   },
   {
-    path: '/admin',
+    path: '/login',
     name: 'AdminLogin',
     component: AdminLogin
   }
