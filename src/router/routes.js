@@ -3,6 +3,7 @@ import Home from '../views/Home'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
 import AdminLogin from "../views/AdminLogin";
+import Entity from "../views/Entity";
 
 export let routes = [
   {
@@ -37,5 +38,10 @@ export let routes = [
     path: '/login',
     name: 'AdminLogin',
     component: AdminLogin
+  },
+  {
+    path:'/entity',
+    name:'Entity',
+    component: Entity
   }
   ];
