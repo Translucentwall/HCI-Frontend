@@ -22,6 +22,7 @@
 
 <script>
     import {login} from "../api/api";
+    import cookie from 'js-cookie'
 
     export default {
         name: "AdminLogin",
@@ -35,7 +36,9 @@
             login: function () {
                 if(this.username!==''&&this.password!==''){
                     login(this.username, this.password).then(res=>{
-                        alert("登录信息：" + res.success);
+                        let expireTime = new Date(new Date().getTime() + 10 * 60 * 1000);
+                        cookie.set('Authorization',res.jwtToken, {expires: expireTime});
+                        document.location.href='/admin/manage';
                     })
                 }
             }

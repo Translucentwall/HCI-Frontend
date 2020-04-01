@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {routes} from './routes'
+import cookie from 'js-cookie';
+import {authorize} from "../api/api";
 
 Vue.use(Router);
 
@@ -10,8 +12,6 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  // console.log(to.path);
-  // console.log(from.path);
   next();
 });
 
