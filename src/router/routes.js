@@ -4,6 +4,8 @@ import Rank from '../views/Rank'
 import Paper from '../views/Paper'
 import AdminLogin from "../views/AdminLogin";
 import Entity from "../views/Entity";
+import Manage from "../views/Manage";
+import Graph from "../views/Graph";
 
 export let routes = [
   {
@@ -40,8 +42,18 @@ export let routes = [
     component: AdminLogin
   },
   {
+    path: '/admin/manage',
+    name: 'AdminManage',
+    component: Manage
+  },
+  {
     path:'/entity/:type/:id',
     name:'Entity',
     component: Entity
+  },
+  {
+    path: '/graph',
+    name: 'Graph',
+    component: Graph
   }
   ];

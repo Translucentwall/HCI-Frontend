@@ -159,6 +159,52 @@ export const getRank = (mode, pageNumber, descend, startYear, endYear) => {
   }
 };
 
+export const getGraph = (id, type)=>{
+  return{
+    centerId: 1,
+    nodes: [
+      {
+        id: 1,
+        name: 'aaa',
+        type: 1
+      },
+      {
+        id: 2,
+        name: 'bbb',
+        type: 1
+      },
+      {
+        id: 3,
+        name: 'ccc',
+        type: 2
+      }
+    ],
+    links: [
+      {
+        sourceId: 1,
+        sourceType: 1,
+        targetId: 2,
+        targetType: 1,
+        value: 0
+      },
+      {
+        sourceId: 1,
+        sourceType: 1,
+        targetId: 3,
+        targetType: 2,
+        value: 0
+      },
+      {
+        sourceId: 2,
+        sourceType: 1,
+        targetId: 3,
+        targetType: 2,
+        value: 0
+      }
+    ]
+  }
+};
+
 export const getPaper = (id) =>{
   return{
     id: id,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import Cookies from 'js-cookie'
+import cookie from 'js-cookie'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
@@ -20,6 +20,14 @@ export const getRank = (mode, pageNumber, descend, startYear, endYear) =>{
 
 export const login = (username, password) =>{
   return axios.post('/login',{username:username,password:password}).then(res=>res.data);
+};
+
+export const logout = () => {
+  return axios.post('/logout').then(res=>res.data);
+};
+
+export const getConfusedAlias = () => {
+ return axios.get('/admin/getConfusedAlias', {headers:{'Authorization': 'Bearer '+cookie.get('Authorization')}}).then();
 };
 
 export const getAcademicEntity = (id, type) =>{
