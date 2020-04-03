@@ -22,6 +22,11 @@ export const login = (username, password) =>{
   return axios.post('/login',{username:username,password:password}).then(res=>res.data);
 };
 
+export const getAcademicEntity = (id, type) =>{
+  return axios.get('/academic'+ id + '?type=' + type).then(res=>res.data);
+};
+
+
 function transfer(text) {
   // if('/+/'.test(text)){
     text = text.replace(/%/g, '%25');

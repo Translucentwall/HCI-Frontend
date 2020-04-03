@@ -40,7 +40,7 @@ export let routes = [
     component: AdminLogin
   },
   {
-    path:'/entity',
+    path:'/entity/:type/:id',
     name:'Entity',
     component: Entity
   }
