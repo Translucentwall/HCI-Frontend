@@ -32,7 +32,7 @@
     </div>
     <div class="body-bottom" v-if="displayBottom">
       <el-row>
-        <el-col :span="19">
+        <el-col :span="18">
           <div class="result-title-wrap">
             <div class="result-title">
               Show results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
@@ -70,7 +70,7 @@
           </div>
           <el-button class="result-more" @click="loadMore">load more...</el-button>
         </el-col>
-        <el-col :span="5" class="body-bottom-right">
+        <el-col :span="6" class="body-bottom-right">
           <RankList
             :size="tableSize"
             :mode="tableMode"
@@ -319,6 +319,6 @@
   }
   .body-bottom-right{
     border-left: 1px solid #ebeef5;
-    padding: 0 0 50px 8px;
+    padding: 0 30px 50px 8px;
   }
 </style>

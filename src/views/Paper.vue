@@ -231,4 +231,7 @@
   a:visited{
     color: #069;
   }
+  .el-button{
+    padding: 0 5px;
+  }
 </style>

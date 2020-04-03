@@ -13,7 +13,7 @@
           <code class="text">password: </code>
           <el-input type="password" v-model="password" class="local-input"></el-input>
         </div>
-        <input type="checkbox" name="remember-me" value="true" checked="checked"/>remember me
+        <input type="checkbox" name="remember-me" value="true" checked="checked" v-model="remember_me"/>remember me
       </div>
       <el-button @click="login" class="login-confirm">Log In</el-button>
     </div>
@@ -28,17 +28,19 @@
         name: "AdminLogin",
         data(){
             return{
-                username:'',
-                password:''
+                username: '',
+                password: '',
+                remember_me: false
             }
         },
         methods:{
             login: function () {
                 if(this.username!==''&&this.password!==''){
-                    login(this.username, this.password).then(res=>{
+                    login(this.username, this.password, this.remember_me).then(res=>{
                         let expireTime = new Date(new Date().getTime() + 10 * 60 * 1000);
                         cookie.set('Authorization',res.jwtToken, {expires: expireTime});
                         document.location.href='/admin/manage';
+                        // this.$router.push('/admin/manage');
                     })
                 }
             }

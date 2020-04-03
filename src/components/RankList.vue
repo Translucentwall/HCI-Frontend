@@ -90,8 +90,8 @@
         },
         mounted(){
             if(this.size === 'small'){
-                this.column1 = 120;
-                this.column2 = 150;
+                this.column1 = 200;
+                this.column2 = 120;
                 this.sortable = false;
             }
             this.change(this.mode);

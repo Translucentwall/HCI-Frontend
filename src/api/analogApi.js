@@ -163,44 +163,34 @@ export const getGraph = (id, type)=>{
   return{
     centerId: 1,
     nodes: [
-      {
-        id: 1,
-        name: 'aaa',
-        type: 1
-      },
-      {
-        id: 2,
-        name: 'bbb',
-        type: 1
-      },
-      {
-        id: 3,
-        name: 'ccc',
-        type: 2
-      }
+      {id:1, name: '王长贵', type:1},
+      {id:1, name: '王大拿', type:2},
+      {id:1, name: '谢小梅', type:3},
+      {id:2, name: '谢广坤', type:1},
+      {id:2, name: '刘能', type:2},
+      {id:3, name: '赵四', type:1},
+      {id:4, name: '刘大脑袋', type:1},
+      {id:2, name: '赵玉田', type:3},
+      {id:5, name: '刘英', type:1},
+      {id:3, name: '王老七', type:3},
+      {id:6, name: '王小蒙', type:1},
+      {id:7, name: '谢大脚', type:1},
+      {id:8, name: '谢永强', type:1}
     ],
     links: [
-      {
-        sourceId: 1,
-        sourceType: 1,
-        targetId: 2,
-        targetType: 1,
-        value: 0
-      },
-      {
-        sourceId: 1,
-        sourceType: 1,
-        targetId: 3,
-        targetType: 2,
-        value: 0
-      },
-      {
-        sourceId: 2,
-        sourceType: 1,
-        targetId: 3,
-        targetType: 2,
-        value: 0
-      }
+      {source: 0, target: 1, relation: '两口子'},
+      {source: 0, target: 2, relation: '曾爱慕'},
+      {source: 0, target: 3, relation: '亲戚'},
+      {source: 0, target: 4, relation: '曾爱慕'},
+      {source: 2, target: 7, relation: '上下属'},
+      {source: 4, target: 5, relation: '死对头'},
+      {source: 4, target: 10, relation: '亲家'},
+      {source: 5, target: 9, relation: '父女'},
+      {source: 5, target: 6, relation: '亲家'},
+      {source: 10, target: 11, relation: '妇女'},
+      {source: 11, target: 12, relation: '两口子'},
+      {source: 4, target: 12, relation: '父子'},
+      {source: 8, target: 9, relation: '两口子'}
     ]
   }
 };

@@ -12,6 +12,15 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  // let adminPattern = /^\/admin/;
+  // if(adminPattern.test(to.path)){
+  //   let token = cookie.get('Authorization');
+  //   if(token===undefined || token===''){
+  //     next('/login');
+  //   }else{
+  //     next();
+  //   }
+  // }
   next();
 });
 

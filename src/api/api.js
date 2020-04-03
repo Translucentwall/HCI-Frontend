@@ -18,8 +18,9 @@ export const getRank = (mode, pageNumber, descend, startYear, endYear) =>{
   return axios.get('/rank/' + mode + '?pageNumber=' + pageNumber + '&descend=' + descend + '&startYear=' + startYear + '&endYear=' + endYear).then(res => res.data);
 };
 
-export const login = (username, password) =>{
-  return axios.post('/login',{username:username,password:password}).then(res=>res.data);
+export const login = (username, password, remember_me) =>{
+  let data = {};
+  return axios.post('/login?remember-me='+remember_me,{username:username,password:password}).then(res=>res.data);
 };
 
 export const logout = () => {
@@ -27,7 +28,8 @@ export const logout = () => {
 };
 
 export const getConfusedAlias = () => {
- return axios.get('/admin/getConfusedAlias', {headers:{'Authorization': 'Bearer '+cookie.get('Authorization')}}).then();
+  let authorize = cookie.get('Authorization');
+    return axios.get('/admin/getConfusedAlias', (authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
 };
 
 function transfer(text) {

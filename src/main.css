@@ -26,8 +26,6 @@
 .el-button{
   background-color: #b04c50;
   border: 1px solid #b04c50;
-  padding-left: 0;
-  padding-right: 0;
   color: #ffffff;
 }
 .el-button:hover{
@@ -70,4 +68,9 @@
 }
 .el-pager li.active{
   color: #b04c50;
+}
+.el-table .cell{
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
 }

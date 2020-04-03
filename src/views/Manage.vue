@@ -15,7 +15,14 @@
         name: "Manage",
         mounted(){
             getConfusedAlias().then(res=>{
-                console.log(res);
+                if(res.status === '000'){
+                    this.$alert('身份信息已过期，请重新登录！','提示', {
+                        type: 'error'
+                    }).then(()=>{
+                        cookie.remove('Authorization');
+                        window.location.href = '/login';
+                    })
+                }
             })
         },
         methods:{
