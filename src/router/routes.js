@@ -1,4 +1,3 @@
-import HelloWorld from '../components/HelloWorld'
 import Home from '../views/Home'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
@@ -17,11 +16,6 @@ export let routes = [
     redirect: '/home'
   },
   {
-    path: '/hello',
-    name: 'hello',
-    component: HelloWorld
-  },
-  {
     path: '/home',
     name: 'Home',
     component: Home
@@ -32,7 +26,7 @@ export let routes = [
     component: Rank
   },
   {
-    path: '/paper',
+    path: '/paper/:id',
     name: 'Paper',
     component: Paper
   },
@@ -52,7 +46,7 @@ export let routes = [
     component: Entity
   },
   {
-    path: '/graph',
+    path: '/graph/:type/:id',
     name: 'Graph',
     component: Graph
   }

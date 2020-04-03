@@ -56,15 +56,9 @@
 
           <div class="result-content">
             <Card
-              v-for="(item, index) in results"
+              v-for="(item, index) in simplePaperVO"
               :key="index"
-              :id="item.id"
-              :title="item.title"
-              :author_simpleAffiliationVOS="item.author_simpleAffiliationVOS"
-              :publication="item.issue"
-              :year="item.publicationYear"
-              :keywords="item.keywords"
-              v-on:search="searchBegin"
+              :simple-paper-v-o="item"
             >
             </Card>
           </div>
@@ -85,8 +79,9 @@
 
 <script>
   import Card from "../components/Card";
-  import {search, getRank} from "../api/api"
+  import {search, getRank, searchable} from "../api/api"
   import RankList from "../components/RankList";
+  import {Loading} from "element-ui";
   export default {
       name: 'Home',
       components: {RankList, Card},
@@ -94,7 +89,7 @@
           return{
               displayBottom: false,
               mode: 'All',
-              results: [],
+              simplePaperVO: [],
               searchContent: '',
               currentPage: 1,
               sortMode: 'Relevance',
@@ -106,15 +101,16 @@
           }
       },
       mounted() {
-          let content = sessionStorage.getItem('searchContent');
-          if(content !== null){
-              this.searchBegin();
-          }
-          // window.onbeforeunload = function(e) {
-          //     var dialogText = 'Dialog text here';
-          //     e.returnValue = dialogText;
-          //     return dialogText;
-          // };
+          let loadingInstance = Loading.service({ fullscreen: true, text:'Server not available, please wait for a moment...'});
+          searchable().then(res=>{
+              if(res.success){
+                  loadingInstance.close();
+                  let content = sessionStorage.getItem('searchContent');
+                  if(content !== null){
+                      this.searchBegin();
+                  }
+              }
+          });
       },
       watch:{
           sortMode: function(){
@@ -152,9 +148,9 @@
                       duration: 1500
                   });
               }else{
-                  this.results.length = 0;
+                  this.simplePaperVO.length = 0;
                   search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
-                      this.results = res;
+                      this.simplePaperVO = res;
                       this.resultTitleMode = this.mode;
                       this.resultTitleContent = this.searchContent;
                       this.displayBottom = true;
@@ -210,7 +206,7 @@
               this.currentPage += 1;
               search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
                   for (let result in res){
-                      this.results.push(res[result]);
+                      this.simplePaperVO.push(res[result]);
                   }
               });
           },

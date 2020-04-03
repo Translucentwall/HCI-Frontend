@@ -14,16 +14,27 @@
     export default {
         name: "Manage",
         mounted(){
-            getConfusedAlias().then(res=>{
-                if(res.status === '000'){
-                    this.$alert('身份信息已过期，请重新登录！','提示', {
-                        type: 'error'
+            getConfusedAlias()
+                .then(res=>{
+                    if(res.status === '000'){
+                        this.$alert('Identity expired, please login again','Tips', {
+                            type: 'error',
+                            confirmButtonText: 'confirm'
+                        }).then(()=>{
+                            cookie.remove('Authorization');
+                            window.location.href = '/login';
+                        })
+                    }
+                })
+                .catch(()=>{
+                    this.$alert('Identity expired, please login again','Tips', {
+                        type: 'error',
+                        confirmButtonText: 'confirm'
                     }).then(()=>{
                         cookie.remove('Authorization');
                         window.location.href = '/login';
                     })
-                }
-            })
+                })
         },
         methods:{
             logout: function () {

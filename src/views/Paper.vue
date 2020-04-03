@@ -7,9 +7,9 @@
     </div>
     <div class="body_bottom">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
-        <el-breadcrumb-item>{{paperVO.identifier}}</el-breadcrumb-item>
-        <el-breadcrumb-item>{{paperVO.publication}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
+        <el-breadcrumb-item :to="'/entity/issue/'+paperVO.conferenceId"><span>{{paperVO.publicationYear}} {{paperVO.publicationTitle}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item>{{paperVO.title}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="body_bottom_body">
         <div class="title">
@@ -34,7 +34,8 @@
                   {{paperVO.summary}}
                 </div>
                 <div class="publication font-medium" v-if="paperVO.publicationTitle">
-                  <div class="subtitle">Publication:</div>{{paperVO.ordno}} {{publicationFull}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}
+                  <div class="subtitle">Publication:</div>
+                  <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.ordno}} {{publicationFull}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
                 </div>
                 <div class="publisher font-medium" v-if="paperVO.publisher">
                   <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
@@ -49,8 +50,8 @@
             </el-collapse-item>
             <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.author_affiliationVOS&&paperVO.author_affiliationVOS[0]">
               <div class="author_affiliation" v-for="item in paperVO.author_affiliationVOS" v-if="item.author">
-                <span class="author" @click="search('Author', item.author)">{{item.author}}</span>
-                <span class="affiliation" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</span>
+                <a class="author" :href="'/entity/author/'+item.authorId">{{item.author}}</a>
+                <a class="affiliation" :href="'/entity/affiliation/'+item.affiliation.id" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</a>
               </div>
             </el-collapse-item>
             <el-collapse-item title="Keywords" name="3" class="block" v-if="paperVO.authorKeywords||paperVO.IEEETerms||paperVO.controlledTerms||paperVO.nonControlledTerms">
@@ -100,20 +101,34 @@
             }
         },
         mounted() {
-            let mode = window.location.href.split('id=');
-            if (mode.length > 1 && mode[1] !== '') {
-                this.id = Number(mode[1]);
-            }else{
-                this.$router.push('/home');
-            }
-            getPaper(this.id).then(res => {
-                if(res.success){
-                    this.paperVO = res.content;
-                    window.scrollTo(0,0);
-                }else{
+            this.id = this.$route.params.id;
+            if(this.id ===undefined){
 
-                }
-            });
+            }else{
+                getPaper(this.id)
+                    .then(res => {
+                        if(res.success){
+                            this.paperVO = res.content;
+                            window.scrollTo(0,0);
+                        }else{
+                            this.$alert('Fail to get paper，please search again','Tips',{
+                                type: 'error',
+                                confirmButtonText: 'confirm'
+                            }).then(()=>{
+                                window.location.href = '/home';
+                            })
+                        }
+                    })
+                    .catch(()=>{
+                        this.$alert('Fail to get paper，please search again','Tips',{
+                            type: 'error',
+                            confirmButtonText: 'confirm'
+                        }).then(()=>{
+                            window.location.href = '/home';
+                        })
+                    })
+                ;
+            }
         },
         computed: {
             publicationFull: function () {
@@ -183,6 +198,13 @@
   .abstract{
     margin-right: 24px;
   }
+  .issue{
+    text-decoration: none;
+    color: #000000;
+  }
+  .issue:hover{
+    color: #409eff;
+  }
   .author_affiliation{
     display: block;
     margin-right: 24px;
@@ -193,6 +215,7 @@
     line-height: 20px;
     font-size: 20px;
     color: #069;
+    text-decoration: none;
   }
   .author:hover{
     color: #409eff;
@@ -200,6 +223,11 @@
   .affiliation{
     font-size: 14px;
     margin-left: 16px;
+    color: #000000;
+    text-decoration: none;
+  }
+  .affiliation:hover{
+    color: #409eff;
   }
   .keywords{
     margin-right: 24px;
@@ -228,10 +256,4 @@
     font-weight: bold;
     font-size: 20px;
    }
-  a:visited{
-    color: #069;
-  }
-  .el-button{
-    padding: 0 5px;
-  }
 </style>

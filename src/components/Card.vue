@@ -1,27 +1,26 @@
 <template>
   <div class="card">
     <div class="title-wrap">
-      <router-link class="router-link" :to="to">
-        <span class="title" v-html="title"></span>
-      </router-link>
+      <a class="title" :href="'/paper/'+simplePaperVO.id" v-html="simplePaperVO.title"></a>
     </div>
-    <div class="author-affiliation-wrap" v-if="author_simpleAffiliationVOS&&author_simpleAffiliationVOS[0]&&author_simpleAffiliationVOS[0].author!==''">
-      <div v-for="(item,index) in author_simpleAffiliationVOS" class="author-affiliation" v-if="index < 3">
-        <span class="author" @click="searchItem(item.author, '3')" v-html="item.author"></span>
+    <div class="author-affiliation-wrap" v-if="simplePaperVO.author_simpleAffiliationVOS&&simplePaperVO.author_simpleAffiliationVOS[0]&&simplePaperVO.author_simpleAffiliationVOS[0].author!==''">
+      <div v-for="(item,index) in simplePaperVO.author_simpleAffiliationVOS" class="author-affiliation" v-if="index < 3">
+        <a class="author" :href="'/entity/author/'+item.authorId" v-html="item.author"></a>
         <span v-if="item.affiliation&&item.affiliation!=='NA'">,</span>
-        <span class="affiliation" @click="searchItem(item.affiliation, '4')" v-if="item.affiliation&&item.affiliation!=='NA'" v-html="item.affiliation.split(',')[0]"></span>
+        <a class="affiliation" :href="'/entity/affiliation/'+item.affiliationId" v-if="item.affiliation&&item.affiliation!=='NA'" v-html="item.affiliation.split(',')[0]"></a>
         <span>;</span>
       </div>
-      <div v-if="author_simpleAffiliationVOS.length > 3">...</div>
+      <div v-if="simplePaperVO.author_simpleAffiliationVOS.length > 3">...</div>
     </div>
-    <div class="publication-wrap" v-if="publication">
+    <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
       <span>publication: </span>
-      <span class="publication" @click="searchItem(publication, '5')" v-html="publication"></span>
-      <span v-if="year">, </span>
-      <span class="year" v-html="year" v-if="year"></span>
+      <a class="publication" :href="'/entity/issue/'+simplePaperVO.conferenceId">
+        <span class="year" v-html="simplePaperVO.publicationYear+' '" v-if="simplePaperVO.publicationYear"></span>
+        <span v-html="simplePaperVO.publicationTitle"></span>
+      </a>
     </div>
-    <div class="keyword-wrap" v-if="keywords&&keywords[0]">
-      <span v-for="(word,index) in keywords" v-if="index < 5">
+    <div class="keyword-wrap" v-if="simplePaperVO.keywords&&simplePaperVO.keywords[0]">
+      <span v-for="(word,index) in simplePaperVO.keywords" v-if="index < 5">
         <span class="keyword" @click="searchItem(word, '6')" v-html="word"></span>
       </span>
     </div>
@@ -33,36 +32,12 @@ export default {
     name: 'Card',
     data(){
         return{
-            to: ''
         }
     },
-    mounted(){
-        this.to = '/paper?id=' + this.id;
-    },
     props: {
-        title: {
-            type: String,
-            default: ''
-        },
-        id: {
-            type: Number,
-            default: 0
-        },
-        author_simpleAffiliationVOS: {
-            type: Array,
-            default: () => {}
-        },
-        publication: {
-            type: String,
-            default: ''
-        },
-        year: {
-            type: String,
-            default: ''
-        },
-        keywords: {
-            type: Array,
-            default: () => {}
+        simplePaperVO: {
+            type: Object,
+            default: {}
         }
     },
     methods: {
@@ -98,7 +73,7 @@ export default {
                     break;
                 }
             }
-            this.$emit('search');
+            window.location.href = '/home';
         }
     }
 }
@@ -114,8 +89,8 @@ export default {
   }
   .title{
     color: #069;
-    /*border-bottom: 1px solid #409eff;*/
     font-size: 24px;
+    text-decoration: none;
   }
   .title:hover{
     color: #409eff;
@@ -128,9 +103,17 @@ export default {
   .author-affiliation{
     margin-right: 10px;
   }
+  .author{
+    color: #000000;
+    text-decoration: none;
+  }
   .author:hover{
     color: #409eff;
     text-decoration: underline;
+  }
+  .affiliation{
+    color: #000000;
+    text-decoration: none;
   }
   .affiliation:hover{
     color: #409eff;
@@ -138,6 +121,10 @@ export default {
   }
   .publication-wrap{
     padding: 0 12px;
+  }
+  .publication{
+    color: #000000;
+    text-decoration: none;
   }
   .publication:hover{
     color: #409eff;

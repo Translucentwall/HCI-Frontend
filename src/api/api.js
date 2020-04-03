@@ -6,6 +6,9 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   ? 'http://' + location.hostname +':80/api'
   : 'http://localhost:8080/api';
 
+export const searchable = () =>{
+  return axios.get('/searchable').then(res => res.data);
+};
 export const getPaper = (id) =>{
   return axios.get('/paperDetail/'+ id).then(res => res.data);
 };
@@ -33,7 +36,7 @@ export const getConfusedAlias = () => {
 };
 
 export const getAcademicEntity = (id, type) =>{
-  return axios.get('/academic'+ id + '?type=' + type).then(res=>res.data);
+  return axios.get('/academic/'+ id + '?type=' + type).then(res=>res.data);
 };
 
 

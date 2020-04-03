@@ -1,8 +1,8 @@
 <template>
-  <div id='svgContainer' style="">
+  <div id='svgContainer'>
     <div class="every">
-      <h3>力导向图探究</h3>
       <div class="svg" id="forceDirected"></div>
+      <div class="option">力导向图探究</div>
     </div>
   </div>
 </template>
@@ -12,54 +12,33 @@
     export default {
         data () {
             return {
+                id: 0,
+                type: 0,
+                typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
                 graphVO: {},
                 moreGraphVO: {}
             }
         },
         mounted () {
+            this.id=this.$route.params.id;
+            this.type=this.typeDic[this.$route.params.type];
+            if(this.id===undefined || this.type===undefined){
+                window.location.href = '/home';
+            }
+            console.log(this.type);
             this.graphVO = getGraph();
             this.forceDirected ();
         },
         methods: {
             forceDirected () {
                 let width = 1400;
-                let height = 800;
+                let height = 600;
                 let padding = {
                     left: 30,
                     right: 30,
                     top: 20,
                     bottom: 20
                 };
-                // let nodes = [
-                //     {name: '谢大脚'},
-                //     {name: '王长贵'},
-                //     {name: '王大拿'},
-                //     {name: '谢小梅'},
-                //     {name: '谢广坤'},
-                //     {name: '刘能'},
-                //     {name: '赵四'},
-                //     {name: '刘大脑袋'},
-                //     {name: '赵玉田'},
-                //     {name: '刘英'},
-                //     {name: '王老七'},
-                //     {name: '王小蒙'},
-                //     {name: '谢永强'}
-                // ];
-                // let links = [
-                //     {source: 0, target: 1, relation: '两口子'},
-                //     {source: 0, target: 2, relation: '曾爱慕'},
-                //     {source: 0, target: 3, relation: '亲戚'},
-                //     {source: 0, target: 4, relation: '曾爱慕'},
-                //     {source: 2, target: 7, relation: '上下属'},
-                //     {source: 4, target: 5, relation: '死对头'},
-                //     {source: 4, target: 10, relation: '亲家'},
-                //     {source: 5, target: 9, relation: '父女'},
-                //     {source: 5, target: 6, relation: '亲家'},
-                //     {source: 10, target: 11, relation: '妇女'},
-                //     {source: 11, target: 12, relation: '两口子'},
-                //     {source: 4, target: 12, relation: '父子'},
-                //     {source: 8, target: 9, relation: '两口子'}
-                // ];
                 let nodes = this.graphVO.nodes;
                 let links = this.graphVO.links;
                 let svg = d3.select('#forceDirected')
@@ -69,19 +48,27 @@
                 // 通过布局来转换数据，然后进行绘制
                 let simulation = d3.forceSimulation()
                     .nodes(nodes)
-                    .force('link', d3.forceLink(links).distance(100))
+                    .force('link', d3.forceLink(links).distance(100).id(d=>d.id))
                     .force('charge', d3.forceManyBody())
                     .force('center', d3.forceCenter((width - padding.left - padding.right) / 2, (height - padding.top - padding.bottom) / 2));
                 let color = d3.scaleOrdinal(d3.schemeCategory10);
 
+                // 添加连线
+                svg.selectAll('line')
+                    .data(links)
+                    .enter()
+                    .append('line')
+                    .style('stroke', '#ccc')
+                    .style('stroke-width', 2);
                 // 添加节点
                 svg.selectAll('circle')
                     .data(nodes)
                     .enter()
                     .append('circle')
-                    .attr('r', 5)
+                    .attr('r', 10)
+                    .style('border','1px solid #ffffff')
                     .style('fill', function (d, i) {
-                        return color(i)
+                        return color(d.entityType);
                     })
                     // 添加圆圈的拖拽事件，同时他会触发simulation的tick事件，重新布局该区域
                     .call(d3.drag()
@@ -111,27 +98,27 @@
                     .append('text')
                     .style('font-size', '12px')
                     .style('fill', '#000')
-                    .attr('dx', 0)
+                    .style('left', '10px')
+                    .attr('dx', 10)
                     .attr('dy', 0)
-                    .text(function (d) { return d.name });
-                // 添加relation
-                svg.selectAll('.relation')
-                    .data(links)
-                    .enter()
-                    .append('text')
-                    .style('fill', 'red')
-                    .style('font-size', '11px')
-                    .attr('class', 'relation')
-                    .attr('dx', 0)
-                    .attr('dy', 0)
-                    .text(function (d) { return d.relation })
-                // 添加连线
-                svg.selectAll('line')
-                    .data(links)
-                    .enter()
-                    .append('line')
-                    .style('stroke', '#ccc')
-                    .style('stroke-width', 2)
+                    .text(function (d) {
+                        if(d.entityName.length<=10){
+                            return d.entityName;
+                        }else{
+                            return d.entityName.substr(0,10)+'...';
+                        }
+                    });
+                // // 添加relation
+                // svg.selectAll('.relation')
+                //     .data(links)
+                //     .enter()
+                //     .append('text')
+                //     .style('fill', 'red')
+                //     .style('font-size', '11px')
+                //     .attr('class', 'relation')
+                //     .attr('dx', 0)
+                //     .attr('dy', 0)
+                //     .text(function (d) { return d.relation });
                 //数据重绘
                 simulation.on('tick', function () {
                     svg.selectAll('circle')
@@ -161,9 +148,7 @@
   .every{
     margin:15px;
     float: left;
-  }
-  h3{
-    margin:0;
+    position: relative;
   }
   .button{
     float: right;
@@ -176,5 +161,13 @@
     border-radius: 4px;}
   .button:hover{
     background: violet;
+  }
+  .svg{
+    border: 1px solid #cccccc;
+  }
+  .option{
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 </style>

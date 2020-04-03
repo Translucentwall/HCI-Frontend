@@ -161,36 +161,74 @@ export const getRank = (mode, pageNumber, descend, startYear, endYear) => {
 
 export const getGraph = (id, type)=>{
   return{
-    centerId: 1,
+    id: "10000000991",
+    centerId: 991,
+    centerType: 1,
+    centerName: "J. Grigera",
     nodes: [
-      {id:1, name: '王长贵', type:1},
-      {id:1, name: '王大拿', type:2},
-      {id:1, name: '谢小梅', type:3},
-      {id:2, name: '谢广坤', type:1},
-      {id:2, name: '刘能', type:2},
-      {id:3, name: '赵四', type:1},
-      {id:4, name: '刘大脑袋', type:1},
-      {id:2, name: '赵玉田', type:3},
-      {id:5, name: '刘英', type:1},
-      {id:3, name: '王老七', type:3},
-      {id:6, name: '王小蒙', type:1},
-      {id:7, name: '谢大脚', type:1},
-      {id:8, name: '谢永强', type:1}
+      {
+        id: "10000000991",
+        entityId: 991,
+        entityName: "J. Grigera",
+        entityType: 1
+      },
+      {
+        id: "50008115717",
+        entityId: 8115717,
+        entityName: "Kobold: Web usability as a service",
+        entityType: 5
+      },
+      {
+        id: "20000000314",
+        entityId: 314,
+        entityName: "LIFIA, Universidad Nacional de La Plata, Argentina, Also at CIC, Argentina",
+        entityType: 2
+      },
+      {
+        id: "40000004186",
+        entityId: 4186,
+        entityName: "web usability",
+        entityType: 4
+      },
+      {
+        id: "40000004455",
+        entityId: 4455,
+        entityName: "software as a service",
+        entityType: 4
+      },
+      {
+        id: "40000003839",
+        entityId: 3839,
+        entityName: "usability refactoring",
+        entityType: 4
+      }
     ],
     links: [
-      {source: 0, target: 1, relation: '两口子'},
-      {source: 0, target: 2, relation: '曾爱慕'},
-      {source: 0, target: 3, relation: '亲戚'},
-      {source: 0, target: 4, relation: '曾爱慕'},
-      {source: 2, target: 7, relation: '上下属'},
-      {source: 4, target: 5, relation: '死对头'},
-      {source: 4, target: 10, relation: '亲家'},
-      {source: 5, target: 9, relation: '父女'},
-      {source: 5, target: 6, relation: '亲家'},
-      {source: 10, target: 11, relation: '妇女'},
-      {source: 11, target: 12, relation: '两口子'},
-      {source: 4, target: 12, relation: '父子'},
-      {source: 8, target: 9, relation: '两口子'}
+      {
+        source: "10000000991",
+        target: "50008115717",
+        value: -1.0
+      },
+      {
+        source: "10000000991",
+        target: "20000000314",
+        value: -1.0
+      },
+      {
+        source: "10000000991",
+        target: "40000004186",
+        value: 2.0
+      },
+      {
+        source: "10000000991",
+        target: "40000004455",
+        value: 2.0
+      },
+      {
+        source: "10000000991",
+        target: "40000003839",
+        value: 2.0
+      }
     ]
   }
 };
