@@ -47,8 +47,8 @@ export let routes = [
     component: Manage
   },
   {
-    path: '/entity',
-    name: 'Entity',
+    path:'/entity/:type/:id',
+    name:'Entity',
     component: Entity
   },
   {

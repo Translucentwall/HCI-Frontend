@@ -233,3 +233,60 @@ export const getPaper = (id) =>{
   }
 };
 
+export const getAcademicEntity = (id, type)=>{
+  return{
+    type: 1,
+    id: 1111,
+    name: 'nju',
+    refsum:1000,
+    authors:
+      [{type: 1, id:0, name:'A'},
+      {type: 1, id:1, name:'B'},
+      {type: 1, id:2, name:'C'},
+      {type: 1, id:3, name:'D'}]
+    ,
+    affilications:
+      [{type:2,id:0,name:'Univ. Politec. de Madrid, Madrid, Spain'},
+      {type:2,id:1,name:'IEEE'},
+      {type:2,id:2,name:'ABC'},
+      {type:2,id:3,name:'DEF'}]
+    ,
+    conferences:
+      [{type:3,id:0,name:'C1'},
+      {type:3,id:1,name:'C2'},
+      {type:3,id:2,name:'C3'}
+      ]
+    ,
+    terms:['t1','t2','t3','t4'],
+    significantPapers:[
+      { id:0,
+        title:'p1',
+        author_simpleAffiliationVOS:[{author:'A0',affilication:'ABC'},{author:'B0',affilication: 'ABC'}],
+        publicationTitle:'p1.1',
+        publicationYear:'2019-2-3',
+        keywords:['t1','t2','t3']
+      },
+      { id:1,
+        title:'p2',
+        author_simpleAffiliationVOS:[{author:'A1',affilication:'ABC'},{author:'B1',affilication: 'ABC'}],
+        publicationTitle:'p1.2',
+        publicationYear:'2019-1-1',
+        keywords:['t1','t2','t3']
+      },
+      { id:2,
+        title:'p3',
+        author_simpleAffiliationVOS:[{author:'A2',affilication:'ABC'},{author:'B2',affilication: 'ABC'}],
+        publicationTitle:'p1.3',
+        publicationYear:'2019-1-3',
+        keywords:['t1','t2','t3']
+      },
+      { id:3,
+        title:'p4',
+        author_simpleAffiliationVOS:[{author:'A3',affilication:'ABC'},{author:'B3',affilication: 'ABC'}],
+        publicationTitle:'p1.4',
+        publicationYear:'2019-1-4',
+        keywords:['t1','t2','t3']
+      }
+    ]
+  }
+};
