@@ -29,18 +29,22 @@
 <!--        <span>id:{{id}}</span>-->
         <el-col class="body-rank" v-if="academicEntityVO.authors!=null" :span="7">
           <ol>
-<!--            <li v-for="n in 10">{{n}}</li>-->
                       <li v-for="author in academicEntityVO.authors">
                         {{author.name}}
                       </li>
           </ol>
+<!--          <el-tag-->
+<!--            v-for="author in academicEntityVO.authors"-->
+<!--            :key="author.id"-->
+<!--            :type="author.name">-->
+<!--            {{author.name}}-->
+<!--          </el-tag>-->
         </el-col>
 <!--      </el-row>-->
 
 <!--      <el-row>-->
         <el-col class="body-rank" v-if="academicEntityVO.affilications!=null" :span="7">
           <ol>
-<!--            <li v-for="n in 10">{{n}}</li>-->
                       <li v-for="affilication in academicEntityVO.affilications">
                         {{affilication.name}}
                       </li>
@@ -51,7 +55,6 @@
 <!--      <el-row>-->
         <el-col class="body-rank" v-if="academicEntityVO.conferences!=null" :span="7">
           <ol>
-<!--            <li v-for="n in 10">{{n}}</li>-->
                       <li v-for="conference in academicEntityVO.conferences">
                         {{conference.name}}
                       </li>
@@ -61,14 +64,22 @@
 
     </el-row>
     <div>
-      <span>代表作</span>
+      <span class="ndTitle">代表作</span>
 <!--      representative work-->
-      <ul>
-        <li v-for="significantPaper in academicEntityVO.significantPapers">
-          <Card></Card>
-          {{significantPaper.title}}:{{significantPaper.author_simpleAffiliationVOS}}:{{significantPaper.publicationYear}}
-        </li>
-      </ul>
+<!--      <ul>-->
+<!--        <li v-for="significantPaper in academicEntityVO.significantPapers">-->
+<!--          {{significantPaper.title}}:{{significantPaper.author_simpleAffiliationVOS}}:{{significantPaper.publicationYear}}-->
+<!--        </li>-->
+<!--      </ul>-->
+      <Card
+      v-for="significantPaper in academicEntityVO.significantPapers"
+      :id="significantPaper.id"
+      :title="significantPaper.title"
+      :author_simple-affiliation-v-o-s="significantPaper.author_simpleAffiliationVOS"
+      :year="significantPaper.publicationYear"
+      :publication="significantPaper.publicationTitle"
+      :keywords="significantPaper.keywords"
+      ></Card>
     </div>
   </div>
 </div>
@@ -106,7 +117,7 @@
       },
       methods:{
           todetail(){
-            this.$router.push("/home");
+            this.$router.push("/graph");
           }
 
       }
@@ -114,5 +125,9 @@
 </script>
 
 <style scoped>
+  .ndTitle{
+    color: #b04c50;
+    font-size: 30px;
+  }
 
 </style>
