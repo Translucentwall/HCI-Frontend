@@ -158,7 +158,8 @@
             },
             getIndex: function (index) {
                 return index + 1 + 10 * (this.page - 1);
-            }
+            },
+
         }
     }
 </script>

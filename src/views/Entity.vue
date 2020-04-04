@@ -19,66 +19,61 @@
       <el-row>
         <el-col class="body_bottom_top" :span="22" :offset="1">
           <el-row>
-            <el-col class="body_top_left column" :span="9">
+            <el-col class="body_top_left column" :span="6">
               <el-row>
-                <el-col :span="9">
+                <el-col :span="8">
                   <div class="reference citation_box" :style="{opacity: academicEntityVO.refSum<0?'0':'1'}">
                     <div class="citation_title">Reference</div>
                     <div class="citation_count">{{academicEntityVO.refSum}}</div>
                   </div>
                 </el-col>
-                <el-col :span="12" :offset="3">
+                <el-col :span="16" class="entry_wrap">
                   <a class="graph_entry" type="primary" :href="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">Relation Graph>>></a>
                 </el-col>
-                <el-col :span="24">
-                  <span>给词云占地儿</span>
+                <el-col class="column under_entry" v-if="academicEntityVO.authors!=null" :span="24">
+                  <strong>Authors:</strong>
+                  <div class="list">
+                    <el-tag
+                      v-for="author in academicEntityVO.authors"
+                      :key="author.id"
+                      :type="author.name"
+                      @click="toOtherEntity('author', author.id)"
+                    >
+                      {{author.name}}
+                    </el-tag>
+                  </div>
+                </el-col>
+                <el-col class="column under_entry" v-if="academicEntityVO.author==null&&academicEntityVO.affiliations!==null&&academicEntityVO.conferences!==null" :span="24">
+                  <strong>Issues:</strong>
+                  <div class="list">
+                    <el-tag
+                      v-for="conference in academicEntityVO.conferences"
+                      :key="conference.id"
+                      :type="conference.name"
+                      @click="toOtherEntity('issue', conference.id)"
+                    >
+                      {{conference.name}}
+                    </el-tag>
+                  </div>
                 </el-col>
               </el-row>
             </el-col>
-            <el-col class="column" v-if="academicEntityVO.authors!=null" :span="6">
-              <strong>Authors:</strong>
-              <div class="list">
-                <!--              <ol>-->
-                <!--                <li v-for="author in academicEntityVO.authors">{{author.name}}</li>-->
-                <!--              </ol>-->
-
-                <el-tag
-                  v-for="author in academicEntityVO.authors"
-                  :key="author.id"
-                  :type="author.name"
-                  @click="toOtherEntity('author', author.id)"
-                >
-                  {{author.name}}
-                </el-tag>
-              </div>
-            </el-col>
             <el-col class="column" v-if="academicEntityVO.affiliations!=null" :span="9">
               <strong>Affiliations:</strong>
-              <!--            <el-row justify="space-around">-->
-              <!--              <el-col v-for="(affiliation,index) in academicEntityVO.affiliations" :key="index">-->
-              <!--                <el-tag>{{affiliation.name}}</el-tag>-->
-              <!--              </el-col>-->
-              <!--            </el-row>-->
               <div class="list">
-                <!--              <ol>-->
-                <!--                <li v-for="affiliation in academicEntityVO.affiliations">{{affiliation.name}}</li>-->
-                <!--              </ol>-->
                 <el-tag
                   v-for="affiliation in academicEntityVO.affiliations"
                   :key="affiliation.id"
                   :type="affiliation.name"
                   @click="toOtherEntity('affiliation', affiliation.id)"
                 >
-                  {{affiliation.name.length>30?affiliation.name.substr(0,30)+'...':affiliation.name}}
+                  {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}
                 </el-tag>
               </div>
             </el-col>
-            <el-col class="column" v-if="academicEntityVO.conferences!=null" :span="6">
+            <el-col class="column" v-if="academicEntityVO.affiliations===null" :span="9">
               <strong>Issues:</strong>
               <div class="list">
-                <!--              <ol>-->
-                <!--                <li v-for="conference in academicEntityVO.conferences">{{conference.name}}</li>-->
-                <!--              </ol>-->
                 <el-tag
                   v-for="conference in academicEntityVO.conferences"
                   :key="conference.id"
@@ -89,16 +84,14 @@
                 </el-tag>
               </div>
             </el-col>
+            <el-col :span="9" id="cloud-wrap" v-if="academicEntityVO.terms!==[]">
+              <strong>Terms Cloud: </strong>
+              <div class="svg" id="cloud"></div>
+            </el-col>
           </el-row>
         </el-col>
         <el-col :span="22"  :offset="1" class="significantPaper_wrap">
           <strong class="significantPaper_title">Significant Papers</strong>
-    <!--      representative work-->
-    <!--      <ul>-->
-    <!--        <li v-for="significantPaper in academicEntityVO.significantPapers">-->
-    <!--          {{significantPaper.title}}:{{significantPaper.author_simpleAffiliationVOS}}:{{significantPaper.publicationYear}}-->
-    <!--        </li>-->
-    <!--      </ul>-->
           <Card
           v-for="(significantPaper,index) in academicEntityVO.significantPapers"
           :key="index"
@@ -115,6 +108,8 @@
     import {getAcademicEntity} from "../api/api";
     import Card from "../components/Card";
     import {Loading} from "element-ui";
+    import * as d3 from 'd3';
+    import * as d3_cloud from 'd3-cloud';
 
     export default {
         name: "Entity",
@@ -124,7 +119,7 @@
                 id: 0,
                 type: 0,
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
-                academicEntityVO: {},
+                academicEntityVO: {}
                 }
         },
         mounted() {
@@ -137,13 +132,16 @@
             getAcademicEntity(this.id,this.type)
                 .then(res => {
                     this.academicEntityVO = res;
-                    window.scrollTo(0,0);
+                    if(res.terms!==null&&res.terms[0]!==undefined){
+                        this.renderCloud();
+                    }
                     loadingInstance.close();
                 })
                 .catch(()=>{
                     this.$alert('Fail to get entity，please search again', 'Tips',{
                         type: 'error',
-                        confirmButtonText: 'confirm'
+                        confirmButtonText: 'confirm',
+                        closable: false
                     }).then(()=>{
                         window.location.href = '/home';
                     })
@@ -152,6 +150,72 @@
         methods: {
             toOtherEntity: function (type, id) {
                 window.location.href='/entity/' + type + '/' + id;
+            },
+            renderCloud: function () {
+                let data = this.academicEntityVO.terms;
+                let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
+                console.log(data.length);
+                let width = document.getElementById('cloud-wrap').offsetWidth;
+                let height = data.length>100?400:300;
+                let color = d3.scaleOrdinal(d3.schemeCategory10);
+                let svg = d3.select('#cloud')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height);
+
+
+                const layout = d3_cloud()
+                    .size([width, height])
+                    .words(data)
+                    .padding(5)
+                    .rotate(function() {
+                        return ~~(Math.random() * 2) * 45;
+                    })
+                    .font('Impact')
+                    .fontSize(function(d) {
+                        return 2+(d.hot+1)/(maxHot+1)*22;
+                    })
+                    .on('end', draw);
+
+                layout.start();
+                function draw(words) {
+                    svg.append('g')
+                        .attr('transform', 'translate('+ (layout.size()[0] / 2) + ',' + (layout.size()[1] / 2)+ ')')
+                        .selectAll('text')
+                        .data(words)
+                        .enter()
+                        .append('text')
+                        .on('click', function(d) {
+                            window.location.href = '/graph/term/' + d.id;
+                        })
+                        .style('cursor', 'pointer')
+                        .attr('fill', (d, i) => color(i))
+                        .style('font-size', function(d) {
+                            return 2+(d.hot+1)/(maxHot+1)*22;
+                        })
+                        .style('font-family', 'Impact')
+                        .attr('text-anchor', 'middle')
+                        .attr('transform', function(d) {
+                            return 'translate('+[d.x, d.y]+')rotate('+d.rotate+')';
+                        })
+                        .text(function(d) {
+                            return d.name;
+                        })
+                        .append('title')
+                        .text(function(d) {
+                            return d.name;
+                        });
+
+                    svg.selectAll('text') // 创建动画
+                        .style('fill-opacity', 0)
+                        .transition()
+                        .duration(100)
+                        .delay(function(d, i) {
+                            return i * 100
+                        })
+                        .style('fill-opacity', 1);
+                }
+
             }
         },
         computed: {
@@ -216,8 +280,17 @@
     font-size: 14px;
     font-weight: bold;
   }
+  /*.entry_wrap{*/
+  /*  margin-top: 48px;*/
+  /*}*/
   .graph_entry{
     color: #409eff;
+  }
+  .under_entry{
+    margin-top: 10px;
+  }
+  #cloud-wrap{
+    text-align: left;
   }
   .significantPaper_wrap{
     margin-top: 20px;
@@ -241,6 +314,7 @@
     /*background-color: #d66881;*/
     /*border-color: #b04c50;*/
     /*color: #ffffff;*/
+    cursor: pointer;
   }
   .el-tag:hover{
     color: #000000;

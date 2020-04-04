@@ -3,15 +3,17 @@
     <div class="every">
       <div class="svg" id="forceDirected"></div>
       <div class="option">
-        <div>{{this.$route.params.type}}: {{graphVO.centerName}}</div>
-        <input type="checkbox" v-model="showTotal">Show Total
-    </div>
+        <div class="option_name">{{changeType}}: {{graphVO.centerName}}</div>
+        <input type="checkbox" v-model="showTotal">Show Total Graph
+      </div>
     </div>
   </div>
 </template>
 <script>
     import * as d3 from 'd3'
     import {getGraph, getMoreGraph} from "../api/api";
+    import {Loading} from "element-ui";
+
     export default {
         data () {
             return {
@@ -20,6 +22,7 @@
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
                 graphVO: {},
                 moreGraphVO: {},
+                moreGraphReady: false,
                 showTotal: false
             }
         },
@@ -29,55 +32,81 @@
             if(this.id===undefined || this.type===undefined){
                 window.location.href = '/home';
             }
+            let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
             getGraph(this.id,this.type)
                 .then(res=>{
                     this.graphVO = res;
+                    loadingInstance.close();
                     if(this.showTotal&&this.type<4){
                         getMoreGraph(this.id,this.type)
                             .then(res=>{
                                 this.moreGraphVO = res;
+                                this.moreGraphReady = true;
                                 let nodes = this.graphVO.nodes.concat(this.moreGraphVO.nodes);
                                 let links = this.graphVO.links.concat(this.moreGraphVO.links);
-                                this.forceDirected (nodes, links);
+                                this.forceDirected (nodes, links, 1);
                             });
                     }else{
                         let nodes = this.graphVO.nodes;
                         let links = this.graphVO.links;
-                        this.forceDirected (nodes, links);
+                        this.forceDirected (nodes, links, 1);
                         if(this.type<4){
-                            getMoreGraph(this.id,this.type)
+                            getMoreGraph(this.id, this.type)
                                 .then(res=>{
                                     this.moreGraphVO = res;
+                                    this.moreGraphReady = true;
                                 });
                         }
                     }
                 });
         },
         watch: {
-          showTotal: function () {
-              if(this.showTotal&&this.type<4){
-                  let svg = document.getElementById('forceDirected');
-                  let children = svg.childNodes;
-                  children.forEach(function (child) {
-                      svg.removeChild(child);
-                  });
-                  let nodes = this.graphVO.nodes.concat(this.moreGraphVO.nodes);
-                  let links = this.graphVO.links.concat(this.moreGraphVO.links);
-                  this.forceDirected (nodes, links);
-              }else{
-                  let svg = document.getElementById('forceDirected');
-                  let children = svg.childNodes;
-                  children.forEach(function (child) {
-                      svg.removeChild(child);
-                  });
-                  let nodes = this.graphVO.nodes;
-                  let links = this.graphVO.links;
-                  this.forceDirected (nodes, links);
-              }
-          }
+            showTotal: function () {
+                if(this.showTotal&&!this.moreGraphReady&&this.type<4){
+                    this.showTotal = false;
+                    this.$notify.error({
+                        title: 'error',
+                        message: 'Total graph is not ready!'
+                    });
+                }else{
+                    if(this.showTotal&&this.type<4){
+                        let svg = document.getElementById('forceDirected');
+                        let children = svg.childNodes;
+                        children.forEach(function (child) {
+                            svg.removeChild(child);
+                        });
+                        let nodes = this.graphVO.nodes.concat(this.moreGraphVO.nodes);
+                        let links = this.graphVO.links.concat(this.moreGraphVO.links);
+                        this.forceDirected (nodes, links, 2);
+                    }else{
+                        let svg = document.getElementById('forceDirected');
+                        let children = svg.childNodes;
+                        children.forEach(function (child) {
+                            svg.removeChild(child);
+                        });
+                        let nodes = this.graphVO.nodes;
+                        let links = this.graphVO.links;
+                        this.forceDirected (nodes, links, 1);
+                    }
+                }
+            },
+            moreGraphReady: function () {
+                if(this.type===3){
+                    this.$notify.success({
+                        title: 'success',
+                        message: 'Total graph is ready!'
+                    });
+                }
+            }
+        },
+        computed: {
+            changeType: function () {
+                let type = this.$route.params.type;
+                return type.substring(0,1).toUpperCase() + type.substring(1);
+            }
         },
         methods: {
-            forceDirected (nodes, links) {
+            forceDirected (nodes, links, type) {
                 console.log(nodes.length);
                 let width = document.getElementById('svgContainer').offsetWidth;
                 let height = 800;
@@ -96,7 +125,7 @@
                 // 通过布局来转换数据，然后进行绘制
                 let simulation = d3.forceSimulation()
                     .nodes(nodes)
-                    .force('link', d3.forceLink(links).distance(150).id(d=>d.id))
+                    .force('link', d3.forceLink(links).distance(type===1?200:100).id(d=>d.id))
                     .force('charge', d3.forceManyBody())
                     .force('center', d3.forceCenter(width / 2, height / 2));
                     // .force('center', d3.forceCenter((width - padding.left - padding.right) / 2, (height - padding.top - padding.bottom) / 2));
@@ -122,16 +151,23 @@
                     .enter()
                     .append('circle')
                     .attr('r', function (d) {
-                        if(d.entityId===centerId&&d.entityType===centerType ){
+                        if(d.entityId===centerId&&d.entityType===centerType&&type===1){
                             return 10;
-                        }else{
+                        }else if(d.entityId===centerId&&d.entityType===centerType&&type===2){
                             return 6;
+                        }else if(type===1){
+                            return 6;
+                        }else{
+                            return 4;
                         }
                     })
                     .attr('stroke', '#000000')
                     .attr('stroke-width', 2)
                     .style('fill', function (d) {
-                        if(d.entityType===1 ){
+                        if(d.entityId===centerId&&d.entityType===centerType){
+                            return 'rgb(106,0,95)';
+                        }
+                        else if(d.entityType===1 ){
                             return 'rgb(214, 39, 40)';
                         }else if(d.entityType===2 ){
                             return 'rgb(255, 127, 14)';
@@ -172,7 +208,7 @@
                     .call(d3.drag()
                         .on('start', function (d) {
                             if (!d3.event.active) {
-                                simulation.alphaTarget(0.3).restart() // 设置衰减系数，对节点位置移动过程的模拟，数值越高移动越快，数值范围[0，1]
+                                simulation.alphaTarget(0.8).restart() // 设置衰减系数，对节点位置移动过程的模拟，数值越高移动越快，数值范围[0，1]
                             }
                             d.fx = d.x;
                             d.fy = d.y;
@@ -259,6 +295,10 @@
     top: 0;
     left: 20px;
     text-align: left;
+    min-width: 160px;
+  }
+  .option_name{
+    margin-left: 0.5ex;
   }
   .author{
     color: rgb(214, 39, 40);
