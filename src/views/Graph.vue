@@ -164,6 +164,8 @@
                         let typeDic2 = {1:"author", 2:'affiliation', 3:'issue', 4:'term', 5:'paper'};
                         if(d.entityType<5){
                             window.location.href='/graph/' + typeDic2[d.entityType] + '/'+ d.entityId;
+                        }else{
+                            window.location.href='/paper/' + d.entityId;
                         }
                     })
                     // 添加圆圈的拖拽事件，同时他会触发simulation的tick事件，重新布局该区域
@@ -263,6 +265,9 @@
   }
   .affiliation{
     color: rgb(255, 127, 14);
+  }
+  .issue{
+    color: rgb(214, 214, 8);
   }
   .term{
     color: rgb(44, 160, 44);
