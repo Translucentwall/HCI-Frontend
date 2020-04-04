@@ -36,7 +36,15 @@ export const getConfusedAlias = () => {
 };
 
 export const getAcademicEntity = (id, type) =>{
-  return axios.get('/academic/'+ id + '?type=' + type).then(res=>res.data);
+  return axios.get('/academic/' + id + '?type=' + type).then(res=>res.data);
+};
+
+export const getGraph = (id, type) =>{
+  return axios.get('/graph/basic/' + id + '?type=' + type).then(res=>res.data);
+};
+
+export const getMoreGraph = (id, type) =>{
+  return axios.get('/graph/more/' + id + '?type=' + type).then(res=>res.data);
 };
 
 

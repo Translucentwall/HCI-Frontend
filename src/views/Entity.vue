@@ -13,21 +13,24 @@
     <div class="body_bottom_body">
       <el-row>
         <el-col :span="22" :offset="1" class="name">
-          <span>{{academicEntityVO.name}}</span>
+          <span>{{changeName}}</span>
         </el-col>
       </el-row>
       <el-row>
-        <el-col class="body_bottom_top" :span="22" offset="1">
+        <el-col class="body_bottom_top" :span="22" :offset="1">
           <el-row>
             <el-col class="body_top_left column" :span="9">
               <el-row>
-                <el-col :span="9" :offset="3">
-                  <span class="refSum" v-if="academicEntityVO.refSum >= 0">被引用数：{{academicEntityVO.refSum}}</span>
+                <el-col :span="9">
+                  <div class="reference citation_box" :style="{opacity: academicEntityVO.refSum<0?'0':'1'}">
+                    <div class="citation_title">Reference</div>
+                    <div class="citation_count">{{academicEntityVO.refSum}}</div>
+                  </div>
                 </el-col>
-                <el-col :span="12">
-                  <el-button type="primary" round @click="toDetail">Entry</el-button>
+                <el-col :span="12" :offset="3">
+                  <a class="graph_entry" type="primary" :href="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">Relation Graph>>></a>
                 </el-col>
-                <el-col :span="21" :offset="3">
+                <el-col :span="24">
                   <span>给词云占地儿</span>
                 </el-col>
               </el-row>
@@ -89,7 +92,7 @@
           </el-row>
         </el-col>
         <el-col :span="22"  :offset="1" class="significantPaper_wrap">
-          <span class="significantPaper_title">Significant Papers</span>
+          <strong class="significantPaper_title">Significant Papers</strong>
     <!--      representative work-->
     <!--      <ul>-->
     <!--        <li v-for="significantPaper in academicEntityVO.significantPapers">-->
@@ -121,7 +124,6 @@
                 id: 0,
                 type: 0,
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
-                simplePaperVO: {},
                 academicEntityVO: {},
                 }
         },
@@ -148,11 +150,31 @@
                 });
         },
         methods: {
-            toDetail: function(){
-                window.location.href='/graph/' + this.$route.params.type + '/' + this.$route.params.id;
-            },
             toOtherEntity: function (type, id) {
                 window.location.href='/entity/' + type + '/' + id;
+            }
+        },
+        computed: {
+            changeName: function () {
+                if(this.type === 3 && this.academicEntityVO.name !== undefined){
+                    let nameItem = this.academicEntityVO.name.split(' ');
+                    if(nameItem[1].substr(-1,1)==='1'){
+                        nameItem[1] += 'st';
+                    }else if(nameItem[1].substr(-1,1)==='2'){
+                        nameItem[1] += 'nd';
+                    }else if(nameItem[1].substr(-1,1)==='3'){
+                        nameItem[1] += 'rd';
+                    }else {
+                        nameItem[1] += 'th';
+                    }
+                    if(nameItem[2] === 'ASE'){
+                        return nameItem[0] + ' ' + nameItem[1] + ' IEEE/ACM International Conference on Automated Software Engineering (ASE)';
+                    }else{
+                        return nameItem[0] + ' ' + nameItem[1] + ' IEEE/ACM International Conference on Software Engineering (ICSE)';
+                    }
+                }else{
+                    return this.academicEntityVO.name;
+                }
             }
         }
     }
@@ -181,13 +203,28 @@
     font-size: 30px;
     font-weight: bold;
   }
+  .citation_box{
+    width: 80px;
+    height: 50px;
+    background-color: #b04c50;
+    color: #ffffff;
+    padding: 10px 0;
+    border-radius: 3px;
+    text-align: center;
+  }
+  .citation_title{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .graph_entry{
+    color: #409eff;
+  }
   .significantPaper_wrap{
     margin-top: 20px;
     text-align: left;
   }
   .significantPaper_title{
-    color: #b04c50;
-    font-size: 30px;
+    font-size: 24px;
   }
   .column{
     padding: 2px;
@@ -201,5 +238,12 @@
   }
   .el-tag{
     margin: 0 30px 10px 0;
+    /*background-color: #d66881;*/
+    /*border-color: #b04c50;*/
+    /*color: #ffffff;*/
+  }
+  .el-tag:hover{
+    color: #000000;
+    text-decoration: underline;
   }
 </style>
