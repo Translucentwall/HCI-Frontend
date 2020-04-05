@@ -73,7 +73,7 @@ export default {
                     break;
                 }
             }
-            window.location.href = '/home';
+            window.location.href = '/search';
         }
     }
 }

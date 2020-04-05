@@ -36,37 +36,52 @@
           <strong class="rank-wrap-title">Hot Rank</strong>
         </el-col>
         <el-col :span="24">
-          <el-row class="rank-wrap">
-            <el-col :span="8" class="rank">
+          <el-row class="rank-wrap" type="flex" justify="space-around">
+            <el-col :span="7" class="rank">
               <el-row>
-                <el-col :span="24">
+                <el-col :span="24" class="rank-title">
                   <strong>Author Hot Rank</strong>
                 </el-col>
-                <el-row v-for="(data, index) in authorTableData" :key="index">
+                <el-row>
+                  <el-col :span="2"><strong>Rank</strong></el-col>
+                  <el-col :span="17" :offset="1"><strong>Author Name</strong></el-col>
+                  <el-col :span="3" :offset="1"><strong>Hot</strong></el-col>
+                </el-row>
+                <el-row v-for="(data, index) in authorTableData" :key="index" class="rank-item">
                   <el-col :span="2">{{index+1}}</el-col>
-                  <el-col :span="16" :offset="1"><span>{{data.name}}</span></el-col>
-                  <el-col :span="4" :offset="1">index</el-col>
+                  <el-col :span="17" :offset="1"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
+                  <el-col :span="3" :offset="1">{{data.value}}</el-col>
                 </el-row>
               </el-row>
             </el-col>
-            <el-col :span="8" class="rank">
-              <el-col :span="24">
+            <el-col :span="7" class="rank">
+              <el-col :span="24" class="rank-title">
                 <strong>Affiliation Hot Rank</strong>
               </el-col>
-              <el-row v-for="(data, index) in affiliationTableData" :key="index">
+              <el-row>
+                <el-col :span="2"><strong>Rank</strong></el-col>
+                <el-col :span="17" :offset="1"><strong>Affiliation Name</strong></el-col>
+                <el-col :span="3" :offset="1"><strong>Hot</strong></el-col>
+              </el-row>
+              <el-row v-for="(data, index) in affiliationTableData" :key="index" class="rank-item">
                 <el-col :span="2">{{index+1}}</el-col>
-                <el-col :span="16" :offset="1"><span>{{data.name}}</span></el-col>
-                <el-col :span="4" :offset="1">{{data.value}}</el-col>
+                <el-col :span="17" :offset="1" class="data-name-column"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
+                <el-col :span="3" :offset="1">{{data.value}}</el-col>
               </el-row>
             </el-col>
-            <el-col :span="8" class="rank">
-              <el-col :span="24">
+            <el-col :span="7" class="rank">
+              <el-col :span="24" class="rank-title">
                 <strong>Term Hot Rank</strong>
               </el-col>
-              <el-row v-for="(data, index) in termTableData" :key="index">
+              <el-row>
+                <el-col :span="2"><strong>Rank</strong></el-col>
+                <el-col :span="17" :offset="1"><strong>Term</strong></el-col>
+                <el-col :span="3" :offset="1"><strong>Hot</strong></el-col>
+              </el-row>
+              <el-row v-for="(data, index) in termTableData" :key="index" class="rank-item">
                 <el-col :span="2">{{index+1}}</el-col>
-                <el-col :span="16" :offset="1"><span>{{data.name}}</span></el-col>
-                <el-col :span="4" :offset="1">{{data.value}}</el-col>
+                <el-col :span="17" :offset="1"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
+                <el-col :span="3" :offset="1">{{data.value}}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -77,7 +92,8 @@
 </template>
 
 <script>
-    import {getPopRank} from "../api/api";
+    import {getPopRank, searchable} from "../api/api";
+    import {Loading} from "element-ui";
 
     export default {
         name: "Home",
@@ -91,14 +107,20 @@
             }
         },
         mounted(){
-            getPopRank(1).then(res=>{
-                this.authorTableData = res;
-            });
-            getPopRank(2).then(res=>{
-                this.affiliationTableData = res;
-            });
-            getPopRank(3).then(res=>{
-                this.termTableData = res;
+            let loadingInstance = Loading.service({ fullscreen: true, text:'Server not available, please wait for a moment...'});
+            searchable().then(res=>{
+                if(res.success){
+                    getPopRank(1).then(res=>{
+                        this.authorTableData = res;
+                    });
+                    getPopRank(2).then(res=>{
+                        this.affiliationTableData = res;
+                    });
+                    getPopRank(4).then(res=>{
+                        this.termTableData = res;
+                    });
+                    loadingInstance.close();
+                }
             });
         },
         methods: {
@@ -161,25 +183,40 @@
     color: #ffffff;
   }
   .body-bottom{
-    margin: 20px;
+    margin: 30px 30px 60px;
   }
   .rank-wrap-title{
     text-decoration: underline #b04c50;
     font-size: 36px;
   }
-  .rank-wrap:last-child{
-    border-right: 1px solid #cccccc;
-  }
   .rank{
-    margin: 40px 4px;
-    padding: 0 4px;
+    margin: 20px 0;
+    padding: 10px 6px 10px 20px;
     box-shadow: 6px 6px 20px 4px #e4e8ef;
     text-align: left;
+    color: #6d6d6d;
   }
-  span{
-    overflow:hidden;
+  .rank-title{
+    text-align: center;
+    font-size: 24px;
+    margin: 16px 0;
+  }
+  .rank-item{
+    margin: 8px 0 0;
+    color: #6d6d6d;
+  }
+  .data-name-column{
+    overflow: hidden;
     white-space:nowrap;
     text-overflow: ellipsis;
   }
+  .data-name{
+    color: #6d6d6d;
+    text-decoration: none;
+  }
+  /*.data-name:hover{*/
+  /*  color: #409eff;*/
+  /*  text-decoration: underline;*/
+  /*}*/
 
 </style>
