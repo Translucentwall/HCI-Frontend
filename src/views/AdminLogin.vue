@@ -37,7 +37,7 @@
             login: function () {
                 if(this.username!==''&&this.password!==''){
                     login(this.username, this.password, this.remember_me).then(res=>{
-                        if(res.status===200){
+                        if(res.status==='200'){
                             let expireTime = new Date(new Date().getTime() + 10 * 60 * 1000);
                             cookie.set('Authorization',res.jwtToken, {expires: expireTime});
                             document.location.href='/admin/manage';
