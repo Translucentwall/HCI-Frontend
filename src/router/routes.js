@@ -1,4 +1,5 @@
 import Home from '../views/Home'
+import Search from '../views/Search'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
 import AdminLogin from "../views/AdminLogin";
@@ -19,6 +20,11 @@ export let routes = [
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search
   },
   {
     path: '/rank',

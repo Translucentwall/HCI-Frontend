@@ -14,7 +14,7 @@
     export default {
         name: "Manage",
         mounted(){
-            getConfusedAlias()
+            getConfusedAlias(1,2)
                 .then(res=>{
                     if(res.status === '000'){
                         this.$alert('Identity expired, please login again','Tips', {

@@ -146,7 +146,7 @@
             search: function (mode, content) {
                 sessionStorage.setItem('searchMode', mode);
                 sessionStorage.setItem('searchContent', content);
-                this.$router.push('/home');
+                window.location.href = '/search';
             }
         }
     }

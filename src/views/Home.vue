@@ -22,55 +22,54 @@
           class="search-input"
           v-model="searchContent"
           placeholder="Please input the search content..."
-          @keydown.13.native="searchBegin"
+          @keydown.13.native="search"
           @keydown.229="handleCN">
         </el-input>
-        <el-button class="search-enter" @click="searchBegin">
+        <el-button class="search-enter" @click="search">
           <i class="el-icon-search"></i>
         </el-button>
       </div>
     </div>
-    <div class="body-bottom" v-if="displayBottom">
+    <div class="body-bottom">
       <el-row>
-        <el-col :span="18">
-          <div class="result-title-wrap">
-            <div class="result-title">
-              Show results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
-            </div>
-            <div class="sort-mode-wrap">
-              <span class="sort-mode-before">sort by:</span>
-              <el-dropdown class="sort-mode" trigger="click" @command="handleSortMode">
-                <el-button class="sort-mode-button" type="primary">
-                  {{sortMode}}<i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="Relevance">Relevance</el-dropdown-item>
-                  <el-dropdown-item command="Newest">Newest</el-dropdown-item>
-                  <el-dropdown-item command="Oldest">Oldest</el-dropdown-item>
-                  <el-dropdown-item command="Title A-Z">Title A-Z</el-dropdown-item>
-                  <el-dropdown-item command="Title Z-A">Title Z-A</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-
-          <div class="result-content">
-            <Card
-              v-for="(item, index) in simplePaperVO"
-              :key="index"
-              :simple-paper-v-o="item"
-            >
-            </Card>
-          </div>
-          <el-button class="result-more" @click="loadMore">load more...</el-button>
+        <el-col :span="24">
+          <strong class="rank-wrap-title">Hot Rank</strong>
         </el-col>
-        <el-col :span="6" class="body-bottom-right">
-          <RankList
-            :size="tableSize"
-            :mode="tableMode"
-            :data="tableData"
-            :page="1">
-          </RankList>
+        <el-col :span="24">
+          <el-row class="rank-wrap">
+            <el-col :span="8" class="rank">
+              <el-row>
+                <el-col :span="24">
+                  <strong>Author Hot Rank</strong>
+                </el-col>
+                <el-row v-for="(data, index) in authorTableData" :key="index">
+                  <el-col :span="2">{{index+1}}</el-col>
+                  <el-col :span="16" :offset="1"><span>{{data.name}}</span></el-col>
+                  <el-col :span="4" :offset="1">index</el-col>
+                </el-row>
+              </el-row>
+            </el-col>
+            <el-col :span="8" class="rank">
+              <el-col :span="24">
+                <strong>Affiliation Hot Rank</strong>
+              </el-col>
+              <el-row v-for="(data, index) in affiliationTableData" :key="index">
+                <el-col :span="2">{{index+1}}</el-col>
+                <el-col :span="16" :offset="1"><span>{{data.name}}</span></el-col>
+                <el-col :span="4" :offset="1">{{data.value}}</el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="8" class="rank">
+              <el-col :span="24">
+                <strong>Term Hot Rank</strong>
+              </el-col>
+              <el-row v-for="(data, index) in termTableData" :key="index">
+                <el-col :span="2">{{index+1}}</el-col>
+                <el-col :span="16" :offset="1"><span>{{data.name}}</span></el-col>
+                <el-col :span="4" :offset="1">{{data.value}}</el-col>
+              </el-row>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
     </div>
@@ -78,143 +77,44 @@
 </template>
 
 <script>
-  import Card from "../components/Card";
-  import {search, getRank, searchable} from "../api/api"
-  import RankList from "../components/RankList";
-  import {Loading} from "element-ui";
-  export default {
-      name: 'Home',
-      components: {RankList, Card},
-      data(){
-          return{
-              displayBottom: false,
-              mode: 'All',
-              simplePaperVO: [],
-              searchContent: '',
-              currentPage: 1,
-              sortMode: 'Relevance',
-              resultTitleMode: '',
-              resultTitleContent: '',
-              tableSize: 'small',
-              tableMode: '0',
-              tableData: []
-          }
-      },
-      mounted() {
-          let loadingInstance = Loading.service({ fullscreen: true, text:'Server not available, please wait for a moment...'});
-          searchable().then(res=>{
-              if(res.success){
-                  loadingInstance.close();
-                  let content = sessionStorage.getItem('searchContent');
-                  if(content !== null){
-                      this.searchBegin();
-                  }
-              }
-          });
-      },
-      watch:{
-          sortMode: function(){
-              this.searchBegin();
-          }
-      },
-      methods: {
-          handleMode(command) {
-              this.mode = command;
-          },
-          handleSortMode(command) {
-              this.sortMode = command;
-          },
-          searchBegin: function () {
-              let content = sessionStorage.getItem('searchContent');
-              if (content !== null) {
-                  this.searchContent = content;
-                  this.mode = sessionStorage.getItem('searchMode');
-                  sessionStorage.removeItem('searchContent');
-                  sessionStorage.removeItem('searchMode');
-              }
+    import {getPopRank} from "../api/api";
 
-              let pattern = /<b><span style="color: #b04c50; ">/;
-              let res = pattern.test(this.searchContent);
-              if(res){
-                  let contentTmp = this.searchContent.replace(/<b><span style="color: #b04c50; ">/g, '');
-                  this.searchContent = contentTmp.replace(/<\/span><\/b>/g, '');
-              }
-              this.currentPage = 1;
-              let blankPattern = /^( )*$/;
-              if(blankPattern.test(this.searchContent)){
-                  this.$message({
-                      message:'请输入有效内容',
-                      type: 'error',
-                      duration: 1500
-                  });
-              }else{
-                  this.simplePaperVO.length = 0;
-                  search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
-                      this.simplePaperVO = res;
-                      this.resultTitleMode = this.mode;
-                      this.resultTitleContent = this.searchContent;
-                      this.displayBottom = true;
-                      setTimeout(function () {
-                          window.scrollTo(100, 700);
-                      }, 100);
-                      let tableMode = '';
-                      switch (this.mode) {
-                          case "All": {
-                              this.tableMode = '1';
-                              tableMode = 'Paper-Cited';
-                              break;
-                          }
-                          case "Title": {
-                              this.tableMode = '1';
-                              tableMode = 'Paper-Cited';
-                              break;
-                          }
-                          case "Author": {
-                              this.tableMode = '2';
-                              tableMode = 'Author-Paper';
-                              break;
-                          }
-                          case "Affiliation": {
-                              this.tableMode = '4';
-                              tableMode = 'Affiliation-Paper';
-                              break;
-                          }
-                          case "Publication": {
-                              this.tableMode = '5';
-                              tableMode = 'Publication-Paper';
-                              break;
-                          }
-                          case "Keyword": {
-                              this.tableMode = '6';
-                              tableMode = 'Keyword-Paper';
-                              break;
-                          }
-                          default: {
-                              this.tableMode = '1';
-                              tableMode = 'Paper-Cited';
-                              break;
-                          }
-                      }
-                      getRank(tableMode, 1, true, 2013, 2019).then(res => {
-                          this.tableData = res.content.rankList;
-                      });
-
-                  });
-              }
-          },
-          loadMore: function () {
-              this.currentPage += 1;
-              search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
-                  for (let result in res){
-                      this.simplePaperVO.push(res[result]);
-                  }
-              });
-          },
-          handleCN: function () {
-              console.log('我捕获了');
-          }
-      }
-  }
+    export default {
+        name: "Home",
+        data(){
+            return{
+                mode: 'All',
+                searchContent: '',
+                authorTableData: [],
+                affiliationTableData: [],
+                termTableData: []
+            }
+        },
+        mounted(){
+            getPopRank(1).then(res=>{
+                this.authorTableData = res;
+            });
+            getPopRank(2).then(res=>{
+                this.affiliationTableData = res;
+            });
+            getPopRank(3).then(res=>{
+                this.termTableData = res;
+            });
+        },
+        methods: {
+            handleMode(command) {
+                this.mode = command;
+            },
+            handleCN: function () {
+                console.log('我捕获了');
+            },
+            search: function () {
+                sessionStorage.setItem('searchMode', this.mode);
+                sessionStorage.setItem('searchContent', this.searchContent);
+                window.location.href = '/search';
+            }
+        }
+    }
 </script>
 
 <style scoped>
@@ -261,60 +161,25 @@
     color: #ffffff;
   }
   .body-bottom{
-    margin: 10px 0 100px;
+    margin: 20px;
   }
-  .result-title-wrap{
-    font-size: 24px;
+  .rank-wrap-title{
+    text-decoration: underline #b04c50;
+    font-size: 36px;
+  }
+  .rank-wrap:last-child{
+    border-right: 1px solid #cccccc;
+  }
+  .rank{
+    margin: 40px 4px;
+    padding: 0 4px;
+    box-shadow: 6px 6px 20px 4px #e4e8ef;
     text-align: left;
-    margin: 0 0 5px 20px;
-    display: flex;
-    justify-content: space-between;
-    line-height: 48px;
   }
-  .result-title{
-    display: flex;
-  }
-  .sort-mode-before{
-    font-size: 15px;
-    font-weight: bold;
-  }
-  .sort-mode{
-    margin-right: 50px;
-  }
-  .sort-mode-button{
-    color: #000000;
-    background-color: #ffffff;
-    border: 0;
-  }
-  .sort-mode-button:hover{
-    color: #000000;
-    background-color: #ffffff;
-    border: 0;
-  }
-  .sort-mode-button:focus{
-    color: #000000;
-    background-color: #ffffff;
-    border: 0;
-  }
-  .result-content{
-    margin-bottom: 30px;
-  }
-  .result-more{
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  .emphasize{
-    color: #b04c50;
-    margin: 0 8px;
-  }
-  .content{
-    max-width: 400px;
-    overflow: hidden;
+  span{
+    overflow:hidden;
+    white-space:nowrap;
     text-overflow: ellipsis;
-    white-space: nowrap;
   }
-  .body-bottom-right{
-    border-left: 1px solid #ebeef5;
-    padding: 0 30px 50px 8px;
-  }
+
 </style>

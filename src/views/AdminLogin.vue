@@ -37,10 +37,17 @@
             login: function () {
                 if(this.username!==''&&this.password!==''){
                     login(this.username, this.password, this.remember_me).then(res=>{
-                        let expireTime = new Date(new Date().getTime() + 10 * 60 * 1000);
-                        cookie.set('Authorization',res.jwtToken, {expires: expireTime});
-                        document.location.href='/admin/manage';
-                        // this.$router.push('/admin/manage');
+                        if(res.status===200){
+                            let expireTime = new Date(new Date().getTime() + 10 * 60 * 1000);
+                            cookie.set('Authorization',res.jwtToken, {expires: expireTime});
+                            document.location.href='/admin/manage';
+                        }else{
+                            this.$message({
+                                message:'username or password wrong!',
+                                type: 'error',
+                                duration: 1500
+                            });
+                        }
                     })
                 }
             }

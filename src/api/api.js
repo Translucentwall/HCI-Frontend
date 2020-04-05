@@ -21,6 +21,10 @@ export const getRank = (mode, pageNumber, descend, startYear, endYear) =>{
   return axios.get('/rank/' + mode + '?pageNumber=' + pageNumber + '&descend=' + descend + '&startYear=' + startYear + '&endYear=' + endYear).then(res => res.data);
 };
 
+export const getPopRank = (type)=>{
+  return axios.get('/hot?type='+type).then(res=>res.data);
+};
+
 export const login = (username, password, remember_me) =>{
   let data = {};
   return axios.post('/login?remember-me='+remember_me,{username:username,password:password}).then(res=>res.data);
@@ -30,9 +34,9 @@ export const logout = () => {
   return axios.post('/logout').then(res=>res.data);
 };
 
-export const getConfusedAlias = () => {
+export const getConfusedAlias = (page, type) => {
   let authorize = cookie.get('Authorization');
-    return axios.get('/admin/getConfusedAlias', (authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
+    return axios.get('/admin/getConfusedAlias?page='+page+'&type='+type, (authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
 };
 
 export const getAcademicEntity = (id, type) =>{
