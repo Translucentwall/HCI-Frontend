@@ -84,7 +84,7 @@
                 </el-tag>
               </div>
             </el-col>
-            <el-col :span="9" id="cloud-wrap" v-if="academicEntityVO.terms!==[]">
+            <el-col :span="9" id="cloud-wrap" v-if="academicEntityVO.terms.length>0">
               <strong>Terms Cloud: </strong>
               <div class="svg" id="cloud"></div>
             </el-col>
@@ -119,7 +119,7 @@
                 id: 0,
                 type: 0,
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
-                academicEntityVO: {}
+                academicEntityVO: {terms:[]}
                 }
         },
         mounted() {
@@ -132,16 +132,21 @@
             getAcademicEntity(this.id,this.type)
                 .then(res => {
                     this.academicEntityVO = res;
-                    if(res.terms!==null&&res.terms[0]!==undefined){
-                        this.renderCloud();
-                    }
-                    loadingInstance.close();
+                    let that = this;
+                    setTimeout(function () {
+                        if(res.terms&&res.terms.length > 0){
+                            that.renderCloud();
+                            loadingInstance.close();
+                        }else{
+                            loadingInstance.close();
+                        }
+                    },100)
                 })
                 .catch(()=>{
                     this.$alert('Fail to get entity，please search again', 'Tips',{
                         type: 'error',
                         confirmButtonText: 'confirm',
-                        closable: false
+                        showClose: false
                     }).then(()=>{
                         window.location.href = '/home';
                     })

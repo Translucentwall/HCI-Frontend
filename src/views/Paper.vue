@@ -113,7 +113,8 @@
                         }else{
                             this.$alert('Fail to get paper，please search again','Tips',{
                                 type: 'error',
-                                confirmButtonText: 'confirm'
+                                confirmButtonText: 'confirm',
+                                showClose: false
                             }).then(()=>{
                                 window.location.href = '/home';
                             })
@@ -122,7 +123,8 @@
                     .catch(()=>{
                         this.$alert('Fail to get paper，please search again','Tips',{
                             type: 'error',
-                            confirmButtonText: 'confirm'
+                            confirmButtonText: 'confirm',
+                            showClose: false
                         }).then(()=>{
                             window.location.href = '/home';
                         })

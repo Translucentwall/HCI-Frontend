@@ -39,6 +39,21 @@ export const getConfusedAlias = (page, type) => {
     return axios.get('/admin/getConfusedAlias?page='+page+'&type='+type, (authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
 };
 
+export const getEffectiveAlias = (page, type) => {
+  let authorize = cookie.get('Authorization');
+  return axios.get('/admin/getEffectiveAlias?page='+page+'&type='+type, (authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
+};
+
+export const modifyAlias = (sonId, fatherId, type) => {
+  let authorize = cookie.get('Authorization');
+  return axios.post('/admin/modifyAlias?sonId='+sonId+'&fatherId='+fatherId+'&type='+type,{},(authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
+};
+
+export const cancelAlias = (sonId, type) => {
+  let authorize = cookie.get('Authorization');
+  return axios.post('/admin/cancelAlias?sonId='+sonId+'&type='+type,{},(authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);
+};
+
 export const getAcademicEntity = (id, type) =>{
   return axios.get('/academic/' + id + '?type=' + type).then(res=>res.data);
 };

@@ -3,8 +3,10 @@
     <div class="every">
       <div class="svg" id="forceDirected"></div>
       <div class="option">
-        <div class="option_name">{{changeType}}: {{graphVO.centerName}}</div>
-        <input type="checkbox" v-model="showTotal">Show Total Graph
+        <div class="option_name">{{changeType}}: <a class="center_name" :href="type<4?'/entity/'+this.$route.params.type+'/'+id: null">{{graphVO.centerName}}</a></div>
+        <div v-if="type<4">
+          <input type="checkbox" v-model="showTotal">Show Total Graph
+        </div>
       </div>
     </div>
   </div>
@@ -282,17 +284,6 @@
                     })
                     .append('title')
                     .text(d=>d.entityName);
-                // // 添加relation
-                // svg.selectAll('.relation')
-                //     .data(links)
-                //     .enter()
-                //     .append('text')
-                //     .style('fill', 'red')
-                //     .style('font-size', '11px')
-                //     .attr('class', 'relation')
-                //     .attr('dx', 0)
-                //     .attr('dy', 0)
-                //     .text(function (d) { return d.relation });
                 //数据重绘
                 simulation.on('tick', function () {
                     svg.selectAll('circle')
@@ -306,10 +297,6 @@
                         .attr('y1', function (d) { return d.source.y })
                         .attr('x2', function (d) { return d.target.x })
                         .attr('y2', function (d) { return d.target.y });
-                    // svg.selectAll('.relation')
-                    //     .attr('x', function (d) { return (d.source.x + d.target.x) / 2 })
-                    //     .attr('y', function (d) { return (d.source.y + d.target.y) / 2 })
-
                 })
             }
         }
@@ -340,6 +327,12 @@
   }
   .option_name{
     margin-left: 0.5ex;
+  }
+  .center_name{
+    color: #000000;
+  }
+  .center_name:hover{
+    color: #409eff;
   }
   .author{
     color: rgb(214, 39, 40);

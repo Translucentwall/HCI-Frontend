@@ -6,8 +6,7 @@
     @select="handleSelect"
     active-text-color="#b04c50"
   >
-
-  <el-menu-item class="home" index="/home">Home</el-menu-item>
+    <el-menu-item class="home" index="/home">Home</el-menu-item>
     <el-submenu index="2">
       <template  class="submenu-title" slot="title">Rank</template>
       <el-submenu index="/rank">

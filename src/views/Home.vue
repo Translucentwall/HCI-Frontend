@@ -43,13 +43,13 @@
                   <strong>Author Hot Rank</strong>
                 </el-col>
                 <el-row>
-                  <el-col :span="2"><strong>Rank</strong></el-col>
-                  <el-col :span="17" :offset="1"><strong>Author Name</strong></el-col>
+                  <el-col :span="3"><strong>Rank</strong></el-col>
+                  <el-col :span="16" :offset="1"><strong>Author Name</strong></el-col>
                   <el-col :span="3" :offset="1"><strong>Hot</strong></el-col>
                 </el-row>
                 <el-row v-for="(data, index) in authorTableData" :key="index" class="rank-item">
-                  <el-col :span="2">{{index+1}}</el-col>
-                  <el-col :span="17" :offset="1"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
+                  <el-col :span="3">{{index+1}}</el-col>
+                  <el-col :span="16" :offset="1"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
                   <el-col :span="3" :offset="1">{{data.value}}</el-col>
                 </el-row>
               </el-row>
@@ -59,13 +59,13 @@
                 <strong>Affiliation Hot Rank</strong>
               </el-col>
               <el-row>
-                <el-col :span="2"><strong>Rank</strong></el-col>
-                <el-col :span="17" :offset="1"><strong>Affiliation Name</strong></el-col>
+                <el-col :span="3"><strong>Rank</strong></el-col>
+                <el-col :span="16" :offset="1"><strong>Affiliation Name</strong></el-col>
                 <el-col :span="3" :offset="1"><strong>Hot</strong></el-col>
               </el-row>
               <el-row v-for="(data, index) in affiliationTableData" :key="index" class="rank-item">
-                <el-col :span="2">{{index+1}}</el-col>
-                <el-col :span="17" :offset="1" class="data-name-column"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
+                <el-col :span="3">{{index+1}}</el-col>
+                <el-col :span="16" :offset="1" class="data-name-column"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
                 <el-col :span="3" :offset="1">{{data.value}}</el-col>
               </el-row>
             </el-col>
@@ -74,13 +74,13 @@
                 <strong>Term Hot Rank</strong>
               </el-col>
               <el-row>
-                <el-col :span="2"><strong>Rank</strong></el-col>
-                <el-col :span="17" :offset="1"><strong>Term</strong></el-col>
+                <el-col :span="3"><strong>Rank</strong></el-col>
+                <el-col :span="16" :offset="1"><strong>Term</strong></el-col>
                 <el-col :span="3" :offset="1"><strong>Hot</strong></el-col>
               </el-row>
               <el-row v-for="(data, index) in termTableData" :key="index" class="rank-item">
-                <el-col :span="2">{{index+1}}</el-col>
-                <el-col :span="17" :offset="1"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name">{{data.name}}</a></el-tooltip></el-col>
+                <el-col :span="3">{{index+1}}</el-col>
+                <el-col :span="16" :offset="1"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name" :href="'/graph/term/'+data.id">{{data.name}}</a></el-tooltip></el-col>
                 <el-col :span="3" :offset="1">{{data.value}}</el-col>
               </el-row>
             </el-col>
@@ -191,8 +191,8 @@
   }
   .rank{
     margin: 20px 0;
-    padding: 10px 6px 10px 20px;
-    box-shadow: 6px 6px 20px 4px #e4e8ef;
+    padding: 10px 14px 30px 20px;
+    box-shadow: 3px 3px 10px 3px #e4e8ef;
     text-align: left;
     color: #6d6d6d;
   }
@@ -214,9 +214,9 @@
     color: #6d6d6d;
     text-decoration: none;
   }
-  /*.data-name:hover{*/
-  /*  color: #409eff;*/
-  /*  text-decoration: underline;*/
-  /*}*/
+  .data-name:hover{
+    color: #409eff;
+    text-decoration: underline;
+  }
 
 </style>
