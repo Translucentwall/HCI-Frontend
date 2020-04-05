@@ -125,7 +125,7 @@
                 // 通过布局来转换数据，然后进行绘制
                 let simulation = d3.forceSimulation()
                     .nodes(nodes)
-                    .force('link', d3.forceLink(links).distance(type===1?200:100).id(d=>d.id))
+                    .force('link', d3.forceLink(links).distance(type===1?200:75).id(d=>d.id))
                     .force('charge', d3.forceManyBody())
                     .force('center', d3.forceCenter(width / 2, height / 2));
                     // .force('center', d3.forceCenter((width - padding.left - padding.right) / 2, (height - padding.top - padding.bottom) / 2));
@@ -136,14 +136,39 @@
                     .data(links)
                     .enter()
                     .append('line')
-                    .attr("stroke", "#ccc")
-                    .attr("stroke-opacity", 0.6)
+                    .attr("stroke", "#cccccc")
                     .attr('stroke-width', function (d) {
                         if(d.value < 0){
                             return 1;
                         }else{
-                            return 2 + d.value/10;
+                            return 1 + d.value/10;
                         }
+                    });
+                // 添加描述
+                svg.selectAll('text')
+                    .data(nodes)
+                    .enter()
+                    .append('text')
+                    .style('font-size', '10px')
+                    .style('fill', '#000')
+                    .style('left', '10px')
+                    .attr('dx', 10)
+                    .attr('dy', 10)
+                    .text(function (d) {
+                        if(type===1){
+                            if(d.entityName.length<=20){
+                                return d.entityName;
+                            }else{
+                                return d.entityName.substr(0,20)+'...';
+                            }
+                        }else{
+                            if(d.entityName.length<=10){
+                                return d.entityName;
+                            }else{
+                                return d.entityName.substr(0,10)+'...';
+                            }
+                        }
+
                     });
                 // 添加节点
                 svg.selectAll('circle')
@@ -224,24 +249,39 @@
                             d.fx = null;
                             d.fy = null;
                         })
-                    );
-                // 添加描述
-                svg.selectAll('text')
-                    .data(nodes)
-                    .enter()
-                    .append('text')
-                    .style('font-size', '10px')
-                    .style('fill', '#000')
-                    .style('left', '10px')
-                    .attr('dx', 10)
-                    .attr('dy', 10)
-                    .text(function (d) {
-                        if(d.entityName.length<=20){
-                            return d.entityName;
-                        }else{
-                            return d.entityName.substr(0,20)+'...';
-                        }
-                    });
+                    )
+                    .on('mouseover', function (d) {
+                        svg.selectAll('line')
+                            .style('stroke-width', function(link) {
+                                if (link.source === d || link.target === d) {
+                                    return 2;
+                                }
+                            })
+                            .style('stroke', function(link) {
+                                if (link.source === d || link.target === d) {
+                                    return '#000000';
+                                }
+                            })
+                    })
+                    .on('mouseout', function (d) {
+                        svg.selectAll('line')
+                            .style('stroke-width', function(link) {
+                                if (link.source === d || link.target === d) {
+                                    if(link.value < 0){
+                                        return 1;
+                                    }else{
+                                        return 1 + link.value/10;
+                                    }
+                                }
+                            })
+                            .style('stroke', function(link) {
+                                if (link.source === d || link.target === d) {
+                                    return '#cccccc'
+                                }
+                            })
+                    })
+                    .append('title')
+                    .text(d=>d.entityName);
                 // // 添加relation
                 // svg.selectAll('.relation')
                 //     .data(links)
@@ -269,6 +309,7 @@
                     // svg.selectAll('.relation')
                     //     .attr('x', function (d) { return (d.source.x + d.target.x) / 2 })
                     //     .attr('y', function (d) { return (d.source.y + d.target.y) / 2 })
+
                 })
             }
         }

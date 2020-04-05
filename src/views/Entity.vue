@@ -22,7 +22,7 @@
             <el-col class="body_top_left column" :span="6">
               <el-row>
                 <el-col :span="8">
-                  <div class="reference citation_box" :style="{opacity: academicEntityVO.refSum<0?'0':'1'}">
+                  <div class="reference citation_box" v-if="academicEntityVO.refSum>=0">
                     <div class="citation_title">Reference</div>
                     <div class="citation_count">{{academicEntityVO.refSum}}</div>
                   </div>
@@ -36,7 +36,7 @@
                     <el-tag
                       v-for="author in academicEntityVO.authors"
                       :key="author.id"
-                      :type="author.name"
+                      :title="author.name"
                       @click="toOtherEntity('author', author.id)"
                     >
                       {{author.name}}
@@ -49,7 +49,7 @@
                     <el-tag
                       v-for="conference in academicEntityVO.conferences"
                       :key="conference.id"
-                      :type="conference.name"
+                      :title="conference.name"
                       @click="toOtherEntity('issue', conference.id)"
                     >
                       {{conference.name}}
@@ -64,7 +64,7 @@
                 <el-tag
                   v-for="affiliation in academicEntityVO.affiliations"
                   :key="affiliation.id"
-                  :type="affiliation.name"
+                  :title="affiliation.name"
                   @click="toOtherEntity('affiliation', affiliation.id)"
                 >
                   {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}
@@ -77,7 +77,7 @@
                 <el-tag
                   v-for="conference in academicEntityVO.conferences"
                   :key="conference.id"
-                  :type="conference.name"
+                  :title="conference.name"
                   @click="toOtherEntity('issue', conference.id)"
                 >
                   {{conference.name}}
