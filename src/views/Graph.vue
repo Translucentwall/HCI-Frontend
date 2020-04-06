@@ -190,6 +190,7 @@
                     })
                     .attr('stroke', '#000000')
                     .attr('stroke-width', 2)
+                    .style('cursor', 'pointer')
                     .style('fill', function (d) {
                         if(d.entityId===centerId&&d.entityType===centerType){
                             return 'rgb(106,0,95)';
