@@ -26,6 +26,12 @@
 
     export default {
         name: "AdminLogin",
+        mounted(){
+          let authorize = cookie.get('Authorization');
+          if(authorize!==undefined&&authorize!==null){
+              window.location.href = '/admin/manage';
+          }
+        },
         data(){
             return{
                 username: '',
