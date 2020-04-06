@@ -65,7 +65,6 @@
         watch: {
             showTotal: function () {
                 if(this.showTotal&&!this.moreGraphReady&&this.type<4){
-                    this.showTotal = false;
                     this.$notify.info({
                         title: 'info',
                         message: 'Total graph is not ready!'
