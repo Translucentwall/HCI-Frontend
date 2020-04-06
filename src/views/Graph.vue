@@ -66,8 +66,8 @@
             showTotal: function () {
                 if(this.showTotal&&!this.moreGraphReady&&this.type<4){
                     this.showTotal = false;
-                    this.$notify.error({
-                        title: 'error',
+                    this.$notify.info({
+                        title: 'info',
                         message: 'Total graph is not ready!'
                     });
                 }else{
@@ -93,12 +93,23 @@
                 }
             },
             moreGraphReady: function () {
-                if(this.type===3){
-                    this.$notify.success({
-                        title: 'success',
-                        message: 'Total graph is ready!'
-                    });
-                }
+                let that = this;
+                this.$notify.success({
+                    title: 'success',
+                    message: 'Total graph is ready!',
+                    onClose: function () {
+                        if(that.showTotal){
+                            let svg = document.getElementById('forceDirected');
+                            let children = svg.childNodes;
+                            children.forEach(function (child) {
+                                svg.removeChild(child);
+                            });
+                            let nodes = that.graphVO.nodes.concat(that.moreGraphVO.nodes);
+                            let links = that.graphVO.links.concat(that.moreGraphVO.links);
+                            that.forceDirected (nodes, links, 2);
+                        }
+                    }
+                });
             }
         },
         computed: {
@@ -111,7 +122,7 @@
             forceDirected (nodes, links, type) {
                 console.log(nodes.length);
                 let width = document.getElementById('svgContainer').offsetWidth;
-                let height = 800;
+                let height = nodes.length<200?800:nodes.length<400?1200:1600;
                 // let padding = {
                 //     left: 30,
                 //     right: 30,
@@ -152,7 +163,7 @@
                     .enter()
                     .append('text')
                     .style('font-size', '10px')
-                    .style('fill', '#000')
+                    .style('fill', '#000000')
                     .style('left', '10px')
                     .attr('dx', 10)
                     .attr('dy', 10)
