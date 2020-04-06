@@ -67,7 +67,9 @@
                 if(this.showTotal&&!this.moreGraphReady&&this.type<4){
                     this.$notify.info({
                         title: 'info',
-                        message: 'Total graph is not ready!'
+                        message: 'Total graph is preparing!',
+                        duration: 0,
+                        showClose: false
                     });
                 }else{
                     if(this.showTotal&&this.type<4){
@@ -92,6 +94,7 @@
                 }
             },
             moreGraphReady: function () {
+                this.$notify.closeAll();
                 let that = this;
                 this.$notify.success({
                     title: 'success',

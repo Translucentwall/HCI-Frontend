@@ -50,6 +50,7 @@
                 trigger="click">
                   <a slot="reference">operate</a>
                   <el-row>
+                    <el-col :span="24">Choose one target to add</el-col>
                     <el-col :span="4">Source:</el-col>
                     <el-col :span="20">
                       <el-tag
@@ -103,6 +104,7 @@
                 trigger="click">
                 <a slot="reference">operate</a>
                 <el-row>
+                  <el-col :span="24">Choose one target to cancel</el-col>
                   <el-col :span="4">Source:</el-col>
                   <el-col :span="20">
                     <el-tag

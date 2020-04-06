@@ -1,37 +1,44 @@
 <template>
-  <el-menu
-    :default-active="activeIndex"
-    class="topBar"
-    mode="horizontal"
-    @select="handleSelect"
-    active-text-color="#b04c50"
-  >
-    <el-menu-item class="home" index="/home">Home</el-menu-item>
-    <el-submenu index="2">
-      <template  class="submenu-title" slot="title">Rank</template>
-      <el-submenu index="/rank">
-        <template slot="title">Paper</template>
-        <el-menu-item index="/rank?mode=1">Cited Rank</el-menu-item>
+  <div>
+    <el-menu
+      :default-active="activeIndex"
+      class="topBar"
+      mode="horizontal"
+      @select="handleSelect"
+      active-text-color="#b04c50"
+    >
+      <el-menu-item class="home" index="/home">Home</el-menu-item>
+      <el-submenu index="2">
+        <template  class="submenu-title" slot="title">Rank</template>
+        <el-submenu index="/rank">
+          <template slot="title">Paper</template>
+          <el-menu-item index="/rank?mode=1">Cited Rank</el-menu-item>
+        </el-submenu>
+        <el-submenu index="2-2">
+          <template slot="title">Author</template>
+          <el-menu-item index="/rank?mode=2">Paper Rank</el-menu-item>
+          <el-menu-item index="/rank?mode=3">Cited Rank</el-menu-item>
+        </el-submenu>
+        <el-submenu index="2-3">
+          <template slot="title">Affiliation</template>
+          <el-menu-item index="/rank?mode=4">Paper Rank</el-menu-item>
+        </el-submenu>
+        <el-submenu index="2-4">
+          <template slot="title">Publication</template>
+          <el-menu-item index="/rank?mode=5">Paper Rank</el-menu-item>
+        </el-submenu>
+        <el-submenu index="2-5">
+          <template slot="title">Keyword</template>
+          <el-menu-item index="/rank?mode=6">Paper Rank</el-menu-item>
+        </el-submenu>
       </el-submenu>
-      <el-submenu index="2-2">
-        <template slot="title">Author</template>
-        <el-menu-item index="/rank?mode=2">Paper Rank</el-menu-item>
-        <el-menu-item index="/rank?mode=3">Cited Rank</el-menu-item>
-      </el-submenu>
-      <el-submenu index="2-3">
-        <template slot="title">Affiliation</template>
-        <el-menu-item index="/rank?mode=4">Paper Rank</el-menu-item>
-      </el-submenu>
-      <el-submenu index="2-4">
-        <template slot="title">Publication</template>
-        <el-menu-item index="/rank?mode=5">Paper Rank</el-menu-item>
-      </el-submenu>
-      <el-submenu index="2-5">
-        <template slot="title">Keyword</template>
-        <el-menu-item index="/rank?mode=6">Paper Rank</el-menu-item>
-      </el-submenu>
-    </el-submenu>
-  </el-menu>
+    </el-menu>
+    <div class="option">
+      <a class="option-item" :href="'/home'">User</a>
+      <span>|</span>
+      <a class="option-item" :href="'/login'">Admin</a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -82,5 +89,17 @@
     margin-left: 40%;
     width: 10%;
   }
-
+  .option{
+    position: absolute;
+    top: 9px;
+    left: 20px;
+  }
+  .option-item{
+    color: #909399;
+    text-decoration: none;
+  }
+  .option-item:hover{
+    color: #000000;
+    text-decoration: underline;
+  }
 </style>
