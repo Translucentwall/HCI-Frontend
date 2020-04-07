@@ -107,6 +107,7 @@
             }
         },
         mounted(){
+            console.log('version 2');
             let loadingInstance = Loading.service({ fullscreen: true, text:'Server not available, please wait for a moment...'});
             searchable().then(res=>{
                 if(res.success){
