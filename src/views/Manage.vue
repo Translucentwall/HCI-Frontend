@@ -22,122 +22,126 @@
             </el-submenu>
           </el-menu>
         </el-col>
-        <el-col :span="18" class="table" v-if="mode==='1-1'||mode==='1-2'">
+        <el-col :span="19" class="body-right">
           <el-row>
-            <el-col :span="5" class="head source"><strong>Source</strong></el-col>
-            <el-col :span="16" class="head targets"><strong>Target(s)</strong></el-col>
-            <el-col :span="3" class="head"><strong>Operation</strong></el-col>
-          </el-row>
-          <el-row v-for="(item,index) in aliasList" :key="index">
-            <el-col :span="5" class="column source">
-              <el-tag
-                :title="item.name"
-                @click="toOtherEntity(item.type, item.sonId)"
-              >{{item.name}}</el-tag>
+            <el-col :span="23" class="table" v-if="mode==='1-1'||mode==='1-2'">
+              <el-row>
+                <el-col :span="5" class="head source"><strong>Source</strong></el-col>
+                <el-col :span="16" class="head targets"><strong>Target(s)</strong></el-col>
+                <el-col :span="3" class="head"><strong>Operation</strong></el-col>
+              </el-row>
+              <el-row v-for="(item,index) in aliasList" :key="index" class="line">
+                <el-col :span="5" class="column source">
+                  <el-tag
+                    :title="item.name"
+                    @click="toOtherEntity(item.type, item.sonId)"
+                  >{{item.name}}</el-tag>
+                </el-col>
+                <el-col :span="16" class="column targets">
+                  <el-tag
+                    v-for="father in item.fathers"
+                    :key="father.fatherId"
+                    :title="father.aliasName"
+                    @click="toOtherEntity(item.type, father.fatherId)"
+                  >{{father.aliasName}}</el-tag>
+                </el-col>
+                <el-col :span="3" class="column operation">
+                  <el-popover
+                    placement="right"
+                    width="400"
+                    trigger="click">
+                    <a slot="reference">operate</a>
+                    <el-row>
+                      <el-col :span="24">Choose one target to add</el-col>
+                      <el-col :span="4">Source:</el-col>
+                      <el-col :span="20">
+                        <el-tag
+                          :title="item.name"
+                        >{{item.name}}</el-tag>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="4">Targets:</el-col>
+                      <el-col :span="20">
+                        <el-tag
+                          v-for="father in item.fathers"
+                          :key="father.fatherId"
+                          :title="father.aliasName"
+                          @click="confirmAlias(item.sonId, father.fatherId, item.type)"
+                        >{{father.aliasName}}</el-tag>
+                      </el-col>
+                    </el-row>
+                  </el-popover>
+                </el-col>
+              </el-row>
+              <el-row>
+                <div class="message" v-if="aliasList.length===0">no data...</div>
+              </el-row>
             </el-col>
-            <el-col :span="16" class="column targets">
-              <el-tag
-                v-for="father in item.fathers"
-                :key="father.fatherId"
-                :title="father.aliasName"
-                @click="toOtherEntity(item.type, father.fatherId)"
-              >{{father.aliasName}}</el-tag>
+            <el-col :span="23" class="table" v-if="mode==='2-1'||mode==='2-2'">
+              <el-row>
+                <el-col :span="5" class="head source"><strong>Source</strong></el-col>
+                <el-col :span="16" class="head targets"><strong>Target(s)</strong></el-col>
+                <el-col :span="3" class="head"><strong>Operation</strong></el-col>
+              </el-row>
+              <el-row v-for="(item,index) in aliasList" :key="index" class="line">
+                <el-col :span="5" class="column source">
+                  <el-tag
+                    :title="item.name"
+                    @click="toOtherEntity(item.type, item.sonId)"
+                  >{{item.name}}</el-tag>
+                </el-col>
+                <el-col :span="16" class="column targets">
+                  <el-tag
+                    v-for="father in item.fathers"
+                    :key="father.fatherId"
+                    :title="father.aliasName"
+                    @click="toOtherEntity(item.type, father.fatherId)"
+                  >{{father.aliasName}}</el-tag>
+                </el-col>
+                <el-col :span="3" class="column operation">
+                  <el-popover
+                    placement="right"
+                    width="400"
+                    trigger="click">
+                    <a slot="reference">operate</a>
+                    <el-row>
+                      <el-col :span="24">Choose one target to cancel</el-col>
+                      <el-col :span="4">Source:</el-col>
+                      <el-col :span="20">
+                        <el-tag
+                          :title="item.name"
+                        >{{item.name}}</el-tag>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="4">Targets:</el-col>
+                      <el-col :span="20">
+                        <el-tag
+                          v-for="father in item.fathers"
+                          :key="father.fatherId"
+                          :title="father.aliasName"
+                          @click="confirmCancelAlias(item.sonId, item.type)"
+                        >{{father.aliasName}}</el-tag>
+                      </el-col>
+                    </el-row>
+                  </el-popover>
+                </el-col>
+              </el-row>
+              <el-row>
+                <div class="message" v-if="aliasList.length===0">no data...</div>
+              </el-row>
             </el-col>
-              <el-col :span="3" class="column operation">
-                <el-popover
-                placement="right"
-                width="400"
-                trigger="click">
-                  <a slot="reference">operate</a>
-                  <el-row>
-                    <el-col :span="24">Choose one target to add</el-col>
-                    <el-col :span="4">Source:</el-col>
-                    <el-col :span="20">
-                      <el-tag
-                        :title="item.name"
-                      >{{item.name}}</el-tag>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="4">Targets:</el-col>
-                    <el-col :span="20">
-                      <el-tag
-                        v-for="father in item.fathers"
-                        :key="father.fatherId"
-                        :title="father.aliasName"
-                        @click="confirmAlias(item.sonId, father.fatherId, item.type)"
-                      >{{father.aliasName}}</el-tag>
-                    </el-col>
-                  </el-row>
-              </el-popover>
-            </el-col>
-          </el-row>
-          <el-row>
-            <div class="message" v-if="aliasList.length===0">no data...</div>
-          </el-row>
-        </el-col>
-        <el-col :span="18" class="table" v-if="mode==='2-1'||mode==='2-2'">
-          <el-row>
-            <el-col :span="5" class="head source"><strong>Source</strong></el-col>
-            <el-col :span="16" class="head targets"><strong>Target(s)</strong></el-col>
-            <el-col :span="3" class="head"><strong>Operation</strong></el-col>
-          </el-row>
-          <el-row v-for="(item,index) in aliasList" :key="index">
-            <el-col :span="5" class="column source">
-              <el-tag
-                :title="item.name"
-                @click="toOtherEntity(item.type, item.sonId)"
-              >{{item.name}}</el-tag>
-            </el-col>
-            <el-col :span="16" class="column targets">
-              <el-tag
-                v-for="father in item.fathers"
-                :key="father.fatherId"
-                :title="father.aliasName"
-                @click="toOtherEntity(item.type, father.fatherId)"
-              >{{father.aliasName}}</el-tag>
-            </el-col>
-            <el-col :span="3" class="column operation">
-              <el-popover
-                placement="right"
-                width="400"
-                trigger="click">
-                <a slot="reference">operate</a>
-                <el-row>
-                  <el-col :span="24">Choose one target to cancel</el-col>
-                  <el-col :span="4">Source:</el-col>
-                  <el-col :span="20">
-                    <el-tag
-                      :title="item.name"
-                    >{{item.name}}</el-tag>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="4">Targets:</el-col>
-                  <el-col :span="20">
-                    <el-tag
-                      v-for="father in item.fathers"
-                      :key="father.fatherId"
-                      :title="father.aliasName"
-                      @click="confirmCancelAlias(item.sonId, item.type)"
-                    >{{father.aliasName}}</el-tag>
-                  </el-col>
-                </el-row>
-              </el-popover>
+            <el-col :span="24" v-if="aliasList.length>0">
+              <el-pagination
+                @current-change="showAlias"
+                :current-page.sync="page"
+                :page-size="1"
+                layout="prev, pager, next, jumper"
+                :total="total">
+              </el-pagination>
             </el-col>
           </el-row>
-          <el-row>
-            <div class="message" v-if="aliasList.length===0">no data...</div>
-          </el-row>
-        </el-col>
-        <el-col :span="19" v-if="aliasList.length>0">
-          <el-pagination
-            @current-change="showAlias"
-            :current-page.sync="page"
-            :page-size="1"
-            layout="prev, pager, next, jumper"
-            :total="total">
-          </el-pagination>
         </el-col>
       </el-row>
     </div>
@@ -366,15 +370,20 @@
   i{
     margin-bottom: 4px;
   }
+  .body-right{
+    margin: 0 0 40px;
+  }
   .table{
     margin: 40px 2vw 10px;
   }
   .head{
     border-bottom: 1px solid #cccccc;
   }
-  .column{
-    height: 52px;
+  .line{
     border-bottom: 1px solid #cccccc;
+  }
+  .column{
+    min-height: 52px;
     padding: 10px 4px 0;
   }
   .source{
