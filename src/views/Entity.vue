@@ -285,6 +285,9 @@
     font-size: 14px;
     font-weight: bold;
   }
+  .citation_count{
+    font-size: 28px;
+  }
   /*.entry_wrap{*/
   /*  margin-top: 48px;*/
   /*}*/
