@@ -178,7 +178,7 @@
                     })
                     .font('Impact')
                     .fontSize(function(d) {
-                        return 2+(d.hot+1)/(maxHot+1)*22;
+                        return 2+Math.sqrt((d.hot+1)/(maxHot+1))*26;
                     })
                     .on('end', draw);
 
@@ -196,7 +196,7 @@
                         .style('cursor', 'pointer')
                         .attr('fill', (d, i) => color(i))
                         .style('font-size', function(d) {
-                            return 2+(d.hot+1)/(maxHot+1)*22;
+                            return 2+Math.sqrt((d.hot+1)/(maxHot+1))*30;
                         })
                         .style('font-family', 'Impact')
                         .attr('text-anchor', 'middle')

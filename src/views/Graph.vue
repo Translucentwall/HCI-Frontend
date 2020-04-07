@@ -73,6 +73,7 @@
                     });
                 }else{
                     if(this.showTotal&&this.type<4){
+                        this.$notify.closeAll();
                         let svg = document.getElementById('forceDirected');
                         let children = svg.childNodes;
                         children.forEach(function (child) {
@@ -82,6 +83,7 @@
                         let links = this.graphVO.links.concat(this.moreGraphVO.links);
                         this.forceDirected (nodes, links, 2);
                     }else{
+                        this.$notify.closeAll();
                         let svg = document.getElementById('forceDirected');
                         let children = svg.childNodes;
                         children.forEach(function (child) {
@@ -99,6 +101,7 @@
                 this.$notify.success({
                     title: 'success',
                     message: 'Total graph is ready!',
+                    duration:1500,
                     onClose: function () {
                         if(that.showTotal){
                             let svg = document.getElementById('forceDirected');
@@ -123,6 +126,7 @@
         methods: {
             forceDirected (nodes, links, type) {
                 console.log(nodes.length);
+                let maxHot = Math.max.apply(Math,links.map(item => { return item.value }));
                 let width = document.getElementById('svgContainer').offsetWidth;
                 let height = nodes.length<200?800:nodes.length<400?1200:1600;
                 // let padding = {
@@ -140,11 +144,9 @@
                 // 通过布局来转换数据，然后进行绘制
                 let simulation = d3.forceSimulation()
                     .nodes(nodes)
-                    .force('link', d3.forceLink(links).distance(type===1?200:75).id(d=>d.id))
+                    .force('link', d3.forceLink(links).distance(nodes.length<200?200:75).id(d=>d.id))
                     .force('charge', d3.forceManyBody())
                     .force('center', d3.forceCenter(width / 2, height / 2));
-                    // .force('center', d3.forceCenter((width - padding.left - padding.right) / 2, (height - padding.top - padding.bottom) / 2));
-                let color = d3.scaleOrdinal(d3.schemeCategory10);
 
                 // 添加连线
                 svg.selectAll('line')
@@ -156,7 +158,16 @@
                         if(d.value < 0){
                             return 1;
                         }else{
-                            return 1 + d.value/10;
+                            return 1 + d.value/15;
+                        }
+                    })
+                    .attr('stroke-dasharray', function (d) {
+                        if(d.source.entityType===4 || d.target.entityType===4 && d.value>=40){
+                            return ''+ (1+maxHot/15)+',5';
+                        }else if(d.source.entityType===4 || d.target.entityType===4){
+                            return '5,5'
+                        }else{
+                            return ''
                         }
                     });
                 // 添加描述
@@ -191,11 +202,11 @@
                     .enter()
                     .append('circle')
                     .attr('r', function (d) {
-                        if(d.entityId===centerId&&d.entityType===centerType&&type===1){
+                        if(d.entityId===centerId&&d.entityType===centerType&&nodes.length<200){
                             return 10;
-                        }else if(d.entityId===centerId&&d.entityType===centerType&&type===2){
+                        }else if(d.entityId===centerId&&d.entityType===centerType){
                             return 6;
-                        }else if(type===1){
+                        }else if(nodes.length<200){
                             return 6;
                         }else{
                             return 4;
@@ -286,7 +297,7 @@
                                     if(link.value < 0){
                                         return 1;
                                     }else{
-                                        return 1 + link.value/10;
+                                        return 1 + link.value/15;
                                     }
                                 }
                             })
