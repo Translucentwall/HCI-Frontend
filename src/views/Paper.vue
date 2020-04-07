@@ -101,6 +101,7 @@
             }
         },
         mounted() {
+            console.log('version 2');
             this.id = this.$route.params.id;
             if(this.id ===undefined){
 
