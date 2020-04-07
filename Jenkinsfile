@@ -34,7 +34,7 @@ node {
             sshTransfer(
               cleanRemote: false,
               excludes: '',
-              execCommand: '''rm -rf /root/se3frontend && mkdir /root/se3frontend && cd /root/se3frontend && tar -xzf se3frontend.tar.gz
+              execCommand: '''rm -rf /root/se3frontend && mkdir /root/se3frontend && cd /root/se3frontend && tar -xzf ../se3frontend.tar.gz
 docker rm -f se3www
 cd /root/se3frontend && docker build -f Dockerfile -t se3vue . && docker run -d -p 80:80 --link se3:se3 --name se3www se3vue:latest''',
               execTimeout: 120000,
@@ -42,7 +42,7 @@ cd /root/se3frontend && docker build -f Dockerfile -t se3vue . && docker run -d 
               makeEmptyDirs: false,
               noDefaultExcludes: false,
               patternSeparator: '[, ]+',
-              remoteDirectory: 'se3frontend',
+              remoteDirectory: '',
               remoteDirectorySDF: false,
               removePrefix: '',
               sourceFiles: 'se3frontend.tar.gz'
