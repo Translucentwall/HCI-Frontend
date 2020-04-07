@@ -162,7 +162,7 @@
                         }
                     })
                     .attr('stroke-dasharray', function (d) {
-                        if(d.source.entityType===4 || d.target.entityType===4 && d.value>=40){
+                        if(d.source.entityType===4 || d.target.entityType===4 && d.value>=60){
                             return ''+ (1+maxHot/15)+',5';
                         }else if(d.source.entityType===4 || d.target.entityType===4){
                             return '5,5'
@@ -181,7 +181,7 @@
                     .attr('dx', 10)
                     .attr('dy', 10)
                     .text(function (d) {
-                        if(type===1){
+                        if(nodes.length<200){
                             if(d.entityName.length<=20){
                                 return d.entityName;
                             }else{
