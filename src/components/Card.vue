@@ -7,7 +7,7 @@
       <div v-for="(item,index) in simplePaperVO.author_simpleAffiliationVOS" class="author-affiliation" v-if="index < 3">
         <a class="author" :href="'/entity/author/'+item.authorId" v-html="item.author"></a>
         <span v-if="item.affiliation&&item.affiliation!=='NA'">,</span>
-        <a class="affiliation" :href="'/entity/affiliation/'+item.affiliationId" v-if="item.affiliation&&item.affiliation!=='NA'" v-html="item.affiliation.split(',')[0]"></a>
+        <a class="affiliation" :href="'/entity/affiliation/'+item.affiliationId" v-if="item.affiliation&&item.affiliation!=='NA'" v-html="item.affiliation"></a>
         <span>;</span>
       </div>
       <div v-if="simplePaperVO.author_simpleAffiliationVOS.length > 3">...</div>
