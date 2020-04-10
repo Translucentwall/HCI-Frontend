@@ -7,6 +7,12 @@
         <div v-if="type<4">
           <input type="checkbox" v-model="showTotal">Show Total Graph
         </div>
+        <el-input
+          class="search-input"
+          v-model="searchText"
+          placeholder=" Reg filter"
+          @input="searchNodes">
+        </el-input>
       </div>
     </div>
   </div>
@@ -25,7 +31,10 @@
                 graphVO: {},
                 moreGraphVO: {},
                 moreGraphReady: false,
-                showTotal: false
+                showTotal: false,
+                searchText: '',
+                isSearching: false,
+                nodeNum: 0
             }
         },
         mounted () {
@@ -126,6 +135,7 @@
         methods: {
             forceDirected (nodes, links, type) {
                 console.log(nodes.length);
+                this.nodeNum = nodes.length;
                 let maxHot = Math.max.apply(Math,links.map(item => { return item.value }));
                 let width = document.getElementById('svgContainer').offsetWidth;
                 let height = nodes.length<200?800:nodes.length<400?1200:1600;
@@ -137,8 +147,10 @@
                 // };
                 let centerId = Number(this.id);
                 let centerType = Number(this.type);
+                let that = this;
                 let svg = d3.select('#forceDirected')
                     .append('svg')
+                    .attr('id', 'graph')
                     .attr('width', width)
                     .attr('height', height);
                 // 通过布局来转换数据，然后进行绘制
@@ -278,34 +290,38 @@
                         })
                     )
                     .on('mouseover', function (d) {
-                        svg.selectAll('line')
-                            .style('stroke-width', function(link) {
-                                if (link.source === d || link.target === d) {
-                                    return 2;
-                                }
-                            })
-                            .style('stroke', function(link) {
-                                if (link.source === d || link.target === d) {
-                                    return '#000000';
-                                }
-                            })
+                        if(!that.isSearching){
+                            svg.selectAll('line')
+                                .style('stroke-width', function(link) {
+                                    if (link.source === d || link.target === d) {
+                                        return 2;
+                                    }
+                                })
+                                .style('stroke', function(link) {
+                                    if (link.source === d || link.target === d) {
+                                        return '#000000';
+                                    }
+                                });
+                        }
                     })
                     .on('mouseout', function (d) {
-                        svg.selectAll('line')
-                            .style('stroke-width', function(link) {
-                                if (link.source === d || link.target === d) {
-                                    if(link.value < 0){
-                                        return 1;
-                                    }else{
-                                        return 1 + link.value/15;
+                        if(!that.isSearching){
+                            svg.selectAll('line')
+                                .style('stroke-width', function(link) {
+                                    if (link.source === d || link.target === d) {
+                                        if(link.value < 0){
+                                            return 1;
+                                        }else{
+                                            return 1 + link.value/15;
+                                        }
                                     }
-                                }
-                            })
-                            .style('stroke', function(link) {
-                                if (link.source === d || link.target === d) {
-                                    return '#cccccc'
-                                }
-                            })
+                                })
+                                .style('stroke', function(link) {
+                                    if (link.source === d || link.target === d) {
+                                        return '#cccccc'
+                                    }
+                                })
+                        }
                     })
                     .append('title')
                     .text(d=>d.entityName);
@@ -322,7 +338,114 @@
                         .attr('y1', function (d) { return d.source.y })
                         .attr('x2', function (d) { return d.target.x })
                         .attr('y2', function (d) { return d.target.y });
-                })
+                });
+                this.searchNodes();
+            },
+            searchNodes: function () {
+                let text = RegExp(this.searchText);
+                let svg = d3.select('#forceDirected');
+                let centerId = Number(this.id);
+                let centerType = Number(this.type);
+                let that = this
+                if(this.searchText===''){
+                    this.isSearching = false;
+                    svg.selectAll('circle')
+                        .style('fill', function (d) {
+                            if(d.entityId===centerId&&d.entityType===centerType){
+                                return 'rgb(106,0,95)';
+                            }
+                            else if(d.entityType===1 ){
+                                return 'rgb(214, 39, 40)';
+                            }else if(d.entityType===2 ){
+                                return 'rgb(255, 127, 14)';
+                            }else if(d.entityType===3 ){
+                                return 'rgb(214,214,8)';
+                            }else if(d.entityType===4 ){
+                                return 'rgb(44, 160, 44)';
+                            }else if(d.entityType===5 ){
+                                return 'rgb(31, 119, 180)';
+                            }else{
+                                return 'rgb(0,0,0)';
+                            }
+                        })
+                        .attr('stroke', '#000000');
+                    svg.selectAll('line')
+                        .style('stroke-width', function(link) {
+                            if(link.value < 0){
+                                return 1;
+                            }else{
+                                return 1 + link.value/15;
+                            }
+                        })
+                        .style('stroke', '#cccccc');
+                    svg.selectAll('text')
+                        .text(function (d) {
+                            if(that.nodeNum.length<200){
+                                if(d.entityName.length<=20){
+                                    return d.entityName;
+                                }else{
+                                    return d.entityName.substr(0,20)+'...';
+                                }
+                            }else{
+                                if(d.entityName.length<=10){
+                                    return d.entityName;
+                                }else{
+                                    return d.entityName.substr(0,10)+'...';
+                                }
+                            }
+
+                        });
+                }else{
+                    this.isSearching = true;
+                    svg.selectAll('circle')
+                        .style('fill', function (d) {
+                            if(text.test(d.entityName)){
+                                if(d.entityId===centerId&&d.entityType===centerType){
+                                    return 'rgb(106,0,95)';
+                                }
+                                else if(d.entityType===1 ){
+                                    return 'rgb(214, 39, 40)';
+                                }else if(d.entityType===2 ){
+                                    return 'rgb(255, 127, 14)';
+                                }else if(d.entityType===3 ){
+                                    return 'rgb(214,214,8)';
+                                }else if(d.entityType===4 ){
+                                    return 'rgb(44, 160, 44)';
+                                }else if(d.entityType===5 ){
+                                    return 'rgb(31, 119, 180)';
+                                }
+                            }
+                            else{
+                                return '#cccccc'
+                            }
+                        })
+                        .attr('stroke', function (d) {
+                            if(text.test(d.entityName)){
+                                return '#000000'
+                            }else {
+                                return '#cccccc'
+                            }
+                        });
+                    svg.selectAll('line')
+                        .style('stroke-width', function(link) {
+                            if (text.test(link.source.entityName) || text.test(link.target.entityName)) {
+                                return 2;
+                            }
+                        })
+                        .style('stroke', function(link) {
+                            if (text.test(link.source.entityName) || text.test(link.target.entityName)) {
+                                return '#000000';
+                            }
+                        });
+                    svg.selectAll('text')
+                        .text(function (d) {
+                            if(text.test(d.entityName)){
+                                return d.entityName
+                            }else{
+                                return ''
+                            }
+                        })
+                }
             }
         }
     }
@@ -352,6 +475,13 @@
   }
   .option_name{
     margin-left: 0.5ex;
+  }
+  .option .el-input__inner{
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 24px;
+    padding: 0 5px;
   }
   .center_name{
     color: #000000;

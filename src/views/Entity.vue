@@ -90,7 +90,7 @@
             </el-col>
           </el-row>
         </el-col>
-        <el-col :span="22"  :offset="1" class="significantPaper_wrap">
+        <el-col :span="22" :offset="1" class="significantPaper_wrap">
           <strong class="significantPaper_title">Significant Papers</strong>
           <Card
           v-for="(significantPaper,index) in academicEntityVO.significantPapers"
@@ -98,6 +98,7 @@
           :simple-paper-v-o="significantPaper"
           ></Card>
         </el-col>
+        <el-col :span="22" :offset="1" class="more"><a class="more-text" @click="search">More information about <strong>{{academicEntityVO.name}} ...</strong></a></el-col>
       </el-row>
     </div>
   </div>
@@ -221,6 +222,12 @@
                         .style('fill-opacity', 1);
                 }
 
+            },
+            search: function () {
+                let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
+                sessionStorage.setItem('searchMode', typeDic2[this.type]);
+                sessionStorage.setItem('searchContent', this.academicEntityVO.name);
+                window.location.href = '/search';
             }
         },
         computed: {
@@ -327,5 +334,15 @@
   .el-tag:hover{
     color: #000000;
     text-decoration: underline;
+  }
+  .more{
+    margin-top: 10px;
+    text-align: left;
+  }
+  .more-text{
+    text-decoration: underline;
+  }
+  .more-text:hover{
+    color: #409eff;
   }
 </style>
