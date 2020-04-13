@@ -107,7 +107,6 @@
             }
         },
         mounted(){
-            console.log('version 2.1');
             let loadingInstance = Loading.service({ fullscreen: true, text:'Server not available, please wait for a moment...'});
             searchable().then(res=>{
                 if(res.success){
@@ -132,9 +131,25 @@
                 console.log('我捕获了');
             },
             search: function () {
-                sessionStorage.setItem('searchMode', this.mode);
-                sessionStorage.setItem('searchContent', this.searchContent);
-                window.location.href = '/search';
+                let blankPattern = /^( )*$/;
+                if (blankPattern.test(this.searchContent)){
+                    this.$message({
+                        message:'请输入有效内容',
+                        type: 'error',
+                        duration: 2000
+                    });
+                }else {
+                    let pattern = /[%\\/?+#&=]/;
+                    if(pattern.test(this.searchContent)){
+                        this.$message({
+                            message:'Search content can\'t include %,\\,/,?,+,#,&,=',
+                            type: 'error',
+                            duration: 2000
+                        });
+                    }else{
+                        window.location.href = '/search/'+this.mode+'/'+this.searchContent;
+                    }
+                }
             }
         }
     }
@@ -151,7 +166,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    box-shadow:0 0 50px 20px #ffffff inset;
+    /*box-shadow:0 0 50px 20px #ffffff inset;*/
   }
   img{
     width: 100%;
@@ -187,7 +202,7 @@
     margin: 30px 30px 60px;
   }
   .rank-wrap-title{
-    text-decoration: underline #b04c50;
+    text-decoration: underline #000000;
     font-size: 36px;
   }
   .rank{

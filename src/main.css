@@ -31,22 +31,22 @@
   font-size: 16px;
 }
 .el-button{
-  background-color: #b04c50;
-  border: 1px solid #b04c50;
+  background-color: #000000;
+  border: 1px solid #000000;
   color: #ffffff;
 }
 .el-button:hover{
   color: #ffffff;
-  background-color: #b04c50;
-  border: 1px solid #b04c50;
+  background-color: #000000;
+  border: 1px solid #000000;
 }
 .el-button:focus{
   color: #ffffff;
-  background-color: #b04c50;
-  border: 1px solid #b04c50;
+  background-color: #000000;
+  border: 1px solid #000000;
 }
 .el-input{
-  border: #b04c50;
+  border: #000000;
 }
 .el-input__inner{
   border-radius: 0;
@@ -62,19 +62,19 @@
   padding: 0 1%;
 }
 .el-table .is-sortable .sort-caret.sort-up-positive{
-  border-bottom-color: #b04c50;
+  border-bottom-color: #000000;
 }
 .el-table .is-sortable .sort-caret.sort-up-negative{
   border-bottom-color: #c0c4cc;
 }
 .el-table .is-sortable .sort-caret.sort-down-positive{
-  border-top-color: #b04c50;
+  border-top-color: #000000;
 }
 .el-table .is-sortable .sort-caret.sort-down-negative{
   border-top-color: #c0c4cc;
 }
 .el-pager li.active{
-  color: #b04c50;
+  color: #000000;
 }
 .el-table .cell{
   word-break: break-word;

@@ -22,7 +22,7 @@ export let routes = [
     component: Home
   },
   {
-    path: '/search',
+    path: '/search/:mode/:content',
     name: 'Search',
     component: Search
   },

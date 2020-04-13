@@ -14,7 +14,7 @@ export const getPaper = (id) =>{
 };
 
 export const search = (text, mode, pageNumber, sortMode, perPage) =>{
-  return axios.get('/search/' + transfer(text) + '/' + mode + '?pageNumber=' + pageNumber + '&sortMode=' + sortMode + '&perPage=' + perPage).then(res => res.data);
+  return axios.get('/search/' + encodeURIComponent(text) + '/' + mode + '?pageNumber=' + pageNumber + '&sortMode=' + sortMode + '&perPage=' + perPage).then(res => res.data);
 };
 
 export const getRank = (mode, pageNumber, descend, startYear, endYear) =>{
@@ -65,32 +65,3 @@ export const getGraph = (id, type) =>{
 export const getMoreGraph = (id, type) =>{
   return axios.get('/graph/more/' + id + '?type=' + type).then(res=>res.data);
 };
-
-
-function transfer(text) {
-  // if('/+/'.test(text)){
-    text = text.replace(/%/g, '%25');
-  // }
-  // if('/ /'.test(text)){
-    text = text.replace(/ /g, '%20');
-  // }
-  // if('/\//'.test(text)){
-    text = text.replace(/\//g, '%2F');
-  // }
-  // if('/?/'.test(text)){
-    text = text.replace(/\?/g, '%3F');
-  // }
-  // if('/%/'.test(text)){
-    text = text.replace(/\+/g, '%2B');
-  // }
-  // if('/#/'.test(text)){
-    text = text.replace(/#/g, '%23');
-  // }
-  // if('/&/'.test(text)){
-    text = text.replace(/&/g, '%26');
-  // }
-  // if('/=/'.test(text)){
-    text = text.replace(/=/g, '%3D');
-  // }
-  return text;
-}

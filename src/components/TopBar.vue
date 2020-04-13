@@ -5,7 +5,7 @@
       class="topBar"
       mode="horizontal"
       @select="handleSelect"
-      active-text-color="#b04c50"
+      active-text-color="#000000"
     >
       <el-menu-item class="home" index="/home">Home</el-menu-item>
       <el-submenu index="2">

@@ -7,7 +7,7 @@
           <el-menu
             :default-active="mode"
             class="manage-menu"
-            active-text-color="#b04c50"
+            active-text-color="#000000"
             @select="select"
           >
             <el-submenu index="1">
@@ -159,7 +159,7 @@
                 mode: '1-1',
                 modeDic: {'1-1':1,'1-2':2, '2-1':1, '2-2':2},
                 page: 1,
-                total: 100,
+                total: 50,
                 aliasList: [],
             }
         },
@@ -186,7 +186,7 @@
             select: function (key) {
                 this.mode = key;
                 this.page=1;
-                this.total=100;
+                this.total=50;
                 this.showAlias();
             },
             toOtherEntity: function (type, id) {
@@ -362,7 +362,7 @@
     background-color: #ffffff;
   }
   .el-menu-item.is-active{
-    border-right: 2px solid #b04c50;
+    border-right: 2px solid #000000;
   }
   .rank-select-item{
     font-size: 16px;

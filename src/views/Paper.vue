@@ -2,7 +2,7 @@
   <div>
     <div class="body_top">
       <div class="top_img">
-        <img src="../assets/background-medium.jpg" alt="This is a background pic."/>
+        <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
       </div>
     </div>
     <div class="body_bottom">
@@ -58,25 +58,25 @@
               <div class="author_keywords keywords" v-if="paperVO.authorKeywords&&paperVO.authorKeywords[0]">
                 <div class="subtitle">Author Keywords</div>
                 <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.authorKeywords" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
+                  <span v-for="keyword in paperVO.authorKeywords" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="IEEE_keywords keywords" v-if="paperVO.ieeeterms&&paperVO.ieeeterms[0]">
                 <div class="subtitle">IEEE Keywords</div>
                 <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.ieeeterms" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
+                  <span v-for="keyword in paperVO.ieeeterms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="controlled_terms keywords" v-if="paperVO.controlledTerms&&paperVO.controlledTerms[0]">
                 <div class="subtitle">INSPEC: Controlled Indexing</div>
                 <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.controlledTerms" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
+                  <span v-for="keyword in paperVO.controlledTerms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="non_controlled_terms keywords" v-if="paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0]">
                 <div class="subtitle">INSPEC: Non-Controlled Indexing</div>
                 <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.nonControlledTerms" class="keyword" @click="search('Keyword', keyword)">{{keyword}}</span>
+                  <span v-for="keyword in paperVO.nonControlledTerms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
             </el-collapse-item>
@@ -145,10 +145,13 @@
             handleChange: function(val) {
                 console.log(val);
             },
-            search: function (mode, content) {
-                sessionStorage.setItem('searchMode', mode);
-                sessionStorage.setItem('searchContent', content);
-                window.location.href = '/search';
+            search: function (item) {
+                let pattern = /<b><span style="color: #b04c50; ">/;
+                if(pattern.test(item)){
+                    let contentTmp = item.replace(/<b><span style="color: #b04c50; ">/g, '');
+                    item = contentTmp.replace(/<\/span><\/b>/g, '');
+                }
+                window.location.href = '/search/Keyword/'+item;
             }
         }
     }
@@ -179,7 +182,7 @@
   .citation_box{
     width: 80px;
     height: 50px;
-    background-color: #b04c50;
+    background-color: #000000;
     color: #ffffff;
     margin: 0 10px;
     padding: 10px 0;

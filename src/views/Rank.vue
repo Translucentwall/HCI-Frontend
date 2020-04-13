@@ -2,7 +2,7 @@
   <div>
     <div class="body-top">
       <div class="top-img">
-        <img src="../assets/background-medium.jpg" alt="This is a background pic."/>
+        <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
       </div>
     </div>
     <div class="body-bottom">
@@ -13,7 +13,7 @@
             class="el-menu-demo"
             mode="vertical"
             @select="handleSelect"
-            active-text-color="#b04c50"
+            active-text-color="#000000"
           >
             <el-menu-item index="1"><div class="rank-select-item">Rank of Paper by Cited</div><div><i class="el-icon-arrow-right"></i></div></el-menu-item>
             <el-menu-item index="2"><div class="rank-select-item">Rank of Author by Paper</div><div><i class="el-icon-arrow-right"></i></div></el-menu-item>
@@ -207,7 +207,7 @@
     background-color: #ffffff;
   }
   .is-active{
-    border-right: 2px solid #b04c50;
+    border-right: 2px solid #000000;
   }
   .rank-select-item{
     font-size: 16px;

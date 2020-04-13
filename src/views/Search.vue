@@ -22,17 +22,25 @@
           class="search-input"
           v-model="searchContent"
           placeholder="Please input the search content..."
-          @keydown.13.native="searchBegin"
+          @keydown.13.native="search"
           @keydown.229="handleCN">
         </el-input>
-        <el-button class="search-enter" @click="searchBegin">
+        <el-button class="search-enter" @click="search">
           <i class="el-icon-search"></i>
         </el-button>
       </div>
     </div>
     <div class="body-bottom" v-if="displayBottom">
       <el-row>
-        <el-col :span="18">
+        <el-col :span="23">
+          <div class="breadcrumb">
+            <el-breadcrumb separator="/">
+              <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
+              <el-breadcrumb-item>Search</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+        </el-col>
+        <el-col :span="17" :offset="1">
           <div class="result-title-wrap">
             <div class="result-title">
               Show results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
@@ -97,7 +105,23 @@
               resultTitleContent: '',
               tableSize: 'small',
               tableMode: '0',
-              tableData: []
+              tableData: [],
+              tableModeDic: {
+                  'All': '1',
+                  "Title": '1',
+                  "Author": '2',
+                  "Affiliation": '4',
+                  "Publication": '5',
+                  "Keyword": '6'
+              },
+              tableModeDic2: {
+                  'All': 'Paper-Cited',
+                  "Title": 'Paper-Cited',
+                  "Author": 'Author-Paper',
+                  "Affiliation": 'Affiliation-Paper',
+                  "Publication": 'Publication-Paper',
+                  "Keyword": 'Keyword-Paper'
+              }
           }
       },
       mounted() {
@@ -105,9 +129,11 @@
           searchable().then(res=>{
               if(res.success){
                   loadingInstance.close();
-                  let content = sessionStorage.getItem('searchContent');
-                  if(content !== null){
+                  let content = this.$route.params.content;
+                  if(content !== null && content !== ''){
                       this.searchBegin();
+                  }else{
+                      window.location.href = '/home';
                   }
               }
           });
@@ -125,81 +151,49 @@
               this.sortMode = command;
           },
           searchBegin: function () {
-              let content = sessionStorage.getItem('searchContent');
+              let content = this.$route.params.content;
               if (content !== null) {
                   this.searchContent = content;
-                  this.mode = sessionStorage.getItem('searchMode');
-                  sessionStorage.removeItem('searchContent');
-                  sessionStorage.removeItem('searchMode');
+                  this.mode = this.$route.params.mode;
               }
 
-              let pattern = /<b><span style="color: #b04c50; ">/;
-              let res = pattern.test(this.searchContent);
-              if(res){
-                  let contentTmp = this.searchContent.replace(/<b><span style="color: #b04c50; ">/g, '');
-                  this.searchContent = contentTmp.replace(/<\/span><\/b>/g, '');
-              }
               this.currentPage = 1;
+
+              this.simplePaperVO.length = 0;
+              search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+                  this.simplePaperVO = res;
+                  this.resultTitleMode = this.mode;
+                  this.resultTitleContent = this.searchContent;
+                  this.displayBottom = true;
+
+                  this.tableMode = this.tableModeDic[this.mode];
+                  let tableMode = this.tableModeDic2[this.mode];
+                  getRank(tableMode, 1, true, 2013, 2019).then(res => {
+                      this.tableData = res.content.rankList;
+                  });
+
+              });
+
+          },
+          search: function () {
               let blankPattern = /^( )*$/;
-              if(blankPattern.test(this.searchContent)){
+              if (blankPattern.test(this.searchContent)){
                   this.$message({
                       message:'请输入有效内容',
                       type: 'error',
-                      duration: 1500
+                      duration: 2000
                   });
-              }else{
-                  this.simplePaperVO.length = 0;
-                  search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
-                      this.simplePaperVO = res;
-                      this.resultTitleMode = this.mode;
-                      this.resultTitleContent = this.searchContent;
-                      this.displayBottom = true;
-                      setTimeout(function () {
-                          window.scrollTo(100, 700);
-                      }, 100);
-                      let tableMode = '';
-                      switch (this.mode) {
-                          case "All": {
-                              this.tableMode = '1';
-                              tableMode = 'Paper-Cited';
-                              break;
-                          }
-                          case "Title": {
-                              this.tableMode = '1';
-                              tableMode = 'Paper-Cited';
-                              break;
-                          }
-                          case "Author": {
-                              this.tableMode = '2';
-                              tableMode = 'Author-Paper';
-                              break;
-                          }
-                          case "Affiliation": {
-                              this.tableMode = '4';
-                              tableMode = 'Affiliation-Paper';
-                              break;
-                          }
-                          case "Publication": {
-                              this.tableMode = '5';
-                              tableMode = 'Publication-Paper';
-                              break;
-                          }
-                          case "Keyword": {
-                              this.tableMode = '6';
-                              tableMode = 'Keyword-Paper';
-                              break;
-                          }
-                          default: {
-                              this.tableMode = '1';
-                              tableMode = 'Paper-Cited';
-                              break;
-                          }
-                      }
-                      getRank(tableMode, 1, true, 2013, 2019).then(res => {
-                          this.tableData = res.content.rankList;
+              }else {
+                  let pattern = /[%\\/?#=]/;
+                  if(pattern.test(this.searchContent)){
+                      this.$message({
+                          message:'Search content can\'t include %,\\,/,?,#,=',
+                          type: 'error',
+                          duration: 2000
                       });
-
-                  });
+                  }else{
+                      window.location.href = '/search/'+this.mode+'/'+this.searchContent;
+                  }
               }
           },
           loadMore: function () {
@@ -228,7 +222,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    box-shadow:0 0 50px 20px #ffffff inset;
+    /*box-shadow:0 0 50px 20px #ffffff inset;*/
   }
   img{
     width: 100%;
@@ -263,10 +257,13 @@
   .body-bottom{
     margin: 10px 0 100px;
   }
+  .breadcrumb{
+    margin-left: 50px;
+  }
   .result-title-wrap{
     font-size: 24px;
     text-align: left;
-    margin: 0 0 5px 20px;
+    margin: 5px 0 0 20px;
     display: flex;
     justify-content: space-between;
     line-height: 48px;

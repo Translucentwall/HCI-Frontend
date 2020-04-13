@@ -10,7 +10,7 @@
         <el-input
           class="search-input"
           v-model="searchText"
-          placeholder=" Reg filter"
+          placeholder="filter"
           @input="searchNodes">
         </el-input>
       </div>
@@ -136,9 +136,8 @@
             forceDirected (nodes, links, type) {
                 console.log(nodes.length);
                 this.nodeNum = nodes.length;
-                let maxHot = Math.max.apply(Math,links.map(item => { return item.value }));
                 let width = document.getElementById('svgContainer').offsetWidth;
-                let height = nodes.length<200?800:nodes.length<400?1200:1600;
+                let height = nodes.length<150?800:nodes.length<400?1200:1600;
                 // let padding = {
                 //     left: 30,
                 //     right: 30,
@@ -174,14 +173,13 @@
                         }
                     })
                     .attr('stroke-dasharray', function (d) {
-                        if(d.source.entityType===4 || d.target.entityType===4 && d.value>=60){
-                            return ''+ (1+maxHot/15)+',5';
-                        }else if(d.source.entityType===4 || d.target.entityType===4){
-                            return '5,5'
+                        if(d.source.entityType===4 || d.target.entityType===4){
+                            return '';
                         }else{
-                            return ''
+                            return '5,5'
                         }
-                    });
+                    })
+                    .attr('background', 'linear-gradient(to right, red , yellow)');
                 // 添加描述
                 svg.selectAll('text')
                     .data(nodes)
@@ -214,14 +212,22 @@
                     .enter()
                     .append('circle')
                     .attr('r', function (d) {
-                        if(d.entityId===centerId&&d.entityType===centerType&&nodes.length<200){
-                            return 10;
-                        }else if(d.entityId===centerId&&d.entityType===centerType){
-                            return 6;
-                        }else if(nodes.length<200){
-                            return 6;
+                        if(nodes.length<200){
+                            if(d.entityId===centerId&&d.entityType===centerType){
+                                return 10
+                            }else if(d.popularity>=0){
+                                return d.popularity>=that.graphVO.popularity?10:(d.popularity/that.graphVO.popularity)*6+4;
+                            }else{
+                                return 6
+                            }
                         }else{
-                            return 4;
+                            if(d.entityId===centerId&&d.entityType===centerType){
+                                return 6
+                            }else if(d.popularity>=0){
+                                return 2+d.popularity>=that.graphVO.popularity?4:(d.popularity/that.graphVO.popularity)*4;
+                            }else{
+                                return 4
+                            }
                         }
                     })
                     .attr('stroke', '#000000')
@@ -230,18 +236,17 @@
                     .style('fill', function (d) {
                         if(d.entityId===centerId&&d.entityType===centerType){
                             return 'rgb(106,0,95)';
-                        }
-                        else if(d.entityType===1 ){
+                        } else if(d.entityType===1 ){
                             return 'rgb(214, 39, 40)';
-                        }else if(d.entityType===2 ){
+                        } else if(d.entityType===2 ){
                             return 'rgb(255, 127, 14)';
-                        }else if(d.entityType===3 ){
+                        } else if(d.entityType===3 ){
                             return 'rgb(214,214,8)';
-                        }else if(d.entityType===4 ){
+                        } else if(d.entityType===4 ){
                             return 'rgb(44, 160, 44)';
-                        }else if(d.entityType===5 ){
+                        } else if(d.entityType===5 ){
                             return 'rgb(31, 119, 180)';
-                        }else{
+                        } else{
                             return 'rgb(0,0,0)';
                         }
                     })
@@ -342,11 +347,10 @@
                 this.searchNodes();
             },
             searchNodes: function () {
-                let text = RegExp(this.searchText);
                 let svg = d3.select('#forceDirected');
                 let centerId = Number(this.id);
                 let centerType = Number(this.type);
-                let that = this
+                let that = this;
                 if(this.searchText===''){
                     this.isSearching = false;
                     svg.selectAll('circle')
@@ -399,7 +403,7 @@
                     this.isSearching = true;
                     svg.selectAll('circle')
                         .style('fill', function (d) {
-                            if(text.test(d.entityName)){
+                            if(d.entityName.indexOf(that.searchText)!==-1){
                                 if(d.entityId===centerId&&d.entityType===centerType){
                                     return 'rgb(106,0,95)';
                                 }
@@ -420,7 +424,7 @@
                             }
                         })
                         .attr('stroke', function (d) {
-                            if(text.test(d.entityName)){
+                            if(d.entityName.indexOf(that.searchText)!==-1){
                                 return '#000000'
                             }else {
                                 return '#cccccc'
@@ -428,18 +432,18 @@
                         });
                     svg.selectAll('line')
                         .style('stroke-width', function(link) {
-                            if (text.test(link.source.entityName) || text.test(link.target.entityName)) {
+                            if (link.source.entityName.indexOf(that.searchText)!==-1 || link.target.entityName.indexOf(that.searchText)!==-1) {
                                 return 2;
                             }
                         })
                         .style('stroke', function(link) {
-                            if (text.test(link.source.entityName) || text.test(link.target.entityName)) {
+                            if (link.source.entityName.indexOf(that.searchText)!==-1 || link.target.entityName.indexOf(that.searchText)!==-1) {
                                 return '#000000';
                             }
                         });
                     svg.selectAll('text')
                         .text(function (d) {
-                            if(text.test(d.entityName)){
+                            if(d.entityName.indexOf(that.searchText)!==-1){
                                 return d.entityName
                             }else{
                                 return ''

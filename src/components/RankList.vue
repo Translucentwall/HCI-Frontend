@@ -16,8 +16,8 @@
           :lazy="true"
           :marks="true"
           :drag-on-click="true"
-          :process-style="{ backgroundColor: '#b04c50' }"
-          :tooltip-style="{ backgroundColor: '#b04c50', borderColor: '#b04c50' }">
+          :process-style="{ backgroundColor: '#000000' }"
+          :tooltip-style="{ backgroundColor: '#000000', borderColor: '#000000' }">
           <template v-slot:dot="{ value, focus }">
             <div :class="['custom-dot', { focus }]"></div>
           </template>
@@ -182,7 +182,7 @@
     width: 100%;
     height: 100%;
     border-radius: 2px;
-    background-color: #b04c50;
+    background-color: #000000;
     transition: all .3s;
   }
   .custom-dot:hover {
@@ -199,7 +199,7 @@
     background-color: #ffffff;
   }
   .custom-step.active {
-    box-shadow: 0 0 0 3px #b04c50;
+    box-shadow: 0 0 0 3px #000000;
     background-color: #ffffff;
   }
 </style>

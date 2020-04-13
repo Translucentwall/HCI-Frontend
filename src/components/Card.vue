@@ -21,7 +21,7 @@
     </div>
     <div class="keyword-wrap" v-if="simplePaperVO.keywords&&simplePaperVO.keywords[0]">
       <span v-for="(word,index) in simplePaperVO.keywords" v-if="index < 5">
-        <span class="keyword" @click="searchItem(word, '6')" v-html="word"></span>
+        <span class="keyword" @click="searchItem(word)" v-html="word"></span>
       </span>
     </div>
   </div>
@@ -41,39 +41,13 @@ export default {
         }
     },
     methods: {
-        searchItem: function (item, mode) {
-            sessionStorage.setItem('searchContent', item);
-            switch (mode) {
-                case '1': {
-                    sessionStorage.setItem('searchMode', 'All');
-                    break;
-                }
-                case '2': {
-                    sessionStorage.setItem('searchMode', 'Title');
-                    break;
-                }
-                case '3': {
-                    sessionStorage.setItem('searchMode', 'Author');
-                    break;
-                }
-                case '4': {
-                    sessionStorage.setItem('searchMode', 'Affiliation');
-                    break;
-                }
-                case '5': {
-                    sessionStorage.setItem('searchMode', 'Publication');
-                    break;
-                }
-                case '6': {
-                    sessionStorage.setItem('searchMode', 'Keyword');
-                    break;
-                }
-                default:{
-                    sessionStorage.setItem('searchMode', 'All');
-                    break;
-                }
+        searchItem: function (item) {
+            let pattern = /<b><span style="color: #b04c50; ">/;
+            if(pattern.test(item)){
+                let contentTmp = item.replace(/<b><span style="color: #b04c50; ">/g, '');
+                item = contentTmp.replace(/<\/span><\/b>/g, '');
             }
-            window.location.href = '/search';
+            window.location.href = '/search/Keyword/'+item;
         }
     }
 }
@@ -82,7 +56,7 @@ export default {
 <style scoped>
   .card{
     background-color: white;
-    margin: 10px 50px;
+    margin: 0 50px 20px;
     box-shadow: 0 1px 0 #aaaaaa;
     text-align: left;
     padding: 0 20px 5px 2px;

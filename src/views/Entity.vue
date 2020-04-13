@@ -2,7 +2,7 @@
 <div>
   <div class = "body_top">
     <div class="top-img">
-      <img src="../assets/background-medium.jpg" alt="This is a background pic."/>
+      <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
     </div>
   </div>
   <div class="body_bottom">
@@ -28,7 +28,11 @@
                   </div>
                 </el-col>
                 <el-col :span="16" class="entry_wrap">
-                  <a class="graph_entry" type="primary" :href="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">Relation Graph>>></a>
+                  <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
+                    <el-tooltip :content="'Relation Graph'" placement="bottom-start" effect="dark" :open-delay="400">
+                      <img src="../assets/graph-entry.png" class="graph_entry">
+                    </el-tooltip>
+                  </router-link>
                 </el-col>
                 <el-col class="column under_entry" v-if="academicEntityVO.authors!=null" :span="24">
                   <strong>Authors:</strong>
@@ -179,7 +183,11 @@
                     })
                     .font('Impact')
                     .fontSize(function(d) {
-                        return 2+Math.sqrt((d.hot+1)/(maxHot+1))*26;
+                        if((d.hot+1)/(maxHot+1)>0.8){
+                            return 4+(d.hot+1)/(maxHot+1)*28;
+                        }else{
+                            return 4+(d.hot+1)/(maxHot+1)*14;
+                        }
                     })
                     .on('end', draw);
 
@@ -197,7 +205,11 @@
                         .style('cursor', 'pointer')
                         .attr('fill', (d, i) => color(i))
                         .style('font-size', function(d) {
-                            return 2+Math.sqrt((d.hot+1)/(maxHot+1))*30;
+                            if((d.hot+1)/(maxHot+1)>0.8){
+                                return 4+(d.hot+1)/(maxHot+1)*28;
+                            }else{
+                                return 2+(d.hot+1)/(maxHot+1)*14;
+                            }
                         })
                         .style('font-family', 'Impact')
                         .attr('text-anchor', 'middle')
@@ -225,9 +237,7 @@
             },
             search: function () {
                 let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
-                sessionStorage.setItem('searchMode', typeDic2[this.type]);
-                sessionStorage.setItem('searchContent', this.academicEntityVO.name);
-                window.location.href = '/search';
+                window.location.href = '/search/'+typeDic2[this.type]+'/'+this.academicEntityVO.name;
             }
         },
         computed: {
@@ -282,7 +292,7 @@
   .citation_box{
     width: 80px;
     height: 50px;
-    background-color: #b04c50;
+    background-color: #000000;
     color: #ffffff;
     padding: 10px 0;
     border-radius: 3px;
@@ -299,7 +309,7 @@
   /*  margin-top: 48px;*/
   /*}*/
   .graph_entry{
-    color: #409eff;
+    width: 3vw;
   }
   .under_entry{
     margin-top: 10px;
