@@ -4,6 +4,9 @@
       <div class="img-wrap">
         <img src="../assets/background-new.jpg" alt="This is a background picture." />
       </div>
+      <div class="system-name-wrap">
+        <span>Online grAph System for acdemIcS</span>
+      </div>
       <div class="search-wrap">
         <el-dropdown class="search-mode" trigger="click" @command="handleMode">
           <el-button class="mode-button" type="primary">
@@ -170,6 +173,14 @@
   }
   img{
     width: 100%;
+  }
+  .system-name-wrap{
+    position: absolute;
+    top: 36px;
+    left: 50px;
+    font-family: 'Arial Rounded MT Bold', serif;
+    font-size: 40px;
+    color: #ffffff;
   }
   .search-wrap{
     position: absolute;

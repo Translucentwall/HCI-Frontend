@@ -4,6 +4,9 @@
       <div class="img-wrap">
         <img src="../assets/background-new.jpg" alt="This is a background picture." />
       </div>
+      <div class="system-name-wrap">
+        <span>Online grAph System for acdemIcS</span>
+      </div>
       <div class="search-wrap">
         <el-dropdown class="search-mode" trigger="click" @command="handleMode">
           <el-button class="mode-button" type="primary">
@@ -43,7 +46,7 @@
         <el-col :span="17" :offset="1">
           <div class="result-title-wrap">
             <div class="result-title">
-              Show results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
+              Results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
             </div>
             <div class="sort-mode-wrap">
               <span class="sort-mode-before">sort by:</span>
@@ -226,6 +229,14 @@
   }
   img{
     width: 100%;
+  }
+  .system-name-wrap{
+    position: absolute;
+    top: 36px;
+    left: 50px;
+    font-family: 'Arial Rounded MT Bold', serif;
+    font-size: 40px;
+    color: #ffffff;
   }
   .search-wrap{
     position: absolute;

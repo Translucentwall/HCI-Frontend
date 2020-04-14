@@ -4,6 +4,9 @@
     <div class="top-img">
       <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
     </div>
+    <div class="system-name-wrap">
+      <span>Online grAph System for acdemIcS</span>
+    </div>
   </div>
   <div class="body_bottom">
     <el-breadcrumb separator="/">
@@ -163,30 +166,45 @@
             },
             renderCloud: function () {
                 let data = this.academicEntityVO.terms;
+                data.sort(function (a, b) {
+                    return b.hot-a.hot;
+                });
                 let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
                 console.log(data.length);
                 let width = document.getElementById('cloud-wrap').offsetWidth;
-                let height = data.length>100?400:300;
+                let height = data.length>100||data[0].name.length>15?400:300;
                 let color = d3.scaleOrdinal(d3.schemeCategory10);
                 let svg = d3.select('#cloud')
                     .append('svg')
                     .attr('width', width)
                     .attr('height', height);
-
+                // if(data.length>20){
+                    data=data.slice(0,50);
+                // }
 
                 const layout = d3_cloud()
                     .size([width, height])
                     .words(data)
-                    .padding(5)
-                    .rotate(function() {
-                        return ~~(Math.random() * 2) * 45;
+                    .padding(function (d) {
+                        if((d.hot+1)/(maxHot+1)>0.8){
+                            return 12;
+                        }else{
+                            return 6;
+                        }
+                    })
+                    .rotate(function(d) {
+                        if(d.hot===maxHot){
+                            return 30;
+                        }else{
+                            return (d.hot+1)/(maxHot+1)>0.8?30:0;
+                        }
                     })
                     .font('Impact')
                     .fontSize(function(d) {
                         if((d.hot+1)/(maxHot+1)>0.8){
-                            return 4+(d.hot+1)/(maxHot+1)*28;
+                            return 10+(d.hot+1)/(maxHot+1)*10;
                         }else{
-                            return 4+(d.hot+1)/(maxHot+1)*14;
+                            return 2+(d.hot+1)/(maxHot+1)*14;
                         }
                     })
                     .on('end', draw);
@@ -206,7 +224,7 @@
                         .attr('fill', (d, i) => color(i))
                         .style('font-size', function(d) {
                             if((d.hot+1)/(maxHot+1)>0.8){
-                                return 4+(d.hot+1)/(maxHot+1)*28;
+                                return 12+(d.hot+1)/(maxHot+1)*12;
                             }else{
                                 return 2+(d.hot+1)/(maxHot+1)*14;
                             }
@@ -224,14 +242,14 @@
                             return d.name;
                         });
 
-                    svg.selectAll('text') // 创建动画
-                        .style('fill-opacity', 0)
-                        .transition()
-                        .duration(100)
-                        .delay(function(d, i) {
-                            return i * 100
-                        })
-                        .style('fill-opacity', 1);
+                    // svg.selectAll('text') // 创建动画
+                    //     .style('fill-opacity', 0)
+                    //     .transition()
+                    //     .duration(100)
+                    //     .delay(function(d, i) {
+                    //         return i * 100
+                    //     })
+                    //     .style('fill-opacity', 1);
                 }
 
             },
@@ -267,8 +285,19 @@
 </script>
 
 <style scoped>
+  .body_top{
+    position: relative;
+  }
   img{
     width:100%
+  }
+  .system-name-wrap{
+    position: absolute;
+    top: 36px;
+    left: 50px;
+    font-family: 'Arial Rounded MT Bold', serif;
+    font-size: 40px;
+    color: #ffffff;
   }
   .body_bottom{
     margin: 20px 50px;

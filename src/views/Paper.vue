@@ -4,6 +4,9 @@
       <div class="top_img">
         <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
       </div>
+      <div class="system-name-wrap">
+        <span>Online grAph System for acdemIcS</span>
+      </div>
     </div>
     <div class="body_bottom">
       <el-breadcrumb separator="/">
@@ -158,8 +161,19 @@
 </script>
 
 <style scoped>
+  .body_top{
+    position: relative;
+  }
   img{
     width:100%
+  }
+  .system-name-wrap{
+    position: absolute;
+    top: 36px;
+    left: 50px;
+    font-family: 'Arial Rounded MT Bold', serif;
+    font-size: 40px;
+    color: #ffffff;
   }
   .body_bottom{
     margin: 20px 50px;
