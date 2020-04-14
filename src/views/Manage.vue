@@ -100,32 +100,7 @@
                   >{{father.aliasName}}</el-tag>
                 </el-col>
                 <el-col :span="3" class="column operation">
-                  <el-popover
-                    placement="right"
-                    width="400"
-                    trigger="click">
-                    <a slot="reference">operate</a>
-                    <el-row>
-                      <el-col :span="24">Choose one target to cancel</el-col>
-                      <el-col :span="4">Source:</el-col>
-                      <el-col :span="20">
-                        <el-tag
-                          :title="item.name"
-                        >{{item.name}}</el-tag>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4">Targets:</el-col>
-                      <el-col :span="20">
-                        <el-tag
-                          v-for="father in item.fathers"
-                          :key="father.fatherId"
-                          :title="father.aliasName"
-                          @click="confirmCancelAlias(item.sonId, item.type)"
-                        >{{father.aliasName}}</el-tag>
-                      </el-col>
-                    </el-row>
-                  </el-popover>
+                  <a @click="confirmCancelAlias(item.sonId, item.type)">operate</a>
                 </el-col>
               </el-row>
               <el-row>
@@ -301,32 +276,41 @@
                 })
             },
             confirmCancelAlias: function (sonId, type) {
-                cancelAlias(sonId,type).then(res=>{
-                    if(res.success){
-                        this.$alert('Cancel alias map succeed!','Tips', {
-                            type: 'success',
-                            confirmButtonText: 'confirm',
-                            showClose: false
-                        }).then(()=>{
-                            this.showAlias();
-                        });
-                    }else if(res.status==='000') {
-                        this.$alert('Identity expired, please login again','Tips', {
-                            type: 'error',
-                            confirmButtonText: 'confirm',
-                            showClose: false
-                        }).then(()=>{
-                            cookie.remove('Authorization');
-                            window.location.href = '/login';
-                        })
-                    }else {
-                        this.$alert('Cancel alias map failed, please try again!','Tips', {
-                            type: 'error',
-                            confirmButtonText: 'confirm',
-                            showClose: false
-                        })
-                    }
-                })
+                this.$confirm('Are you sure you want to cancel ', 'tip', {
+                    confirmButtonText: 'yes',
+                    cancelButtonText: 'no',
+                    type: 'info'
+                }).then(() => {
+                    cancelAlias(sonId,type).then(res=>{
+                        if(res.success){
+                            this.$alert('Cancel alias map succeed!','Tips', {
+                                type: 'success',
+                                confirmButtonText: 'confirm',
+                                showClose: false
+                            }).then(()=>{
+                                this.showAlias();
+                            });
+                        }else if(res.status==='000') {
+                            this.$alert('Identity expired, please login again','Tips', {
+                                type: 'error',
+                                confirmButtonText: 'confirm',
+                                showClose: false
+                            }).then(()=>{
+                                cookie.remove('Authorization');
+                                window.location.href = '/login';
+                            })
+                        }else {
+                            this.$alert('Cancel alias map failed, please try again!','Tips', {
+                                type: 'error',
+                                confirmButtonText: 'confirm',
+                                showClose: false
+                            })
+                        }
+                    })
+                }).catch(() => {
+                    console.log('取消');
+                });
+
             }
         }
     }

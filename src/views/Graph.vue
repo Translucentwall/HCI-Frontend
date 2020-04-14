@@ -34,7 +34,8 @@
                 showTotal: false,
                 searchText: '',
                 isSearching: false,
-                nodeNum: 0
+                nodeNum: 0,
+                maxHot: 0
             }
         },
         mounted () {
@@ -55,12 +56,12 @@
                                 this.moreGraphReady = true;
                                 let nodes = this.graphVO.nodes.concat(this.moreGraphVO.nodes);
                                 let links = this.graphVO.links.concat(this.moreGraphVO.links);
-                                this.forceDirected (nodes, links, 1);
+                                this.forceDirected (nodes, links);
                             });
                     }else{
                         let nodes = this.graphVO.nodes;
                         let links = this.graphVO.links;
-                        this.forceDirected (nodes, links, 1);
+                        this.forceDirected (nodes, links);
                         if(this.type<4){
                             getMoreGraph(this.id, this.type)
                                 .then(res=>{
@@ -90,7 +91,7 @@
                         });
                         let nodes = this.graphVO.nodes.concat(this.moreGraphVO.nodes);
                         let links = this.graphVO.links.concat(this.moreGraphVO.links);
-                        this.forceDirected (nodes, links, 2);
+                        this.forceDirected (nodes, links);
                     }else{
                         this.$notify.closeAll();
                         let svg = document.getElementById('forceDirected');
@@ -100,7 +101,7 @@
                         });
                         let nodes = this.graphVO.nodes;
                         let links = this.graphVO.links;
-                        this.forceDirected (nodes, links, 1);
+                        this.forceDirected (nodes, links);
                     }
                 }
             },
@@ -120,7 +121,7 @@
                             });
                             let nodes = that.graphVO.nodes.concat(that.moreGraphVO.nodes);
                             let links = that.graphVO.links.concat(that.moreGraphVO.links);
-                            that.forceDirected (nodes, links, 2);
+                            that.forceDirected (nodes, links);
                         }
                     }
                 });
@@ -133,9 +134,11 @@
             }
         },
         methods: {
-            forceDirected (nodes, links, type) {
+            forceDirected (nodes, links) {
                 console.log(nodes.length);
                 this.nodeNum = nodes.length;
+                let maxHot = Math.max.apply(Math,links.map(item => { return item.value }));
+                this.maxHot=maxHot;
                 let width = document.getElementById('svgContainer').offsetWidth;
                 let height = nodes.length<150?800:nodes.length<400?1200:1600;
                 // let padding = {
@@ -155,7 +158,7 @@
                 // 通过布局来转换数据，然后进行绘制
                 let simulation = d3.forceSimulation()
                     .nodes(nodes)
-                    .force('link', d3.forceLink(links).distance(nodes.length<200?200:75).id(d=>d.id))
+                    .force('link', d3.forceLink(links).distance(nodes.length<200?200:100).id(d=>d.id))
                     .force('charge', d3.forceManyBody())
                     .force('center', d3.forceCenter(width / 2, height / 2));
 
@@ -166,10 +169,12 @@
                     .append('line')
                     .attr("stroke", "#cccccc")
                     .attr('stroke-width', function (d) {
-                        if(d.value < 0){
-                            return 1;
+                        if((d.value+1)/(maxHot+1)>0.8){
+                            return d.value>=maxHot?10:(d.value+1)/(maxHot+1)*8+2;
+                        }else if(d.value>=0){
+                            return (d.value+1)/(maxHot+1)*4+2;
                         }else{
-                            return 1 + d.value/15;
+                            return 1;
                         }
                     })
                     .attr('stroke-dasharray', function (d) {
@@ -224,9 +229,9 @@
                             if(d.entityId===centerId&&d.entityType===centerType){
                                 return 6
                             }else if(d.popularity>=0){
-                                return 2+d.popularity>=that.graphVO.popularity?4:(d.popularity/that.graphVO.popularity)*4;
+                                return d.popularity>=that.graphVO.popularity?6:(d.popularity/that.graphVO.popularity)*2+4;
                             }else{
-                                return 4
+                                return 5
                             }
                         }
                     })
@@ -314,10 +319,12 @@
                             svg.selectAll('line')
                                 .style('stroke-width', function(link) {
                                     if (link.source === d || link.target === d) {
-                                        if(link.value < 0){
-                                            return 1;
+                                        if((link.value+1)/(maxHot+1)>0.8){
+                                            return link.value>=maxHot?10:(link.value+1)/(maxHot+1)*8+2;
+                                        }else if(link.value>=0){
+                                            return (link.value+1)/(maxHot+1)*4+2;
                                         }else{
-                                            return 1 + link.value/15;
+                                            return 1;
                                         }
                                     }
                                 })
@@ -375,10 +382,12 @@
                         .attr('stroke', '#000000');
                     svg.selectAll('line')
                         .style('stroke-width', function(link) {
-                            if(link.value < 0){
-                                return 1;
+                            if((link.value+1)/(that.maxHot+1)>0.8){
+                                return link.value>=that.maxHot?10:(link.value+1)/(that.maxHot+1)*8+2;
+                            }else if(link.value>=0){
+                                return (link.value+1)/(that.maxHot+1)*4+2;
                             }else{
-                                return 1 + link.value/15;
+                                return 1;
                             }
                         })
                         .style('stroke', '#cccccc');
@@ -486,6 +495,9 @@
     font-size: 14px;
     height: 24px;
     padding: 0 5px;
+  }
+  .search-input{
+    width: 16vw;
   }
   .center_name{
     color: #000000;
