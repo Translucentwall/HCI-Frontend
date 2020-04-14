@@ -4,6 +4,9 @@
       <div class="top-img">
         <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
       </div>
+      <div class="system-name-wrap">
+        <span>Online grAph System for acdemIcS</span>
+      </div>
     </div>
     <div class="body-bottom">
       <el-row>
@@ -181,8 +184,19 @@
 </script>
 
 <style scoped>
+  .body-top{
+    position: relative;
+  }
   img{
     width:100%
+  }
+  .system-name-wrap{
+    position: absolute;
+    top: 36px;
+    left: 50px;
+    font-family: 'Arial Rounded MT Bold', serif;
+    font-size: 40px;
+    color: #ffffff;
   }
   .rank-select-wrap{
     /*margin-top: 100px;*/
