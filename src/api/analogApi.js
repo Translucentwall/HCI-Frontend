@@ -276,14 +276,14 @@ export const getAcademicEntity = (id, type)=>{
     type: 1,
     id: 1111,
     name: 'nju',
-    refsum:1000,
+    refsum: 1000,
     authors:
       [{type: 1, id:0, name:'A'},
       {type: 1, id:1, name:'B'},
       {type: 1, id:2, name:'C'},
       {type: 1, id:3, name:'D'}]
     ,
-    affilications:
+    affiliations:
       [{type:2,id:0,name:'Univ. Politec. de Madrid, Madrid, Spain'},
       {type:2,id:1,name:'IEEE'},
       {type:2,id:2,name:'ABC'},
@@ -295,12 +295,23 @@ export const getAcademicEntity = (id, type)=>{
       {type:3,id:2,name:'C3'}
       ]
     ,
-    terms:['t1','t2','t3','t4'],
+    terms:[{id: 1,name: 'computer science',hot: 20},
+      {id: 2,name: 'software engineering',hot: 19},
+      {id: 3,name: 'computer',hot: 10},
+      {id: 4,name: 'science',hot: 9},
+      {id: 5,name: 'software',hot: 5}],
+    yearlyTerms: [
+      {year: 2013, termItemList:[{id: 1,name: 'computer science',hot: 20}]},
+      {year: 2014, termItemList:[{id: 2,name: 'software engineering',hot: 19}]},
+      {year: 2015, termItemList:[{id: 3,name: 'computer',hot: 10}]},
+      {year: 2016, termItemList:[{id: 5,name: 'software',hot: 5},{id: 4,name: 'science',hot: 9}]}
+    ],
     significantPapers:[
       { id:0,
         title:'p1',
         author_simpleAffiliationVOS:[{author:'A0',affilication:'ABC'},{author:'B0',affilication: 'ABC'}],
         publicationTitle:'p1.1',
+        conferenceId: 1,
         publicationYear:'2019-2-3',
         keywords:['t1','t2','t3']
       },
@@ -308,6 +319,7 @@ export const getAcademicEntity = (id, type)=>{
         title:'p2',
         author_simpleAffiliationVOS:[{author:'A1',affilication:'ABC'},{author:'B1',affilication: 'ABC'}],
         publicationTitle:'p1.2',
+        conferenceId: 2,
         publicationYear:'2019-1-1',
         keywords:['t1','t2','t3']
       },
@@ -315,6 +327,7 @@ export const getAcademicEntity = (id, type)=>{
         title:'p3',
         author_simpleAffiliationVOS:[{author:'A2',affilication:'ABC'},{author:'B2',affilication: 'ABC'}],
         publicationTitle:'p1.3',
+        conferenceId: 3,
         publicationYear:'2019-1-3',
         keywords:['t1','t2','t3']
       },
@@ -322,6 +335,7 @@ export const getAcademicEntity = (id, type)=>{
         title:'p4',
         author_simpleAffiliationVOS:[{author:'A3',affilication:'ABC'},{author:'B3',affilication: 'ABC'}],
         publicationTitle:'p1.4',
+        conferenceId: 4,
         publicationYear:'2019-1-4',
         keywords:['t1','t2','t3']
       }

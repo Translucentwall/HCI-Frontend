@@ -16,11 +16,87 @@
     <div class="body_bottom_body">
       <el-row>
         <el-col :span="22" :offset="1" class="name">
-          <span>{{changeName}}</span>
+          <span>{{academicEntityVO.name}}</span>
         </el-col>
       </el-row>
       <el-row>
         <el-col class="body_bottom_top" :span="22" :offset="1">
+          <el-row>
+            <el-col>
+            <el-tabs v-model="activeName" type="border-card">
+              <el-tab-pane v-if="academicEntityVO.authors!=null" name="author">
+                <span slot="label"><i class="el-icon-s-custom"></i> Authors</span>
+                <el-row>
+                  <el-col class="column" v-if="academicEntityVO.authors!=null" :span="24">
+                    <strong>Authors:</strong>
+                    <div class="list">
+                      <el-tag
+                        v-for="author in academicEntityVO.authors"
+                        :key="author.id"
+                        :title="author.name"
+                        @click="toOtherEntity('author', author.id)"
+                      >
+                        {{author.name}}
+                      </el-tag>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-tab-pane>
+              <el-tab-pane v-if="academicEntityVO.affiliations!=null" name="affiliation">
+                <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
+                <el-row>
+                  <el-col class="column" :span="24">
+                    <strong>Affiliations:</strong>
+                    <div class="list">
+                      <el-tag
+                        v-for="affiliation in academicEntityVO.affiliations"
+                        :key="affiliation.id"
+                        :title="affiliation.name"
+                        @click="toOtherEntity('affiliation', affiliation.id)"
+                      >
+                        {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}
+                      </el-tag>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-tab-pane>
+              <el-tab-pane v-if="academicEntityVO.conferences!=null" name="conference">
+                <span slot="label"><i class="el-icon-time"></i> Conferences</span>
+                <el-row>
+                  <el-col class="column" :span="24">
+                    <strong>Issues:</strong>
+                    <div class="list">
+                      <el-tag
+                        v-for="conference in academicEntityVO.conferences"
+                        :key="conference.id"
+                        :title="conference.name"
+                        @click="toOtherEntity('issue', conference.id)"
+                      >
+                        {{conference.name}}
+                      </el-tag>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-tab-pane>
+              <el-tab-pane name="cloud">
+                <span slot="label"><i class="el-icon-cloudy"></i> Cloud</span>
+                <el-row>
+                  <el-col :span="24" v-if="academicEntityVO.terms.length===0">
+                    <strong>没有云图</strong>
+                  </el-col>
+                  <el-col :span="24" id="cloud-wrap" v-if="academicEntityVO.terms.length>0">
+                    <strong>Terms Cloud: </strong>
+                    <div class="svg" id="cloud"></div>
+                  </el-col>
+                </el-row>
+              </el-tab-pane>
+              <el-tab-pane name="graph">
+                <span slot="label"><i class="el-icon-connection"></i> Relation Graph</span>
+                这里是关系图
+              </el-tab-pane>
+            </el-tabs>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col class="body_top_left column" :span="6">
               <el-row>
@@ -37,63 +113,7 @@
                     </el-tooltip>
                   </router-link>
                 </el-col>
-                <el-col class="column under_entry" v-if="academicEntityVO.authors!=null" :span="24">
-                  <strong>Authors:</strong>
-                  <div class="list">
-                    <el-tag
-                      v-for="author in academicEntityVO.authors"
-                      :key="author.id"
-                      :title="author.name"
-                      @click="toOtherEntity('author', author.id)"
-                    >
-                      {{author.name}}
-                    </el-tag>
-                  </div>
-                </el-col>
-                <el-col class="column under_entry" v-if="academicEntityVO.author==null&&academicEntityVO.affiliations!==null&&academicEntityVO.conferences!==null" :span="24">
-                  <strong>Issues:</strong>
-                  <div class="list">
-                    <el-tag
-                      v-for="conference in academicEntityVO.conferences"
-                      :key="conference.id"
-                      :title="conference.name"
-                      @click="toOtherEntity('issue', conference.id)"
-                    >
-                      {{conference.name}}
-                    </el-tag>
-                  </div>
-                </el-col>
               </el-row>
-            </el-col>
-            <el-col class="column" v-if="academicEntityVO.affiliations!=null" :span="9">
-              <strong>Affiliations:</strong>
-              <div class="list">
-                <el-tag
-                  v-for="affiliation in academicEntityVO.affiliations"
-                  :key="affiliation.id"
-                  :title="affiliation.name"
-                  @click="toOtherEntity('affiliation', affiliation.id)"
-                >
-                  {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}
-                </el-tag>
-              </div>
-            </el-col>
-            <el-col class="column" v-if="academicEntityVO.affiliations===null" :span="9">
-              <strong>Issues:</strong>
-              <div class="list">
-                <el-tag
-                  v-for="conference in academicEntityVO.conferences"
-                  :key="conference.id"
-                  :title="conference.name"
-                  @click="toOtherEntity('issue', conference.id)"
-                >
-                  {{conference.name}}
-                </el-tag>
-              </div>
-            </el-col>
-            <el-col :span="9" id="cloud-wrap" v-if="academicEntityVO.terms.length>0">
-              <strong>Terms Cloud: </strong>
-              <div class="svg" id="cloud"></div>
             </el-col>
           </el-row>
         </el-col>
@@ -113,7 +133,7 @@
 </template>
 
 <script>
-    import {getAcademicEntity} from "../api/api";
+    import {getAcademicEntity} from "../api/analogApi";
     import Card from "../components/Card";
     import {Loading} from "element-ui";
     import * as d3 from 'd3';
@@ -126,6 +146,7 @@
             return{
                 id: 0,
                 type: 0,
+                activeName: 'author',
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
                 academicEntityVO: {terms:[]}
                 }
@@ -133,32 +154,43 @@
         mounted() {
             this.id=this.$route.params.id;
             this.type=this.typeDic[this.$route.params.type];
+            if(this.type===1){
+              this.activeName = 'affiliation'
+            }
             if(this.id===undefined || this.type===undefined){
                 window.location.href = '/home';
             }
             let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
-            getAcademicEntity(this.id,this.type)
-                .then(res => {
-                    this.academicEntityVO = res;
-                    let that = this;
-                    setTimeout(function () {
-                        if(res.terms&&res.terms.length > 0){
-                            that.renderCloud();
-                            loadingInstance.close();
-                        }else{
-                            loadingInstance.close();
-                        }
-                    },100)
-                })
-                .catch(()=>{
-                    this.$alert('Fail to get entity，please search again', 'Tips',{
-                        type: 'error',
-                        confirmButtonText: 'confirm',
-                        showClose: false
-                    }).then(()=>{
-                        window.location.href = '/home';
-                    })
-                });
+            this.academicEntityVO = getAcademicEntity(this.id,this.type);
+            let that = this;
+            setTimeout(function () {
+              loadingInstance.close();
+              console.log(document.getElementById('cloud-wrap').offsetWidth);
+              that.renderCloud();
+
+              },100);
+            // getAcademicEntity(this.id,this.type)
+            //     .then(res => {
+            //         this.academicEntityVO = res;
+            //         let that = this;
+            //         setTimeout(function () {
+            //             if(res.terms&&res.terms.length > 0){
+            //                 that.renderCloud();
+            //                 loadingInstance.close();
+            //             }else{
+            //                 loadingInstance.close();
+            //             }
+            //         },100)
+            //     })
+            //     .catch(()=>{
+            //         this.$alert('Fail to get entity，please search again', 'Tips',{
+            //             type: 'error',
+            //             confirmButtonText: 'confirm',
+            //             showClose: false
+            //         }).then(()=>{
+            //             window.location.href = '/home';
+            //         })
+            //     });
         },
         methods: {
             toOtherEntity: function (type, id) {
@@ -170,8 +202,8 @@
                     return b.hot-a.hot;
                 });
                 let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
-                console.log(data.length);
-                let width = document.getElementById('cloud-wrap').offsetWidth;
+                let width = 500;
+                // let width = document.getElementById('cloud-wrap').offsetWidth;
                 let height = data.length>100||data[0].name.length>15?400:300;
                 let color = d3.scaleOrdinal(d3.schemeCategory10);
                 let svg = d3.select('#cloud')
@@ -339,9 +371,6 @@
   /*}*/
   .graph_entry{
     width: 3vw;
-  }
-  .under_entry{
-    margin-top: 10px;
   }
   #cloud-wrap{
     text-align: left;
