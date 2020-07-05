@@ -38,7 +38,7 @@
                 </div>
                 <div class="publication font-medium" v-if="paperVO.publicationTitle">
                   <div class="subtitle">Publication:</div>
-                  <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.ordno}} {{publicationFull}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
+                  <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
                 </div>
                 <div class="publisher font-medium" v-if="paperVO.publisher">
                   <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
@@ -133,15 +133,6 @@
                         })
                     })
                 ;
-            }
-        },
-        computed: {
-            publicationFull: function () {
-                if(this.paperVO.publicationTitle === 'ASE'){
-                    return 'IEEE/ACM International Conference on Automated Software Engineering (ASE)';
-                }else if(this.paperVO.publicationTitle === 'ICSE'){
-                    return 'IEEE/ACM International Conference on Software Engineering (ICSE)'
-                }
             }
         },
         methods: {
