@@ -2,7 +2,7 @@
   <div id='svgContainer'>
     <div class="every">
       <div class="svg" id="forceDirected"></div>
-      <div class="option">
+      <div class="option" v-if="size==='large'">
         <div class="option_name">{{changeType}}: <a class="center_name" :href="type<4?'/entity/'+this.$route.params.type+'/'+id: null">{{graphVO.centerName}}</a></div>
         <div v-if="type<4">
           <input type="checkbox" v-model="showTotal">Show Total Graph
@@ -46,6 +46,10 @@
           etype: {
             type: Number,
             default: 1
+          },
+          size: {
+            type: String,
+            default: 'large'
           }
         },
         mounted () {
@@ -113,25 +117,27 @@
                 }
             },
             moreGraphReady: function () {
-                this.$notify.closeAll();
-                let that = this;
-                this.$notify.success({
-                    title: 'success',
-                    message: 'Total graph is ready!',
-                    duration:1500,
-                    onClose: function () {
-                        if(that.showTotal){
-                            let svg = document.getElementById('forceDirected');
-                            let children = svg.childNodes;
-                            children.forEach(function (child) {
-                                svg.removeChild(child);
-                            });
-                            let nodes = that.graphVO.nodes.concat(that.moreGraphVO.nodes);
-                            let links = that.graphVO.links.concat(that.moreGraphVO.links);
-                            that.forceDirected (nodes, links);
+                if(this.size === 'large'){
+                    this.$notify.closeAll();
+                    let that = this;
+                    this.$notify.success({
+                        title: 'success',
+                        message: 'Total graph is ready!',
+                        duration:1500,
+                        onClose: function () {
+                            if(that.showTotal){
+                                let svg = document.getElementById('forceDirected');
+                                let children = svg.childNodes;
+                                children.forEach(function (child) {
+                                    svg.removeChild(child);
+                                });
+                                let nodes = that.graphVO.nodes.concat(that.moreGraphVO.nodes);
+                                let links = that.graphVO.links.concat(that.moreGraphVO.links);
+                                that.forceDirected (nodes, links);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         },
         computed: {
@@ -147,7 +153,10 @@
                 let maxHot = Math.max.apply(Math,links.map(item => { return item.value }));
                 this.maxHot=maxHot;
                 let width = document.getElementById('svgContainer').offsetWidth;
-                let height = nodes.length<150?800:nodes.length<400?1200:1600;
+                let height = 400;
+                if(this.size==='large'){
+                  height = nodes.length<150?800:nodes.length<400?1200:1600;
+                }
                 // let padding = {
                 //     left: 30,
                 //     right: 30,
@@ -473,13 +482,14 @@
 <style>
   #svgContainer{
     width: 100%;
-    height: 100%;
+    height: 400px;
   }
   #forceDirected{
     width: 100%;
   }
   .every{
     /*margin:15px;*/
+    width: 100%;
     float: left;
     position: relative;
   }

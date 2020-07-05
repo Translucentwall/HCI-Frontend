@@ -1,6 +1,6 @@
 <template>
   <div>
-    <relation-graph v-if="id!==0" :eid="id" :etype="type"></relation-graph>
+    <relation-graph v-if="id!==0" :eid="id" :etype="type" :size="size"></relation-graph>
   </div>
 </template>
 <script>
@@ -15,6 +15,7 @@
             return {
                 id: 0,
                 type: 1,
+                size: 'large',
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
             }
         },

@@ -15,8 +15,15 @@
     </el-breadcrumb>
     <div class="body_bottom_body">
       <el-row>
-        <el-col :span="22" :offset="1" class="name">
+        <el-col :span="19" :offset="1" class="name">
           <span>{{academicEntityVO.name}}</span>
+          <hr/>
+        </el-col>
+        <el-col :span="3" :offset="1">
+          <div class="reference citation_box" v-if="academicEntityVO.refSum>=0">
+            <div class="citation_title">Reference</div>
+            <div class="citation_count">{{academicEntityVO.refSum}}</div>
+          </div>
         </el-col>
       </el-row>
       <el-row>
@@ -84,36 +91,25 @@
                   <el-col :span="24" v-if="academicEntityVO.terms.length===0">
                     <strong>没有云图</strong>
                   </el-col>
-                  <el-col :span="24" id="cloud-wrap" v-if="academicEntityVO.terms.length>0">
-                    <strong>Terms Cloud: </strong>
-                    <div class="svg" id="cloud"></div>
+                  <el-col :span="24" v-if="academicEntityVO.terms.length>0">
+                    <div id="cloud-wrap">
+                      <div class="svg" id="cloud"></div>
+                    </div>
                   </el-col>
                 </el-row>
               </el-tab-pane>
               <el-tab-pane name="graph">
                 <span slot="label"><i class="el-icon-connection"></i> Relation Graph</span>
-                这里是关系图
-              </el-tab-pane>
-            </el-tabs>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col class="body_top_left column" :span="6">
-              <el-row>
-                <el-col :span="8">
-                  <div class="reference citation_box" v-if="academicEntityVO.refSum>=0">
-                    <div class="citation_title">Reference</div>
-                    <div class="citation_count">{{academicEntityVO.refSum}}</div>
-                  </div>
-                </el-col>
-                <el-col :span="16" class="entry_wrap">
+                <relation-graph v-if="id!==0&&activeName==='graph'" :eid="parseInt(id)" :etype="type" :size="size"></relation-graph>
+                <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
-                    <el-tooltip :content="'Relation Graph'" placement="bottom-start" effect="dark" :open-delay="400">
+                    <el-tooltip :content="'More Relation Graph'" placement="bottom-start" effect="dark" :open-delay="400">
                       <img src="../assets/graph-entry.png" class="graph_entry">
                     </el-tooltip>
                   </router-link>
-                </el-col>
-              </el-row>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
             </el-col>
           </el-row>
         </el-col>
@@ -138,18 +134,29 @@
     import {Loading} from "element-ui";
     import * as d3 from 'd3';
     import * as d3_cloud from 'd3-cloud';
+    import RelationGraph from "../components/RelationGraph";
 
     export default {
         name: "Entity",
-        components: {Card},
+        components: {RelationGraph, Card},
         data(){
             return{
                 id: 0,
                 type: 0,
+                size: 'small',
                 activeName: 'author',
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
-                academicEntityVO: {terms:[]}
+                academicEntityVO: {terms:[]},
+                hasCloud: false
+            }
+        },
+        watch: {
+            activeName: function(){
+                if (this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
+                    let that = this;
+                    setTimeout(function (){that.renderCloud();},100)
                 }
+            }
         },
         mounted() {
             this.id=this.$route.params.id;
@@ -162,13 +169,7 @@
             }
             let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
             this.academicEntityVO = getAcademicEntity(this.id,this.type);
-            let that = this;
-            setTimeout(function () {
-              loadingInstance.close();
-              console.log(document.getElementById('cloud-wrap').offsetWidth);
-              that.renderCloud();
-
-              },100);
+            loadingInstance.close();
             // getAcademicEntity(this.id,this.type)
             //     .then(res => {
             //         this.academicEntityVO = res;
@@ -202,8 +203,10 @@
                     return b.hot-a.hot;
                 });
                 let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
-                let width = 500;
-                // let width = document.getElementById('cloud-wrap').offsetWidth;
+                let width = document.getElementById('cloud-wrap').offsetWidth;
+                // console.log(document.getElementById('cloud-wrap').offsetWidth);
+                // console.log(document.getElementById('cloud-wrap').innerWidth);
+                // console.log(document.getElementById('cloud-wrap').clientWidth);
                 let height = data.length>100||data[0].name.length>15?400:300;
                 let color = d3.scaleOrdinal(d3.schemeCategory10);
                 let svg = d3.select('#cloud')
@@ -283,7 +286,7 @@
                     //     })
                     //     .style('fill-opacity', 1);
                 }
-
+                this.hasCloud = true;
             },
             search: function () {
                 let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
@@ -369,10 +372,17 @@
   /*.entry_wrap{*/
   /*  margin-top: 48px;*/
   /*}*/
+  #pane-graph{
+    position: relative;
+  }
   .graph_entry{
     width: 3vw;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
   #cloud-wrap{
+    width: 100%;
     text-align: left;
   }
   .significantPaper_wrap{

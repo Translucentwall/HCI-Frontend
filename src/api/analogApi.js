@@ -276,7 +276,7 @@ export const getAcademicEntity = (id, type)=>{
     type: 1,
     id: 1111,
     name: 'nju',
-    refsum: 1000,
+    refSum: 1000,
     authors:
       [{type: 1, id:0, name:'A'},
       {type: 1, id:1, name:'B'},
