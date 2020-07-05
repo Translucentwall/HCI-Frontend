@@ -58,6 +58,10 @@ export const getAcademicEntity = (id, type) =>{
   return axios.get('/academic/' + id + '?type=' + type).then(res=>res.data);
 };
 
+export const getSignificantPaper = (year, termId) =>{
+  return axios.get('/academic/significantPapers?year=' + year + '&termId=' + termId).then(res=>res.data);
+};
+
 export const getGraph = (id, type) =>{
   return axios.get('/graph/basic/' + id + '?type=' + type).then(res=>res.data);
 };

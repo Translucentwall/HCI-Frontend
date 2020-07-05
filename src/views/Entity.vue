@@ -115,6 +115,38 @@
         </el-col>
         <el-col :span="22" :offset="1" class="significantPaper_wrap">
           <strong class="significantPaper_title">Significant Papers</strong>
+          <hr/>
+          <div class="radio">
+            <el-row>
+              <el-col :span="2">
+                <strong>Year: </strong>
+              </el-col>
+              <el-col :span="22">
+                <el-radio-group v-model="yearSelect">
+                  <el-radio :label="-1">All</el-radio>
+                  <el-radio v-for="(yearlyTerm, index) in academicEntityVO.yearlyTerms" :key="index" :label="yearlyTerm.year">
+                    {{yearlyTerm.year}}
+                  </el-radio>
+                </el-radio-group>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="radio">
+            <el-row>
+              <el-col :span="2">
+                <strong>Term: </strong>
+              </el-col>
+              <el-col :span="22">
+                <el-radio-group v-model="termSelect">
+                  <el-radio :label="-1">All</el-radio>
+                  <el-radio v-for="(termItem, index) in showTermItems" :key="index" :label="termItem.id">
+                    {{termItem.name}}
+                  </el-radio>
+                </el-radio-group>
+              </el-col>
+            </el-row>
+            <hr/>
+          </div>
           <Card
           v-for="(significantPaper,index) in academicEntityVO.significantPapers"
           :key="index"
@@ -147,15 +179,39 @@
                 activeName: 'author',
                 typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
                 academicEntityVO: {terms:[]},
-                hasCloud: false
+                hasCloud: false,
+                yearSelect: -1,
+                termSelect: -1,
+                allTermItems: [],
+                showTermItems: []
             }
         },
         watch: {
             activeName: function(){
-                if (this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
+                if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
                     let that = this;
                     setTimeout(function (){that.renderCloud();},100)
                 }
+            },
+            yearSelect: function () {
+                if(this.yearSelect === -1){
+                    this.showTermItems = this.allTermItems;
+                }else{
+                    let that = this;
+                    this.academicEntityVO.yearlyTerms.forEach(function (yearlyTerm){
+                        if(yearlyTerm.year===that.yearSelect){
+                          that.showTermItems = yearlyTerm.termItemList;
+                        }
+                    })
+                }
+                if(this.termSelect === -1){
+                  console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
+                }else{
+                  this.termSelect = -1;
+                }
+            },
+            termSelect: function () {
+                console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
             }
         },
         mounted() {
@@ -169,6 +225,26 @@
             }
             let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
             this.academicEntityVO = getAcademicEntity(this.id,this.type);
+            console.log(this.academicEntityVO);
+            let allTermItems = [];
+            this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
+                yearlyTerm.termItemList.forEach(function (termItem) {
+                    console.log(termItem);
+                    let has = false;
+                    allTermItems.forEach(function(term){
+                        if(term.id===termItem.id && term.name===termItem.name){
+                            has = true;
+                        }
+                    })
+                    console.log(has);
+                    if(!has){
+                      allTermItems.push(termItem);
+                    }
+                })
+            })
+            console.log(allTermItems);
+            this.allTermItems = allTermItems;
+            this.showTermItems = this.allTermItems;
             loadingInstance.close();
             // getAcademicEntity(this.id,this.type)
             //     .then(res => {
@@ -391,6 +467,9 @@
   }
   .significantPaper_title{
     font-size: 24px;
+  }
+  .radio{
+    margin: 10px 50px 0;
   }
   .column{
     padding: 2px;
