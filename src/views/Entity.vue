@@ -161,7 +161,7 @@
 </template>
 
 <script>
-    import {getAcademicEntity} from "../api/analogApi";
+    import {getAcademicEntity} from "../api/api";
     import Card from "../components/Card";
     import {Loading} from "element-ui";
     import * as d3 from 'd3';
@@ -224,50 +224,36 @@
                 window.location.href = '/home';
             }
             let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
-            this.academicEntityVO = getAcademicEntity(this.id,this.type);
-            console.log(this.academicEntityVO);
-            let allTermItems = [];
-            this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
-                yearlyTerm.termItemList.forEach(function (termItem) {
-                    console.log(termItem);
-                    let has = false;
-                    allTermItems.forEach(function(term){
-                        if(term.id===termItem.id && term.name===termItem.name){
-                            has = true;
-                        }
-                    })
-                    console.log(has);
-                    if(!has){
-                      allTermItems.push(termItem);
-                    }
+            getAcademicEntity(this.id,this.type)
+                .then(res => {
+                    this.academicEntityVO = res;
+                    let allTermItems = [];
+                    this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
+                        yearlyTerm.termItemList.forEach(function (termItem) {
+                            let has = false;
+                            allTermItems.forEach(function(term){
+                                if(term.id===termItem.id && term.name===termItem.name){
+                                  has = true;
+                                }
+                            });
+                            if(!has){
+                                allTermItems.push(termItem);
+                            }
+                        })
+                    });
+                    this.allTermItems = allTermItems;
+                    this.showTermItems = this.allTermItems;
+                    loadingInstance.close();
                 })
-            })
-            console.log(allTermItems);
-            this.allTermItems = allTermItems;
-            this.showTermItems = this.allTermItems;
-            loadingInstance.close();
-            // getAcademicEntity(this.id,this.type)
-            //     .then(res => {
-            //         this.academicEntityVO = res;
-            //         let that = this;
-            //         setTimeout(function () {
-            //             if(res.terms&&res.terms.length > 0){
-            //                 that.renderCloud();
-            //                 loadingInstance.close();
-            //             }else{
-            //                 loadingInstance.close();
-            //             }
-            //         },100)
-            //     })
-            //     .catch(()=>{
-            //         this.$alert('Fail to get entity，please search again', 'Tips',{
-            //             type: 'error',
-            //             confirmButtonText: 'confirm',
-            //             showClose: false
-            //         }).then(()=>{
-            //             window.location.href = '/home';
-            //         })
-            //     });
+                .catch(()=>{
+                    this.$alert('Fail to get entity，please search again', 'Tips',{
+                        type: 'error',
+                        confirmButtonText: 'confirm',
+                        showClose: false
+                    }).then(()=>{
+                        window.location.href = '/home';
+                    })
+                });
         },
         methods: {
             toOtherEntity: function (type, id) {
