@@ -116,7 +116,7 @@
         <el-col :span="22" :offset="1" class="significantPaper_wrap">
           <strong class="significantPaper_title">Significant Papers</strong>
           <hr/>
-          <div class="radio">
+          <div class="radio" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
             <el-row>
               <el-col :span="2">
                 <strong>Year: </strong>
@@ -131,7 +131,7 @@
               </el-col>
             </el-row>
           </div>
-          <div class="radio">
+          <div class="radio" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
             <el-row>
               <el-col :span="2">
                 <strong>Term: </strong>
