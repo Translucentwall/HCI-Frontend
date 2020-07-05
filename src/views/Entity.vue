@@ -161,7 +161,7 @@
 </template>
 
 <script>
-    import {getAcademicEntity} from "../api/api";
+  import {getAcademicEntity, getSignificantPaper} from "../api/api";
     import Card from "../components/Card";
     import {Loading} from "element-ui";
     import * as d3 from 'd3';
@@ -205,13 +205,19 @@
                     })
                 }
                 if(this.termSelect === -1){
-                  console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
+                    // console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
+                    getSignificantPaper(this.id, this.type, this.yearSelect, this.termSelect).then(res=>{
+                        this.academicEntityVO.significantPapers = res;
+                    });
                 }else{
                   this.termSelect = -1;
                 }
             },
             termSelect: function () {
-                console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
+                // console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
+              getSignificantPaper(this.id, this.type, this.yearSelect, this.termSelect).then(res=>{
+                  this.academicEntityVO.significantPapers = res;
+              });
             }
         },
         mounted() {
