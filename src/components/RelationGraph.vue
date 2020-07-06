@@ -60,7 +60,7 @@
                 .then(res=>{
                     this.graphVO = res;
                     loadingInstance.close();
-                    if(this.showTotal&&this.type<4){
+                    if(this.showTotal&&this.type<4&&this.size==='large'){
                         getMoreGraph(this.id,this.type)
                             .then(res=>{
                                 this.moreGraphVO = res;
@@ -73,7 +73,7 @@
                         let nodes = this.graphVO.nodes;
                         let links = this.graphVO.links;
                         this.forceDirected (nodes, links);
-                        if(this.type<4){
+                        if(this.type<4&&this.size==='large'){
                             getMoreGraph(this.id, this.type)
                                 .then(res=>{
                                     this.moreGraphVO = res;
@@ -149,13 +149,15 @@
         methods: {
             forceDirected (nodes, links) {
                 console.log(nodes.length);
-                this.nodeNum = nodes.length;
+                this.nodeNum= nodes.length;
                 let maxHot = Math.max.apply(Math,links.map(item => { return item.value }));
                 this.maxHot=maxHot;
                 let width = document.getElementById('svgContainer').offsetWidth;
                 let height = 400;
                 if(this.size==='large'){
-                  height = nodes.length<150?800:nodes.length<400?1200:1600;
+                    height = nodes.length<150?800:nodes.length<400?1200:1600;
+                }else{
+                    height = nodes.length<50?400:600;
                 }
                 // let padding = {
                 //     left: 30,

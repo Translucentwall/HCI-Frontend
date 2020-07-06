@@ -218,6 +218,7 @@
               getSignificantPaper(this.id, this.type, this.yearSelect, this.termSelect).then(res=>{
                   this.academicEntityVO.significantPapers = res;
               });
+              // todo 加标志位，别拿那么多次
             }
         },
         mounted() {
@@ -278,7 +279,7 @@
                 // console.log(document.getElementById('cloud-wrap').offsetWidth);
                 // console.log(document.getElementById('cloud-wrap').innerWidth);
                 // console.log(document.getElementById('cloud-wrap').clientWidth);
-                let height = data.length>100||data[0].name.length>15?400:300;
+                let height = data.length>100||data[0].name.length>15?600:400;
                 let color = d3.scaleOrdinal(d3.schemeCategory10);
                 let svg = d3.select('#cloud')
                     .append('svg')
@@ -293,24 +294,25 @@
                     .words(data)
                     .padding(function (d) {
                         if((d.hot+1)/(maxHot+1)>0.8){
-                            return 12;
+                            return 24;
                         }else{
-                            return 6;
+                            return 12;
                         }
                     })
                     .rotate(function(d) {
-                        if(d.hot===maxHot){
-                            return 30;
-                        }else{
-                            return (d.hot+1)/(maxHot+1)>0.8?30:0;
-                        }
+                        // if(d.hot===maxHot){
+                        //     return 30;
+                        // }else{
+                        //     return (d.hot+1)/(maxHot+1)>0.8?30:0;
+                        // }
+                        return Math.round(Math.random()*3)*45;
                     })
                     .font('Impact')
                     .fontSize(function(d) {
                         if((d.hot+1)/(maxHot+1)>0.8){
-                            return 10+(d.hot+1)/(maxHot+1)*10;
+                            return 20+(d.hot+1)/(maxHot+1)*20;
                         }else{
-                            return 2+(d.hot+1)/(maxHot+1)*14;
+                            return 10+(d.hot+1)/(maxHot+1)*20;
                         }
                     })
                     .on('end', draw);
@@ -330,9 +332,9 @@
                         .attr('fill', (d, i) => color(i))
                         .style('font-size', function(d) {
                             if((d.hot+1)/(maxHot+1)>0.8){
-                                return 12+(d.hot+1)/(maxHot+1)*12;
+                                return 20+(d.hot+1)/(maxHot+1)*20;
                             }else{
-                                return 2+(d.hot+1)/(maxHot+1)*14;
+                                return 10+(d.hot+1)/(maxHot+1)*20;
                             }
                         })
                         .style('font-family', 'Impact')
