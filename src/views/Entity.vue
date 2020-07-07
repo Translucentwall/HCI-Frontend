@@ -17,6 +17,7 @@
       <el-row>
         <el-col :span="19" :offset="1" class="name">
           <span>{{academicEntityVO.name}}</span>
+          <hot-graph v-if="academicEntityVO.popTrend" :data="academicEntityVO.popTrend" :id="type + '' + id"></hot-graph>
           <hr/>
         </el-col>
         <el-col :span="3" :offset="1">
@@ -33,55 +34,46 @@
             <el-tabs v-model="activeName" type="border-card">
               <el-tab-pane v-if="academicEntityVO.authors" name="author">
                 <span slot="label"><i class="el-icon-s-custom"></i> Authors</span>
-                <el-row>
-                  <el-col class="column" v-if="academicEntityVO.authors!=null" :span="24">
-                    <strong>Authors:</strong>
-                    <div class="list">
-                      <el-tag
-                        v-for="author in academicEntityVO.authors"
-                        :key="author.id"
-                        :title="author.name"
-                        @click="toOtherEntity('author', author.id)"
-                      >
+                <el-row v-for="author in academicEntityVO.authors" :key="author.id">
+                  <el-col class="column" :span="6">
+                    <div>
+                      <a class="entity" :title="author.name" @click="toOtherEntity('author', author.id)">
                         {{author.name}}
-                      </el-tag>
+                      </a>
                     </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <hot-graph :data="author.popTrend" :id="'1' + author.id"></hot-graph>
                   </el-col>
                 </el-row>
               </el-tab-pane>
               <el-tab-pane v-if="academicEntityVO.affiliations" name="affiliation">
                 <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
-                <el-row>
-                  <el-col class="column" :span="24">
-                    <strong>Affiliations:</strong>
-                    <div class="list">
-                      <el-tag
-                        v-for="affiliation in academicEntityVO.affiliations"
-                        :key="affiliation.id"
-                        :title="affiliation.name"
-                        @click="toOtherEntity('affiliation', affiliation.id)"
-                      >
+                <el-row v-for="affiliation in academicEntityVO.affiliations" :key="affiliation.id">
+                  <el-col class="column" :span="6">
+                    <div>
+                      <a class="entity" :title="affiliation.name" @click="toOtherEntity('affiliation', affiliation.id)">
                         {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}
-                      </el-tag>
+                      </a>
                     </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <hot-graph :data="affiliation.popTrend" :id="'2' + affiliation.id"></hot-graph>
                   </el-col>
                 </el-row>
               </el-tab-pane>
               <el-tab-pane v-if="academicEntityVO.conferences" name="conference">
                 <span slot="label"><i class="el-icon-time"></i> Conferences</span>
-                <el-row>
-                  <el-col class="column" :span="24">
-                    <strong>Issues:</strong>
-                    <div class="list">
-                      <el-tag
-                        v-for="conference in academicEntityVO.conferences"
-                        :key="conference.id"
-                        :title="conference.name"
-                        @click="toOtherEntity('issue', conference.id)"
-                      >
+                <el-row v-for="conference in academicEntityVO.conferences" :key="conference.id">
+                  <el-col class="column" :span="6">
+                    <div>
+                      <a class="entity" :title="conference.name" @click="toOtherEntity('issue', conference.id)">
                         {{conference.name}}
-                      </el-tag>
+                      </a>
                     </div>
+                  </el-col>
+                  <el-col :span="6" v-if="conference.popTrend">
+                    <hot-graph :data="conference.popTrend" :id="'3' + conference.id"></hot-graph>
                   </el-col>
                 </el-row>
               </el-tab-pane>
@@ -163,10 +155,11 @@
     import * as d3 from 'd3';
     import * as d3_cloud from 'd3-cloud';
     import RelationGraph from "../components/RelationGraph";
+  import HotGraph from "../components/HotGraph";
 
       export default {
           name: "Entity",
-          components: {RelationGraph, Card},
+          components: {HotGraph, RelationGraph, Card},
           data(){
               return{
                   id: 0,
@@ -269,7 +262,7 @@
                   // console.log(document.getElementById('cloud-wrap').offsetWidth);
                   // console.log(document.getElementById('cloud-wrap').innerWidth);
                   // console.log(document.getElementById('cloud-wrap').clientWidth);
-                  let height = data.length>100||data[0].name.length>15?800:600;
+                  let height = data.length>100||data[0].name.length>10?600:400;
                   let color = d3.scaleOrdinal(d3.schemeCategory10);
                   let svg = d3.select('#cloud')
                       .append('svg')
@@ -448,9 +441,11 @@
   .citation_count{
     font-size: 28px;
   }
-  /*.entry_wrap{*/
-  /*  margin-top: 48px;*/
-  /*}*/
+  .entity{
+    color: #409eff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
   #pane-graph{
     position: relative;
   }
@@ -483,14 +478,7 @@
     margin: 10px 50px 0;
   }
   .column{
-    padding: 2px;
     text-align: left;
-    height: 100%;
-  }
-  .list{
-    margin-top: 10px;
-    text-align: center;
-    justify-content: space-between;
   }
   .el-tag{
     margin: 0 30px 10px 0;
