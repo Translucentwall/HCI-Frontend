@@ -1,6 +1,9 @@
 <template>
   <div>
-    <i class="el-icon-setting logout" @click="logout"></i>
+    <div class="logout"  @click="logout">
+      Logout
+      <i class="el-icon-delete"></i>
+    </div>
     <div>
       <el-row>
         <el-col :span="5">
@@ -322,6 +325,7 @@
     top: 8px;
     right: 8px;
     font-size: 20px;
+    cursor: pointer;
   }
   .el-menu{
     padding: 20vh 0 50vh;

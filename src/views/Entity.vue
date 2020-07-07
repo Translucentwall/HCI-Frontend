@@ -20,7 +20,7 @@
           <hr/>
         </el-col>
         <el-col :span="3" :offset="1">
-          <div class="reference citation_box" v-if="academicEntityVO.refSum>=0">
+          <div class="reference citation_box" v-if="academicEntityVO.refSum>-1">
             <div class="citation_title">Reference</div>
             <div class="citation_count">{{academicEntityVO.refSum}}</div>
           </div>

@@ -7,7 +7,7 @@
       @select="handleSelect"
       active-text-color="#000000"
     >
-      <el-menu-item class="home" index="/home">Home</el-menu-item>
+      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='/admin/manage'?'0 0 0 35%':'0 0 0 40%'}">Home</el-menu-item>
       <el-submenu index="2">
         <template  class="submenu-title" slot="title">Rank</template>
         <el-submenu index="/rank">
@@ -32,6 +32,7 @@
           <el-menu-item index="/rank?mode=6">Paper Rank</el-menu-item>
         </el-submenu>
       </el-submenu>
+      <el-menu-item class="admin" index="/admin/manage" v-if="this.$route.path==='/admin/manage'">Manage</el-menu-item>
     </el-menu>
     <div class="option">
       <a class="option-item" :href="'/home'">User</a>
@@ -86,7 +87,9 @@
     background-color: transparent;
   }
   .topBar .home{
-    margin-left: 40%;
+    width: 10%;
+  }
+  .admin{
     width: 10%;
   }
   .option{

@@ -7,13 +7,30 @@
       <div class="login-content">
         <div class="login-username">
           <code class="text">username: </code>
-          <el-input v-model="username" class="local-input"></el-input>
+          <el-input
+            v-model="username"
+            class="local-input"
+            @keydown.13.native="login"
+            @keydown.229="handleCN"
+          ></el-input>
         </div>
         <div class="login-password">
           <code class="text">password: </code>
-          <el-input type="password" v-model="password" class="local-input"></el-input>
+          <el-input
+            type="password"
+            v-model="password"
+            class="local-input"
+            @keydown.13.native="login"
+            @keydown.229="handleCN">
+          </el-input>
         </div>
-        <input type="checkbox" name="remember-me" value="true" checked="checked" v-model="remember_me"/>remember me
+        <input
+          type="checkbox"
+          name="remember-me"
+          value="true"
+          checked="checked"
+          v-model="remember_me"/>
+        remember me
       </div>
       <el-button @click="login" class="login-confirm">Log In</el-button>
     </div>
@@ -40,6 +57,9 @@
             }
         },
         methods:{
+            handleCN: function () {
+                console.log('我捕获了');
+            },
             login: function () {
                 if(this.username!==''&&this.password!==''){
                     login(this.username, this.password, this.remember_me).then(res=>{
