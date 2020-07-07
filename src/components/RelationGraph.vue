@@ -157,7 +157,7 @@
                 if(this.size==='large'){
                     height = nodes.length<150?800:nodes.length<400?1200:1600;
                 }else{
-                    height = nodes.length<50?400:600;
+                    height = nodes.length<50?600:800;
                 }
                 // let padding = {
                 //     left: 30,

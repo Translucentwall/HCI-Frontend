@@ -5,7 +5,7 @@
         <img src="../assets/background-new.jpg" alt="This is a background picture." />
       </div>
       <div class="system-name-wrap">
-        <span>Online grAph System for acdemIcS</span>
+        <span>Online grAph System for academIcS</span>
       </div>
       <div class="search-wrap">
         <el-dropdown class="search-mode" trigger="click" @command="handleMode">

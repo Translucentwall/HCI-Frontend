@@ -5,7 +5,7 @@
       <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
     </div>
     <div class="system-name-wrap">
-      <span>Online grAph System for acdemIcS</span>
+      <span>Online grAph System for academIcS</span>
     </div>
   </div>
   <div class="body_bottom">
@@ -168,228 +168,238 @@
     import * as d3_cloud from 'd3-cloud';
     import RelationGraph from "../components/RelationGraph";
 
-    export default {
-        name: "Entity",
-        components: {RelationGraph, Card},
-        data(){
-            return{
-                id: 0,
-                type: 0,
-                size: 'small',
-                activeName: 'author',
-                typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
-                academicEntityVO: {terms:[]},
-                hasCloud: false,
-                yearSelect: -1,
-                termSelect: -1,
-                allTermItems: [],
-                showTermItems: []
-            }
-        },
-        watch: {
-            activeName: function(){
-                if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
-                    let that = this;
-                    setTimeout(function (){that.renderCloud();},100)
-                }
-            },
-            yearSelect: function () {
-                if(this.yearSelect === -1){
-                    this.showTermItems = this.allTermItems;
-                }else{
-                    let that = this;
-                    this.academicEntityVO.yearlyTerms.forEach(function (yearlyTerm){
-                        if(yearlyTerm.year===that.yearSelect){
-                          that.showTermItems = yearlyTerm.termItemList;
-                        }
-                    })
-                }
-                if(this.termSelect === -1){
-                    // console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
-                    getSignificantPaper(this.id, this.type, this.yearSelect, this.termSelect).then(res=>{
-                        this.academicEntityVO.significantPapers = res;
-                    });
-                }else{
-                  this.termSelect = -1;
-                }
-            },
-            termSelect: function () {
-                // console.log('获取 ' + this.yearSelect + ' ' + this.termSelect);
-              getSignificantPaper(this.id, this.type, this.yearSelect, this.termSelect).then(res=>{
-                  this.academicEntityVO.significantPapers = res;
-              });
-              // todo 加标志位，别拿那么多次
-            }
-        },
-        mounted() {
-            this.id=this.$route.params.id;
-            this.type=this.typeDic[this.$route.params.type];
-            if(this.type===1){
-              this.activeName = 'affiliation'
-            }
-            if(this.id===undefined || this.type===undefined){
-                window.location.href = '/home';
-            }
-            let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
-            getAcademicEntity(this.id,this.type)
-                .then(res => {
-                    res.yearlyTerms.sort(function (a, b) {
-                        return b.year-a.year;
-                    });
-                    this.academicEntityVO = res;
-                    let allTermItems = [];
-                    this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
-                        yearlyTerm.termItemList.forEach(function (termItem) {
-                            let has = false;
-                            allTermItems.forEach(function(term){
-                                if(term.id===termItem.id && term.name===termItem.name){
-                                  has = true;
-                                }
-                            });
-                            if(!has){
-                                allTermItems.push(termItem);
-                            }
-                        })
-                    });
-                    this.allTermItems = allTermItems;
-                    this.showTermItems = this.allTermItems;
-                    loadingInstance.close();
-                })
-                .catch(()=>{
-                    this.$alert('Fail to get entity，please search again', 'Tips',{
-                        type: 'error',
-                        confirmButtonText: 'confirm',
-                        showClose: false
-                    }).then(()=>{
-                        window.location.href = '/home';
-                    })
-                });
-        },
-        methods: {
-            toOtherEntity: function (type, id) {
-                window.location.href='/entity/' + type + '/' + id;
-            },
-            renderCloud: function () {
-                let data = this.academicEntityVO.terms;
-                data.sort(function (a, b) {
-                    return b.hot-a.hot;
-                });
-                let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
-                let width = document.getElementById('cloud-wrap').offsetWidth;
-                // console.log(document.getElementById('cloud-wrap').offsetWidth);
-                // console.log(document.getElementById('cloud-wrap').innerWidth);
-                // console.log(document.getElementById('cloud-wrap').clientWidth);
-                let height = data.length>100||data[0].name.length>15?600:400;
-                let color = d3.scaleOrdinal(d3.schemeCategory10);
-                let svg = d3.select('#cloud')
-                    .append('svg')
-                    .attr('width', width)
-                    .attr('height', height);
-                // if(data.length>20){
-                    data=data.slice(0,50);
-                // }
+      export default {
+          name: "Entity",
+          components: {RelationGraph, Card},
+          data(){
+              return{
+                  id: 0,
+                  type: 0,
+                  size: 'small',
+                  activeName: 'author',
+                  typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
+                  academicEntityVO: {terms:[]},
+                  hasCloud: false,
+                  yearSelect: -1,
+                  termSelect: -1,
+                  allTermItems: [],
+                  showTermItems: [],
+                  significantPapers: []
+              }
+          },
+          watch: {
+              activeName: function(){
+                  if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
+                      let that = this;
+                      setTimeout(function (){that.renderCloud();},100)
+                  }
+              },
+              yearSelect: function () {
+                  if(this.yearSelect === -1){
+                      this.showTermItems = this.allTermItems;
+                  }else{
+                      let that = this;
+                      this.academicEntityVO.yearlyTerms.forEach(function (yearlyTerm){
+                          if(yearlyTerm.year===that.yearSelect){
+                              that.showTermItems = yearlyTerm.termItemList;
+                          }
+                      })
+                  }
+                  if(this.termSelect === -1){
+                      this.renderSignificantPaper();
+                  }else{
+                    this.termSelect = -1;
+                  }
+              },
+              termSelect: function () {
+                  this.renderSignificantPaper();
+              }
+          },
+          mounted() {
+              this.id=this.$route.params.id;
+              this.type=this.typeDic[this.$route.params.type];
+              if(this.type===1){
+                this.activeName = 'affiliation'
+              }
+              if(this.id===undefined || this.type===undefined){
+                  window.location.href = '/home';
+              }
+              let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
+              getAcademicEntity(this.id,this.type)
+                  .then(res => {
+                      res.yearlyTerms.sort(function (a, b) {
+                          return b.year-a.year;
+                      });
+                      this.academicEntityVO = res;
+                      let allTermItems = [];
+                      this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
+                          yearlyTerm.termItemList.forEach(function (termItem) {
+                              let has = false;
+                              allTermItems.forEach(function(term){
+                                  if(term.id===termItem.id && term.name===termItem.name){
+                                    has = true;
+                                  }
+                              });
+                              if(!has){
+                                  allTermItems.push(termItem);
+                              }
+                          })
+                      });
+                      this.allTermItems = allTermItems;
+                      this.showTermItems = this.allTermItems;
+                      loadingInstance.close();
+                  })
+                  .catch(()=>{
+                      this.$alert('Fail to get entity，please search again', 'Tips',{
+                          type: 'error',
+                          confirmButtonText: 'confirm',
+                          showClose: false
+                      }).then(()=>{
+                          window.location.href = '/home';
+                      })
+                  });
+          },
+          methods: {
+              toOtherEntity: function (type, id) {
+                  window.location.href='/entity/' + type + '/' + id;
+              },
+              renderCloud: function () {
+                  let data = this.academicEntityVO.terms;
+                  data.sort(function (a, b) {
+                      return b.hot-a.hot;
+                  });
+                  let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
+                  let width = document.getElementById('cloud-wrap').offsetWidth;
+                  // console.log(document.getElementById('cloud-wrap').offsetWidth);
+                  // console.log(document.getElementById('cloud-wrap').innerWidth);
+                  // console.log(document.getElementById('cloud-wrap').clientWidth);
+                  let height = data.length>100||data[0].name.length>15?800:600;
+                  let color = d3.scaleOrdinal(d3.schemeCategory10);
+                  let svg = d3.select('#cloud')
+                      .append('svg')
+                      .attr('width', width)
+                      .attr('height', height);
+                  // if(data.length>20){
+                      data=data.slice(0,50);
+                  // }
 
-                const layout = d3_cloud()
-                    .size([width, height])
-                    .words(data)
-                    .padding(function (d) {
-                        if((d.hot+1)/(maxHot+1)>0.8){
-                            return 24;
-                        }else{
-                            return 12;
-                        }
-                    })
-                    .rotate(function(d) {
-                        // if(d.hot===maxHot){
-                        //     return 30;
-                        // }else{
-                        //     return (d.hot+1)/(maxHot+1)>0.8?30:0;
-                        // }
-                        return Math.round(Math.random()*3)*45;
-                    })
-                    .font('Impact')
-                    .fontSize(function(d) {
-                        if((d.hot+1)/(maxHot+1)>0.8){
-                            return 20+(d.hot+1)/(maxHot+1)*20;
-                        }else{
-                            return 10+(d.hot+1)/(maxHot+1)*20;
-                        }
-                    })
-                    .on('end', draw);
+                  const layout = d3_cloud()
+                      .size([width, height])
+                      .words(data)
+                      .padding(function (d) {
+                          if((d.hot+1)/(maxHot+1)>0.8){
+                              return 24;
+                          }else{
+                              return 12;
+                          }
+                      })
+                      .rotate(function(d) {
+                          // if(d.hot===maxHot){
+                          //     return 30;
+                          // }else{
+                          //     return (d.hot+1)/(maxHot+1)>0.8?30:0;
+                          // }
+                          return Math.round(Math.random()*3)*45;
+                      })
+                      .font('Impact')
+                      .fontSize(function(d) {
+                          if((d.hot+1)/(maxHot+1)>0.8){
+                              return 20+(d.hot+1)/(maxHot+1)*20;
+                          }else{
+                              return 10+(d.hot+1)/(maxHot+1)*20;
+                          }
+                      })
+                      .on('end', draw);
 
-                layout.start();
-                function draw(words) {
-                    svg.append('g')
-                        .attr('transform', 'translate('+ (layout.size()[0] / 2) + ',' + (layout.size()[1] / 2)+ ')')
-                        .selectAll('text')
-                        .data(words)
-                        .enter()
-                        .append('text')
-                        .on('click', function(d) {
-                            window.location.href = '/graph/term/' + d.id;
-                        })
-                        .style('cursor', 'pointer')
-                        .attr('fill', (d, i) => color(i))
-                        .style('font-size', function(d) {
-                            if((d.hot+1)/(maxHot+1)>0.8){
-                                return 20+(d.hot+1)/(maxHot+1)*20;
-                            }else{
-                                return 10+(d.hot+1)/(maxHot+1)*20;
-                            }
-                        })
-                        .style('font-family', 'Impact')
-                        .attr('text-anchor', 'middle')
-                        .attr('transform', function(d) {
-                            return 'translate('+[d.x, d.y]+')rotate('+d.rotate+')';
-                        })
-                        .text(function(d) {
-                            return d.name;
-                        })
-                        .append('title')
-                        .text(function(d) {
-                            return d.name;
-                        });
+                  layout.start();
+                  function draw(words) {
+                      svg.append('g')
+                          .attr('transform', 'translate('+ (layout.size()[0] / 2) + ',' + (layout.size()[1] / 2)+ ')')
+                          .selectAll('text')
+                          .data(words)
+                          .enter()
+                          .append('text')
+                          .on('click', function(d) {
+                              window.location.href = '/graph/term/' + d.id;
+                          })
+                          .style('cursor', 'pointer')
+                          .attr('fill', (d, i) => color(i))
+                          .style('font-size', function(d) {
+                              if((d.hot+1)/(maxHot+1)>0.8){
+                                  return 20+(d.hot+1)/(maxHot+1)*20;
+                              }else{
+                                  return 10+(d.hot+1)/(maxHot+1)*20;
+                              }
+                          })
+                          .style('font-family', 'Impact')
+                          .attr('text-anchor', 'middle')
+                          .attr('transform', function(d) {
+                              return 'translate('+[d.x, d.y]+')rotate('+d.rotate+')';
+                          })
+                          .text(function(d) {
+                              return d.name;
+                          })
+                          .append('title')
+                          .text(function(d) {
+                              return d.name;
+                          });
 
-                    // svg.selectAll('text') // 创建动画
-                    //     .style('fill-opacity', 0)
-                    //     .transition()
-                    //     .duration(100)
-                    //     .delay(function(d, i) {
-                    //         return i * 100
-                    //     })
-                    //     .style('fill-opacity', 1);
-                }
-                this.hasCloud = true;
-            },
-            search: function () {
-                let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
-                window.location.href = '/search/'+typeDic2[this.type]+'/'+this.academicEntityVO.name;
-            }
-        },
-        computed: {
-            changeName: function () {
-                if(this.type === 3 && this.academicEntityVO.name !== undefined){
-                    let nameItem = this.academicEntityVO.name.split(' ');
-                    if(nameItem[1].substr(-1,1)==='1'){
-                        nameItem[1] += 'st';
-                    }else if(nameItem[1].substr(-1,1)==='2'){
-                        nameItem[1] += 'nd';
-                    }else if(nameItem[1].substr(-1,1)==='3'){
-                        nameItem[1] += 'rd';
-                    }else {
-                        nameItem[1] += 'th';
-                    }
-                    if(nameItem[2] === 'ASE'){
-                        return nameItem[0] + ' ' + nameItem[1] + ' IEEE/ACM International Conference on Automated Software Engineering (ASE)';
-                    }else{
-                        return nameItem[0] + ' ' + nameItem[1] + ' IEEE/ACM International Conference on Software Engineering (ICSE)';
-                    }
-                }else{
-                    return this.academicEntityVO.name;
-                }
-            }
-        }
-    }
+                      // svg.selectAll('text') // 创建动画
+                      //     .style('fill-opacity', 0)
+                      //     .transition()
+                      //     .duration(100)
+                      //     .delay(function(d, i) {
+                      //         return i * 100
+                      //     })
+                      //     .style('fill-opacity', 1);
+                  }
+                  this.hasCloud = true;
+              },
+              search: function () {
+                  let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
+                  window.location.href = '/search/'+typeDic2[this.type]+'/'+this.academicEntityVO.name;
+              },
+              renderSignificantPaper: function () {
+                  let that = this;
+                  let change = false;
+                  this.significantPapers.forEach(function (significantPaper) {
+                      if(that.yearSelect===significantPaper.year&&that.termSelect===significantPaper.term){
+                          that.academicEntityVO.significantPapers = significantPaper.paper;
+                          change = true;
+                      }
+                  })
+                  if (!change){
+                      getSignificantPaper(this.id, this.type, this.yearSelect, this.termSelect).then(res=>{
+                          this.academicEntityVO.significantPapers = res;
+                          this.significantPapers.push({year: this.yearSelect, term: this.termSelect, paper: res})
+                      });
+                  }
+              }
+          },
+          computed: {
+              changeName: function () {
+                  if(this.type === 3 && this.academicEntityVO.name !== undefined){
+                      let nameItem = this.academicEntityVO.name.split(' ');
+                      if(nameItem[1].substr(-1,1)==='1'){
+                          nameItem[1] += 'st';
+                      }else if(nameItem[1].substr(-1,1)==='2'){
+                          nameItem[1] += 'nd';
+                      }else if(nameItem[1].substr(-1,1)==='3'){
+                          nameItem[1] += 'rd';
+                      }else {
+                          nameItem[1] += 'th';
+                      }
+                      if(nameItem[2] === 'ASE'){
+                          return nameItem[0] + ' ' + nameItem[1] + ' IEEE/ACM International Conference on Automated Software Engineering (ASE)';
+                      }else{
+                          return nameItem[0] + ' ' + nameItem[1] + ' IEEE/ACM International Conference on Software Engineering (ICSE)';
+                      }
+                  }else{
+                      return this.academicEntityVO.name;
+                  }
+              }
+          }
+      }
 </script>
 
 <style scoped>

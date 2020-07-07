@@ -5,7 +5,7 @@
         <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
       </div>
       <div class="system-name-wrap">
-        <span>Online grAph System for acdemIcS</span>
+        <span>Online grAph System for academIcS</span>
       </div>
     </div>
     <div class="body-bottom">
