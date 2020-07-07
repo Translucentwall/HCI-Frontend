@@ -57,7 +57,7 @@
                 <a class="affiliation" :href="'/entity/affiliation/'+item.affiliation.id" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</a>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="Keywords" name="3" class="block" v-if="paperVO.authorKeywords||paperVO.IEEETerms||paperVO.controlledTerms||paperVO.nonControlledTerms">
+            <el-collapse-item title="Keywords" name="3" class="block" v-if="(paperVO.authorKeywords&&paperVO.authorKeywords[0])||(paperVO.ieeeterms&&paperVO.ieeeterms[0])||(paperVO.controlledTerms&&paperVO.controlledTerms[0])||(paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0])">
               <div class="author_keywords keywords" v-if="paperVO.authorKeywords&&paperVO.authorKeywords[0]">
                 <div class="subtitle">Author Keywords</div>
                 <div class="keyword_wrap">

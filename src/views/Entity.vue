@@ -31,7 +31,7 @@
           <el-row>
             <el-col>
             <el-tabs v-model="activeName" type="border-card">
-              <el-tab-pane v-if="academicEntityVO.authors!=null" name="author">
+              <el-tab-pane v-if="academicEntityVO.authors" name="author">
                 <span slot="label"><i class="el-icon-s-custom"></i> Authors</span>
                 <el-row>
                   <el-col class="column" v-if="academicEntityVO.authors!=null" :span="24">
@@ -49,7 +49,7 @@
                   </el-col>
                 </el-row>
               </el-tab-pane>
-              <el-tab-pane v-if="academicEntityVO.affiliations!=null" name="affiliation">
+              <el-tab-pane v-if="academicEntityVO.affiliations" name="affiliation">
                 <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
                 <el-row>
                   <el-col class="column" :span="24">
@@ -67,7 +67,7 @@
                   </el-col>
                 </el-row>
               </el-tab-pane>
-              <el-tab-pane v-if="academicEntityVO.conferences!=null" name="conference">
+              <el-tab-pane v-if="academicEntityVO.conferences" name="conference">
                 <span slot="label"><i class="el-icon-time"></i> Conferences</span>
                 <el-row>
                   <el-col class="column" :span="24">
@@ -85,18 +85,14 @@
                   </el-col>
                 </el-row>
               </el-tab-pane>
-              <el-tab-pane name="cloud">
+              <el-tab-pane name="cloud" v-if="academicEntityVO.terms&&academicEntityVO.terms.length>0">
                 <span slot="label"><i class="el-icon-cloudy"></i> Cloud</span>
-                <el-row>
-                  <el-col :span="24" v-if="academicEntityVO.terms.length===0">
-                    <strong>没有云图</strong>
-                  </el-col>
-                  <el-col :span="24" v-if="academicEntityVO.terms.length>0">
-                    <div id="cloud-wrap">
-                      <div class="svg" id="cloud"></div>
-                    </div>
-                  </el-col>
-                </el-row>
+                <div id="cloud-wrap">
+                  <div class="svg" id="cloud"></div>
+                </div>
+                <div class="cloud_tip" v-if="hasCloud">
+                  <em>hover or click to know more ...</em>
+                </div>
               </el-tab-pane>
               <el-tab-pane name="graph">
                 <span slot="label"><i class="el-icon-connection"></i> Relation Graph</span>
@@ -178,7 +174,7 @@
                   size: 'small',
                   activeName: 'author',
                   typeDic: {"author":1, 'affiliation':2, 'issue':3, 'term': 4, 'paper':5},
-                  academicEntityVO: {terms:[]},
+                  academicEntityVO: {},
                   hasCloud: false,
                   yearSelect: -1,
                   termSelect: -1,
@@ -299,7 +295,7 @@
                           // }else{
                           //     return (d.hot+1)/(maxHot+1)>0.8?30:0;
                           // }
-                          return Math.round(Math.random()*3)*45;
+                          return Math.round(Math.random())*45;
                       })
                       .font('Impact')
                       .fontSize(function(d) {
@@ -457,6 +453,14 @@
   /*}*/
   #pane-graph{
     position: relative;
+  }
+  #pane-cloud{
+    position: relative;
+  }
+  .cloud_tip{
+    position: absolute;
+    top: 0;
+    left: 0;
   }
   .graph_entry{
     width: 3vw;
