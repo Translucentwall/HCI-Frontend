@@ -15,15 +15,15 @@
     </el-breadcrumb>
     <div class="body_bottom_body">
       <el-row>
-        <el-col :span="19" :offset="1">
+        <el-col :span="academicEntityVO.refSum>-1?19:22" :offset="1">
           <div class="entity-title">
             <span class="name">{{academicEntityVO.name}}</span>
             <hot-graph v-if="academicEntityVO.popTrend" :data="academicEntityVO.popTrend" :id="type + '' + id"></hot-graph>
           </div>
-          <hr/>
+          <hr v-if="academicEntityVO.refSum>-1"/>
         </el-col>
-        <el-col :span="3" :offset="1">
-          <div class="reference citation_box" v-if="academicEntityVO.refSum>-1">
+        <el-col :span="3" :offset="1" v-if="academicEntityVO.refSum>-1">
+          <div class="reference citation_box">
             <div class="citation_title">Reference</div>
             <div class="citation_count">{{academicEntityVO.refSum}}</div>
           </div>
