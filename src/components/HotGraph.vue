@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="hot-graph">
+    <span class="year">{{year}}</span>
     <span title="This is the chart of hot change.">
       <svg width="155" height="30">
         <defs>
@@ -30,6 +31,7 @@
         name: "HotGraph",
         data(){
             return{
+                year: 2000,
                 points: ''
             }
         },
@@ -48,6 +50,7 @@
         },
         methods: {
             changeData: function () {
+                this.year = this.data.split(' ')[0];
                 let dataStr = this.data.slice(5).split(' ');
                 let dataInt = [];
                 dataStr.forEach(function (data) {
@@ -56,6 +59,7 @@
                 if(dataInt.length === 1){
                     dataInt.unshift(0);
                     dataInt.push(0);
+                    this.year -= 1;
                 }
                 let max = Math.max(...dataInt);
                 let min = Math.min(...dataInt);
@@ -75,4 +79,11 @@
 </script>
 
 <style scoped>
+  .hot-graph{
+    min-width: 190px;
+  }
+  .year{
+    color: #aaaaaa;
+    font-size: 0.0625em;
+  }
 </style>

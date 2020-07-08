@@ -56,13 +56,13 @@
                 <el-row>
                   <el-col class="column" :span="12" v-for="(affiliation,index) in academicEntityVO.affiliations" :key="index">
                     <el-row  class="entity-wrap">
-                      <el-col :span="16">
+                      <el-col :span="14">
                         <a class="entity" :title="affiliation.name" :href="'/entity/affiliation/' + affiliation.id">
 <!--                          {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}-->
                           {{(index + 1) + '. ' +affiliation.name}}
                         </a>
                       </el-col>
-                      <el-col :span="8">
+                      <el-col :span="10">
                         <hot-graph :data="affiliation.popTrend" :id="'2' + affiliation.id"></hot-graph>
                       </el-col>
                     </el-row>
