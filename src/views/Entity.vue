@@ -15,9 +15,11 @@
     </el-breadcrumb>
     <div class="body_bottom_body">
       <el-row>
-        <el-col :span="19" :offset="1" class="name">
-          <span>{{academicEntityVO.name}}</span>
-          <hot-graph v-if="academicEntityVO.popTrend" :data="academicEntityVO.popTrend" :id="type + '' + id"></hot-graph>
+        <el-col :span="19" :offset="1">
+          <div class="entity-title">
+            <span class="name">{{academicEntityVO.name}}</span>
+            <hot-graph v-if="academicEntityVO.popTrend" :data="academicEntityVO.popTrend" :id="type + '' + id"></hot-graph>
+          </div>
           <hr/>
         </el-col>
         <el-col :span="3" :offset="1">
@@ -32,48 +34,55 @@
           <el-row>
             <el-col>
             <el-tabs v-model="activeName" type="border-card">
-              <el-tab-pane v-if="academicEntityVO.authors" name="author">
+              <el-tab-pane v-if="academicEntityVO.authors&&academicEntityVO.authors.length>0" name="author">
                 <span slot="label"><i class="el-icon-s-custom"></i> Authors</span>
-                <el-row v-for="author in academicEntityVO.authors" :key="author.id">
-                  <el-col class="column" :span="6">
-                    <div>
-                      <a class="entity" :title="author.name" @click="toOtherEntity('author', author.id)">
-                        {{author.name}}
-                      </a>
-                    </div>
-                  </el-col>
-                  <el-col :span="6">
-                    <hot-graph :data="author.popTrend" :id="'1' + author.id"></hot-graph>
+                <el-row>
+                  <el-col class="column" :span="12" v-for="(author, index) in academicEntityVO.authors" :key="index">
+                    <el-row class="entity-wrap">
+                      <el-col :span="9">
+                        <a class="entity" :title="author.name" :href="'/entity/author/' + author.id">
+                          {{(index + 1) + '. ' +author.name}}
+                        </a>
+                      </el-col>
+                      <el-col :span="15">
+                        <hot-graph :data="author.popTrend" :id="'1' + author.id"></hot-graph>
+                      </el-col>
+                    </el-row>
                   </el-col>
                 </el-row>
               </el-tab-pane>
-              <el-tab-pane v-if="academicEntityVO.affiliations" name="affiliation">
+              <el-tab-pane v-if="academicEntityVO.affiliations&&academicEntityVO.affiliations.length>0" name="affiliation">
                 <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
-                <el-row v-for="affiliation in academicEntityVO.affiliations" :key="affiliation.id">
-                  <el-col class="column" :span="6">
-                    <div>
-                      <a class="entity" :title="affiliation.name" @click="toOtherEntity('affiliation', affiliation.id)">
-                        {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}
-                      </a>
-                    </div>
-                  </el-col>
-                  <el-col :span="6">
-                    <hot-graph :data="affiliation.popTrend" :id="'2' + affiliation.id"></hot-graph>
+                <el-row>
+                  <el-col class="column" :span="12" v-for="(affiliation,index) in academicEntityVO.affiliations" :key="index">
+                    <el-row  class="entity-wrap">
+                      <el-col :span="16">
+                        <a class="entity" :title="affiliation.name" :href="'/entity/affiliation/' + affiliation.id">
+<!--                          {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}-->
+                          {{(index + 1) + '. ' +affiliation.name}}
+                        </a>
+                      </el-col>
+                      <el-col :span="8">
+                        <hot-graph :data="affiliation.popTrend" :id="'2' + affiliation.id"></hot-graph>
+                      </el-col>
+                    </el-row>
                   </el-col>
                 </el-row>
               </el-tab-pane>
-              <el-tab-pane v-if="academicEntityVO.conferences" name="conference">
+              <el-tab-pane v-if="academicEntityVO.conferences&&academicEntityVO.conferences.length>0" name="conference">
                 <span slot="label"><i class="el-icon-time"></i> Conferences</span>
-                <el-row v-for="conference in academicEntityVO.conferences" :key="conference.id">
-                  <el-col class="column" :span="6">
-                    <div>
-                      <a class="entity" :title="conference.name" @click="toOtherEntity('issue', conference.id)">
-                        {{conference.name}}
-                      </a>
-                    </div>
-                  </el-col>
-                  <el-col :span="6" v-if="conference.popTrend">
-                    <hot-graph :data="conference.popTrend" :id="'3' + conference.id"></hot-graph>
+                <el-row>
+                  <el-col class="column" :span="12" v-for="(conference,index) in academicEntityVO.conferences" :key="index">
+                    <el-row class="entity-wrap">
+                      <el-col :span="conference.popTrend?12:24">
+                        <a class="entity" :title="conference.name" :href="'/entity/issue/' + conference.id">
+                          {{(index + 1) + '. ' +conference.name}}
+                        </a>
+                      </el-col>
+                      <el-col :span="12" v-if="conference.popTrend">
+                        <hot-graph :data="conference.popTrend" :id="'3' + conference.id"></hot-graph>
+                      </el-col>
+                    </el-row>
                   </el-col>
                 </el-row>
               </el-tab-pane>
@@ -262,7 +271,7 @@
                   // console.log(document.getElementById('cloud-wrap').offsetWidth);
                   // console.log(document.getElementById('cloud-wrap').innerWidth);
                   // console.log(document.getElementById('cloud-wrap').clientWidth);
-                  let height = data.length>100||data[0].name.length>10?600:400;
+                  let height = data.length>20?600:400;
                   let color = d3.scaleOrdinal(d3.schemeCategory10);
                   let svg = d3.select('#cloud')
                       .append('svg')
@@ -420,10 +429,14 @@
     border-top: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
   }
+  .entity-title{
+    display: flex;
+  }
   .name{
     text-align: left;
     font-size: 30px;
     font-weight: bold;
+    margin-right: 20px;
   }
   .citation_box{
     width: 80px;
@@ -441,10 +454,20 @@
   .citation_count{
     font-size: 28px;
   }
+  .entity-wrap{
+    margin: 10px 0;
+  }
   .entity{
+    color: #000000;
+    text-decoration: underline;
+    cursor: pointer;
+    font-style: italic;
+  }
+  .entity:hover{
     color: #409eff;
     text-decoration: underline;
     cursor: pointer;
+    font-style: italic;
   }
   #pane-graph{
     position: relative;
