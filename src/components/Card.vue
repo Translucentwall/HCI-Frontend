@@ -15,7 +15,6 @@
     <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
       <span>publication: </span>
       <a class="publication" :href="'/entity/issue/'+simplePaperVO.conferenceId">
-        <span class="year" v-html="simplePaperVO.publicationYear+' '" v-if="simplePaperVO.publicationYear"></span>
         <span v-html="simplePaperVO.publicationTitle"></span>
       </a>
     </div>

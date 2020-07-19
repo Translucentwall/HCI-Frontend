@@ -84,6 +84,6 @@
   }
   .year{
     color: #aaaaaa;
-    font-size: 0.0625em;
+    font-size: 12px;
   }
 </style>

@@ -1,5 +1,5 @@
 import Home from '../views/Home'
-import Search from '../views/Search'
+import Search from '../views/SearchPage'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
 import AdminLogin from "../views/AdminLogin";

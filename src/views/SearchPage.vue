@@ -7,31 +7,10 @@
       <div class="system-name-wrap">
         <span>Online grAph System for academIcS</span>
       </div>
-      <div class="search-wrap">
-        <el-dropdown class="search-mode" trigger="click" @command="handleMode">
-          <el-button class="mode-button" type="primary">
-            {{mode}}<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="All">All</el-dropdown-item>
-            <el-dropdown-item command="Title">Title</el-dropdown-item>
-            <el-dropdown-item command="Author">Author</el-dropdown-item>
-            <el-dropdown-item command="Affiliation">Affiliation</el-dropdown-item>
-            <el-dropdown-item command="Publication">Publication</el-dropdown-item>
-            <el-dropdown-item command="Keyword">Keyword</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-input
-          class="search-input"
-          v-model="searchContent"
-          placeholder="Please input the search content..."
-          @keydown.13.native="search"
-          @keydown.229="handleCN">
-        </el-input>
-        <el-button class="search-enter" @click="search">
-          <i class="el-icon-search"></i>
-        </el-button>
-      </div>
+      <Search
+          v-if="showSearch"
+          :search-mode="mode"
+          :search-content="searchContent"></Search>
     </div>
     <div class="body-bottom" v-if="displayBottom">
       <el-row>
@@ -93,15 +72,17 @@
   import {search, getRank, searchable} from "../api/api"
   import RankList from "../components/RankList";
   import {Loading} from "element-ui";
+  import Search from "../components/Search";
   export default {
-      name: 'Search',
-      components: {RankList, Card},
+      name: 'SearchPage',
+      components: {Search, RankList, Card},
       data(){
           return{
               displayBottom: false,
               mode: 'All',
               simplePaperVO: [],
               searchContent: '',
+              showSearch: false,
               currentPage: 1,
               sortMode: 'Relevance',
               resultTitleMode: '',
@@ -111,19 +92,21 @@
               tableData: [],
               tableModeDic: {
                   'All': '1',
-                  "Title": '1',
-                  "Author": '2',
-                  "Affiliation": '4',
-                  "Publication": '5',
-                  "Keyword": '6'
+                  'Title': '1',
+                  'Author': '2',
+                  'Affiliation': '4',
+                  'Publication': '5',
+                  'Keyword': '6',
+                  'Advanced': '1',
               },
               tableModeDic2: {
                   'All': 'Paper-Cited',
-                  "Title": 'Paper-Cited',
-                  "Author": 'Author-Paper',
-                  "Affiliation": 'Affiliation-Paper',
-                  "Publication": 'Publication-Paper',
-                  "Keyword": 'Keyword-Paper'
+                  'Title': 'Paper-Cited',
+                  'Author': 'Author-Paper',
+                  'Affiliation': 'Affiliation-Paper',
+                  'Publication': 'Publication-Paper',
+                  'Keyword': 'Keyword-Paper',
+                  'Advanced': 'Paper-Cited'
               }
           }
       },
@@ -147,9 +130,6 @@
           }
       },
       methods: {
-          handleMode(command) {
-              this.mode = command;
-          },
           handleSortMode(command) {
               this.sortMode = command;
           },
@@ -176,28 +156,7 @@
                   });
 
               });
-
-          },
-          search: function () {
-              let blankPattern = /^( )*$/;
-              if (blankPattern.test(this.searchContent)){
-                  this.$message({
-                      message:'请输入有效内容',
-                      type: 'error',
-                      duration: 2000
-                  });
-              }else {
-                  let pattern = /[%\\/?#=]/;
-                  if(pattern.test(this.searchContent)){
-                      this.$message({
-                          message:'Search content can\'t include %,\\,/,?,#,=',
-                          type: 'error',
-                          duration: 2000
-                      });
-                  }else{
-                      window.location.href = '/search/'+this.mode+'/'+this.searchContent;
-                  }
-              }
+              this.showSearch = true;
           },
           loadMore: function () {
               this.currentPage += 1;
@@ -206,9 +165,6 @@
                       this.simplePaperVO.push(res[result]);
                   }
               });
-          },
-          handleCN: function () {
-              console.log('我捕获了');
           }
       }
   }
@@ -236,33 +192,6 @@
     left: 50px;
     font-family: 'Arial Rounded MT Bold', serif;
     font-size: 40px;
-    color: #ffffff;
-  }
-  .search-wrap{
-    position: absolute;
-    top: 40%;
-    left: 27vw;
-    display: flex;
-    border: 2px solid #ffffff;
-    border-radius: 4px;
-  }
-  .search-mode{
-    width: 10vw;
-  }
-  .mode-button{
-    width: 10vw;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .search-input{
-    width: 30vw;
-  }
-  .search-enter{
-    width: 4vw;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  .el-icon-search{
     color: #ffffff;
   }
   .body-bottom{
