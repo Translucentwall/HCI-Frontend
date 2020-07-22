@@ -159,12 +159,14 @@
 
 <script>
   import {getAcademicEntity, getSignificantPaper} from "../api/api";
-    import Card from "../components/Card";
-    import {Loading} from "element-ui";
-    import * as d3 from 'd3';
-    import * as d3_cloud from 'd3-cloud';
-    import RelationGraph from "../components/RelationGraph";
+  import Card from "../components/Card";
+  import {Loading} from "element-ui";
+  import * as d3 from 'd3';
+  import * as d3_cloud from 'd3-cloud';
+  import RelationGraph from "../components/RelationGraph";
   import HotGraph from "../components/HotGraph";
+  import echarts from 'echarts';
+  import 'echarts-wordCloud'
 
       export default {
           name: "Entity",
@@ -189,7 +191,7 @@
               activeName: function(){
                   if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
                       let that = this;
-                      setTimeout(function (){that.renderCloud();},100)
+                      setTimeout(function (){that.renderCloudNew();},100)
                   }
               },
               yearSelect: function () {
@@ -277,18 +279,17 @@
                       .append('svg')
                       .attr('width', width)
                       .attr('height', height);
-                  // if(data.length>20){
-                      data=data.slice(0,50);
-                  // }
+
+                  data=data.slice(0,50);
 
                   const layout = d3_cloud()
                       .size([width, height])
                       .words(data)
                       .padding(function (d) {
                           if((d.hot+1)/(maxHot+1)>0.8){
-                              return 24;
+                              return 30;
                           }else{
-                              return 12;
+                              return 30;
                           }
                       })
                       .rotate(function(d) {
@@ -332,7 +333,7 @@
                           .style('font-family', 'Impact')
                           .attr('text-anchor', 'middle')
                           .attr('transform', function(d) {
-                              return 'translate('+[d.x, d.y]+')rotate('+d.rotate+')';
+                              return 'translate('+[d.x*1.1, d.y*1.1]+')rotate('+d.rotate+')';
                           })
                           .text(function(d) {
                               return d.name;
@@ -352,6 +353,57 @@
                       //     .style('fill-opacity', 1);
                   }
                   this.hasCloud = true;
+              },
+              renderCloudNew: function(){
+                  let data = this.academicEntityVO.terms;
+                  data.sort(function (a, b) {
+                    return b.hot-a.hot;
+                  });
+                  let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
+                  let echartData = [];
+                  data.forEach(function (d) {
+                      echartData.push({
+                        name: d.name,
+                        id: d.id,
+                        value: (d.hot+1)/(maxHot+1)>0.8? 20+(d.hot+1)/(maxHot+1)*20: 20+(d.hot+1)/(maxHot+1)*20
+                      })
+                  });
+                  console.log(echartData);
+                  let myChart = echarts.init(document.getElementById('cloud'));
+                  let option = {
+                    tooltip: {
+                      trigger: 'item',
+                      formatter: '{b}'
+                    },
+                    series: [
+                      {
+                        type: 'wordCloud',
+                        gridSize: 2,
+                        sizeRange: [12, 100],
+                        rotationRange: [-90, 90],
+                        shape: 'pentagon',
+                        textStyle: {
+                          normal: {
+                            color: function () {
+                              return 'rgb(' + [
+                                Math.round(Math.random() * 255),
+                                Math.round(Math.random() * 255),
+                                Math.round(Math.random() * 255)
+                              ].join(',') + ')';
+                            }
+                          },
+                          emphasis: {
+                            shadowBlur: 5,
+                            shadowColor: '#333'
+                          }
+                        },
+                        data: echartData
+                      }]
+                  };
+                  myChart.setOption(option);
+                  myChart.on('click', function (word) {
+                      window.location.href = '/graph/term/' + word.data.id;
+                  });
               },
               search: function () {
                   let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
@@ -523,5 +575,9 @@
   }
   .more-text:hover{
     color: #409eff;
+  }
+  .svg{
+    width: 100%;
+    height: 600px;
   }
 </style>
