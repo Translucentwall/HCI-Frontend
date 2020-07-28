@@ -166,7 +166,7 @@
   import RelationGraph from "../components/RelationGraph";
   import HotGraph from "../components/HotGraph";
   import echarts from 'echarts';
-  import 'echarts-wordCloud'
+  import 'echarts-wordcloud'
 
       export default {
           name: "Entity",
