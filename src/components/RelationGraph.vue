@@ -499,8 +499,8 @@
     /*border: 1px solid #cccccc;*/
   }
   .option{
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 40px;
     left: 20px;
     text-align: left;
     min-width: 160px;
