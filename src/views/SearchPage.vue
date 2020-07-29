@@ -27,7 +27,7 @@
             <div class="result-title">
               Results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
             </div>
-            <div class="sort-mode-wrap">
+            <div v-if="simplePaperVO[0]" class="sort-mode-wrap">
               <span class="sort-mode-before">sort by:</span>
               <el-dropdown class="sort-mode" trigger="click" @command="handleSortMode">
                 <el-button class="sort-mode-button" type="primary">
@@ -52,7 +52,8 @@
             >
             </Card>
           </div>
-          <el-button class="result-more" @click="loadMore">load more...</el-button>
+          <div v-if="!simplePaperVO[0]" class="message">No Result...</div>
+          <el-button v-if="simplePaperVO[0]" class="result-more" @click="loadMore">load more...</el-button>
         </el-col>
         <el-col :span="6" class="body-bottom-right">
           <RankList
@@ -253,5 +254,9 @@
   .body-bottom-right{
     border-left: 1px solid #ebeef5;
     padding: 0 30px 50px 8px;
+  }
+  .message{
+    margin: 20px 0 10px;
+    font-size: 32px;
   }
 </style>

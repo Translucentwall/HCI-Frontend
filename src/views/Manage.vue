@@ -56,16 +56,17 @@
                     <a slot="reference">operate</a>
                     <el-row>
                       <el-col :span="24">Choose one target to add</el-col>
+                    </el-row>
+                    <el-row class="operate-source">
                       <el-col :span="4">Source:</el-col>
                       <el-col :span="20">
-                        <el-tag
-                          :title="item.name"
-                        >{{item.name}}</el-tag>
+                        <strong :title="item.name">{{item.name}}</strong>
                       </el-col>
                     </el-row>
-                    <el-row>
+                    <el-row class="operate-target">
                       <el-col :span="4">Targets:</el-col>
                       <el-col :span="20">
+                        <el-tag :title="item.name" @click="confirmAlias(item.sonId, item.sonId, item.type)">{{item.name}}</el-tag>
                         <el-tag
                           v-for="father in item.fathers"
                           :key="father.fatherId"
@@ -103,7 +104,7 @@
                   >{{father.aliasName}}</el-tag>
                 </el-col>
                 <el-col :span="3" class="column operation">
-                  <a @click="confirmCancelAlias(item.sonId, item.type)">operate</a>
+                  <a @click="confirmCancelAlias(item.sonId, item.type)">cancel</a>
                 </el-col>
               </el-row>
               <el-row>
@@ -402,5 +403,8 @@
   .message{
     margin: 20px 0 10px;
     font-size: 32px;
+  }
+  .operate-source{
+    margin: 10px 0;
   }
 </style>

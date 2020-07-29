@@ -218,9 +218,6 @@
           mounted() {
               this.id=this.$route.params.id;
               this.type=this.typeDic[this.$route.params.type];
-              if(this.type===1){
-                this.activeName = 'affiliation'
-              }
               if(this.id===undefined || this.type===undefined){
                   window.location.href = '/home';
               }
@@ -231,6 +228,17 @@
                           return b.year-a.year;
                       });
                       this.academicEntityVO = res;
+                      if(res.authors&&res.authors[0]){
+                          this.activeName = 'author';
+                      }else if(res.affiliations&&res.affiliations[0]){
+                          this.activeName = 'affiliation';
+                      }else if(res.conferences&&res.conferences[0]){
+                          this.activeName = 'conference';
+                      }else if(res.terms&&res.terms[0]){
+                          this.activeName = 'cloud';
+                      }else{
+                          this.activeName = 'graph';
+                      }
                       let allTermItems = [];
                       this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
                           yearlyTerm.termItemList.forEach(function (termItem) {
@@ -379,9 +387,9 @@
                       {
                         type: 'wordCloud',
                         gridSize: 2,
-                        sizeRange: [12, 100],
-                        rotationRange: [-90, 90],
-                        shape: 'pentagon',
+                        sizeRange: [20, 80],
+                        rotationRange: [0, 0],
+                        shape: 'circle',
                         textStyle: {
                           normal: {
                             color: function () {
