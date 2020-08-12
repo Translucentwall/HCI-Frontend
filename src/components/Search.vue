@@ -24,6 +24,16 @@
         @keydown.229="handleCN">
       </el-input>
       <div class="advanced" v-if="mode==='Advanced'">
+        <el-dropdown trigger="click" @command="handleRelationMode">
+          <el-button class="relation-mode" type="primary" size="small">
+            {{relationMode}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="AND">AND</el-dropdown-item>
+            <el-dropdown-item command="OR">OR</el-dropdown-item>
+            <el-dropdown-item command="NOT">NOT</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <el-dropdown trigger="click" @command="handleAdvancedMode">
           <el-button class="advanced-mode" type="primary" size="small">
             {{advancedMode}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -58,7 +68,8 @@
         v-for="(advancedSearchItem, index) in advancedSearch"
         :class="'tag ' + advancedTypeDic[advancedSearchItem.mode]"
         :key="index"
-        :title="advancedSearchItem.mode + ': ' + advancedSearchItem.content">
+        :title="advancedSearchItem.relation + ' ' + advancedSearchItem.mode + ': ' + advancedSearchItem.content">
+        <div class="relation-text">{{advancedSearchItem.relation}}</div>
         <div class="tag-text">{{advancedSearchItem.content}}</div>
         <i class="el-icon-close tag-delete" @click="remove(index)"></i>
       </div>
@@ -73,6 +84,7 @@
             return{
                 mode: 'All',
                 content: '',
+                relationMode: 'AND',
                 advancedMode: 'Title',
                 advancedContent: '',
                 advancedSearch: [],
@@ -107,8 +119,11 @@
             handleMode(command) {
                 this.mode = command;
             },
+            handleRelationMode(command){
+                this.relationMode = command;
+            },
             handleAdvancedMode(command){
-                this.advancedMode = command;
+              this.advancedMode = command;
             },
             handleCN: function () {
                 console.log('我捕获了');
@@ -144,8 +159,12 @@
                     }else{
                         let content = '';
                         this.advancedSearch.forEach(function (advancedSearchItem) {
-                            content = content + advancedSearchItem.mode + ':' + advancedSearchItem.content + ' ';
+                            content = content + advancedSearchItem.relation + ' ' + advancedSearchItem.mode + ':' + advancedSearchItem.content + ' ';
                         })
+                        if(this.advancedSearch[0].relation !== 'NOT'){
+                            content = content.replace(' ', '，').split('，')[1];
+                        }
+                        console.log(content);
                         sessionStorage.setItem('advancedContent', content);
                         window.location.href = '/search/' + this.mode + '/' + content;
                     }
@@ -168,7 +187,7 @@
                             duration: 2000
                         });
                     }else{
-                        this.advancedSearch.push({mode: this.advancedMode, content: this.advancedContent});
+                        this.advancedSearch.push({relation: this.relationMode, mode: this.advancedMode, content: this.advancedContent});
                         this.advancedContent = '';
                     }
                 }
@@ -206,11 +225,17 @@
     border-right-width: 2px;
     border-left-width: 2px;
   }
+  .relation-mode{
+    width: 6vw;
+    border-radius: 0;
+    border-right: 1px solid #ffffff;
+  }
   .advanced-mode{
     width: 9vw;
+    border-radius: 0;
   }
   .advanced-input{
-    width: 18vw;
+    width: 12vw;
   }
   .advanced-add{
     width: 4vw;
@@ -242,6 +267,9 @@
     float: left;
     padding-left: 2px;
     color: #ffffff;
+  }
+  .relation-text{
+    margin-right: 2px;
   }
   .tag-text{
     width: 80%;

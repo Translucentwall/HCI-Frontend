@@ -25,7 +25,7 @@
         <el-col :span="17" :offset="1">
           <div class="result-title-wrap">
             <div class="result-title">
-              Results for <span class="emphasize content">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
+              Results for <span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
             </div>
             <div v-if="simplePaperVO[0]" class="sort-mode-wrap">
               <span class="sort-mode-before">sort by:</span>
