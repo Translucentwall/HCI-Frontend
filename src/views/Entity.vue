@@ -41,7 +41,7 @@
                     <el-row class="entity-wrap">
                       <el-col :span="9">
                         <a class="entity" :title="author.name" :href="'/entity/author/' + author.id">
-                          {{(index + 1) + '. ' +author.name}}
+                          {{'· ' +author.name}}
                         </a>
                       </el-col>
                       <el-col :span="15">
@@ -59,7 +59,7 @@
                       <el-col :span="14">
                         <a class="entity" :title="affiliation.name" :href="'/entity/affiliation/' + affiliation.id">
 <!--                          {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}-->
-                          {{(index + 1) + '. ' +affiliation.name}}
+                          {{'· ' +affiliation.name}}
                         </a>
                       </el-col>
                       <el-col :span="10">
@@ -76,7 +76,7 @@
                     <el-row class="entity-wrap">
                       <el-col :span="conference.popTrend?12:24">
                         <a class="entity" :title="conference.name" :href="'/entity/issue/' + conference.id">
-                          {{(index + 1) + '. ' +conference.name}}
+                          {{'· ' +conference.name}}
                         </a>
                       </el-col>
                       <el-col :span="12" v-if="conference.popTrend">
@@ -518,13 +518,14 @@
     margin: 10px 0;
   }
   .entity{
-    color: #000000;
-    text-decoration: underline;
+    color: #409eff;
+    text-decoration: none;
     cursor: pointer;
     font-style: italic;
+    font-weight: bold;
   }
   .entity:hover{
-    color: #409eff;
+    color: #000000;
     text-decoration: underline;
     cursor: pointer;
     font-style: italic;

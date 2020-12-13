@@ -136,18 +136,19 @@
           },
           searchBegin: function () {
               let content = this.$route.params.content;
-              if (content !== null) {
+              this.mode = this.$route.params.mode;
+              if (this.mode !== 'Advanced') {
                   this.searchContent = content;
-                  this.mode = this.$route.params.mode;
+
               }
 
               this.currentPage = 1;
 
               this.simplePaperVO.length = 0;
-              search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+              search(content, this.mode, this.currentPage, this.sortMode, 10).then(res => {
                   this.simplePaperVO = res;
                   this.resultTitleMode = this.mode;
-                  this.resultTitleContent = this.searchContent;
+                  this.resultTitleContent = content;
                   this.displayBottom = true;
 
                   this.tableMode = this.tableModeDic[this.mode];
