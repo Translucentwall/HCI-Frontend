@@ -4,13 +4,11 @@
       <a class="title" :href="'/paper/'+simplePaperVO.id" v-html="simplePaperVO.title"></a>
     </div>
     <div class="author-affiliation-wrap" v-if="simplePaperVO.author_simpleAffiliationVOS&&simplePaperVO.author_simpleAffiliationVOS[0]&&simplePaperVO.author_simpleAffiliationVOS[0].author!==''">
-      <div v-for="(item,index) in simplePaperVO.author_simpleAffiliationVOS" class="author-affiliation" v-if="index < 3">
+      <div v-for="(item,index) in simplePaperVO.author_simpleAffiliationVOS" class="author-affiliation" >
         <a class="author" :href="'/entity/author/'+item.authorId" v-html="item.author"></a>
-        <span v-if="item.affiliation&&item.affiliation!=='NA'">,</span>
-        <a class="affiliation" :href="'/entity/affiliation/'+item.affiliationId" v-if="item.affiliation&&item.affiliation!=='NA'" v-html="item.affiliation"></a>
-        <span>;</span>
+        <span v-if="index<simplePaperVO.author_simpleAffiliationVOS.length-2">, </span>
+        <span v-else-if="index===simplePaperVO.author_simpleAffiliationVOS.length-2"> and </span>
       </div>
-      <div v-if="simplePaperVO.author_simpleAffiliationVOS.length > 3">...</div>
     </div>
     <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
       <span>publication: </span>
@@ -70,7 +68,7 @@ export default {
     text-decoration: underline;
   }
   .author-affiliation-wrap{
-    /*display: flex;*/
+    display: flex;
     padding: 0 12px;
   }
   .author-affiliation{

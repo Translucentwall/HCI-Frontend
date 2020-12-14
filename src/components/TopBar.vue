@@ -7,45 +7,18 @@
       @select="handleSelect"
       active-text-color="#000000"
     >
-      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='/admin/manage'?'0 0 0 35%':'0 0 0 40%'}">Home</el-menu-item>
-      <el-submenu index="2">
-        <template  class="submenu-title" slot="title">Rank</template>
-        <el-submenu index="/rank">
-          <template slot="title">Paper</template>
-          <el-menu-item index="/rank?mode=1">Cited Rank</el-menu-item>
-        </el-submenu>
-        <el-submenu index="2-2">
-          <template slot="title">Author</template>
-          <el-menu-item index="/rank?mode=2">Paper Rank</el-menu-item>
-          <el-menu-item index="/rank?mode=3">Cited Rank</el-menu-item>
-        </el-submenu>
-        <el-submenu index="2-3">
-          <template slot="title">Affiliation</template>
-          <el-menu-item index="/rank?mode=4">Paper Rank</el-menu-item>
-        </el-submenu>
-        <el-submenu index="2-4">
-          <template slot="title">Publication</template>
-          <el-menu-item index="/rank?mode=5">Paper Rank</el-menu-item>
-        </el-submenu>
-        <el-submenu index="2-5">
-          <template slot="title">Keyword</template>
-          <el-menu-item index="/rank?mode=6">Paper Rank</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item class="admin" index="/admin/manage" v-if="this.$route.path==='/admin/manage'">Manage</el-menu-item>
+      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='0 0 0 0'}">Home</el-menu-item>
+      <SearchInTopBar></SearchInTopBar>
     </el-menu>
-    <div class="option">
-      <a class="option-item" :href="'/home'">User</a>
-      <span>|</span>
-      <a class="option-item" :href="'/login'">Admin</a>
-    </div>
   </div>
 </template>
 
 <script>
+    import SearchInTopBar from "./SearchInTopBar";
     export default {
         name: "TopBar",
-        data() {
+      components: {SearchInTopBar},
+      data() {
             return {
                 activeIndex: '1'
             };
@@ -85,9 +58,12 @@
 <style scoped>
   .topBar{
     background-color: transparent;
+    height: auto;
   }
   .topBar .home{
     width: 10%;
+    height: auto;
+    line-height: 45px;
   }
   .admin{
     width: 10%;

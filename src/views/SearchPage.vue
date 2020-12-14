@@ -1,28 +1,11 @@
 <template>
   <div style="text-align: center">
     <div class="body-top">
-      <div class="img-wrap">
-        <img src="../assets/background-new.jpg" alt="This is a background picture." />
-      </div>
-      <div class="system-name-wrap">
-        <span>Online grAph System for academIcS</span>
-      </div>
-      <Search
-          v-if="showSearch"
-          :search-mode="mode"
-          :search-content="searchContent"></Search>
+      <TopBar></TopBar>
     </div>
     <div class="body-bottom" v-if="displayBottom">
       <el-row>
-        <el-col :span="23">
-          <div class="breadcrumb">
-            <el-breadcrumb separator="/">
-              <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
-              <el-breadcrumb-item>Search</el-breadcrumb-item>
-            </el-breadcrumb>
-          </div>
-        </el-col>
-        <el-col :span="17" :offset="1">
+        <el-col :span="23" :offset="1">
           <div class="result-title-wrap">
             <div class="result-title">
               Results for <span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
@@ -55,14 +38,6 @@
           <div v-if="!simplePaperVO[0]" class="message">No Result...</div>
           <el-button v-if="simplePaperVO[0]" class="result-more" @click="loadMore">load more...</el-button>
         </el-col>
-        <el-col :span="6" class="body-bottom-right">
-          <RankList
-            :size="tableSize"
-            :mode="tableMode"
-            :data="tableData"
-            :page="1">
-          </RankList>
-        </el-col>
       </el-row>
     </div>
   </div>
@@ -73,10 +48,11 @@
   import {search, getRank, searchable} from "../api/api"
   import RankList from "../components/RankList";
   import {Loading} from "element-ui";
-  import Search from "../components/Search";
+
+  import TopBar from "../components/TopBar";
   export default {
       name: 'SearchPage',
-      components: {Search, RankList, Card},
+      components: {TopBar,RankList, Card},
       data(){
           return{
               displayBottom: false,

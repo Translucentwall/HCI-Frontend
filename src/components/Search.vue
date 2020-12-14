@@ -9,7 +9,6 @@
           <el-dropdown-item command="All">All</el-dropdown-item>
           <el-dropdown-item command="Title">Title</el-dropdown-item>
           <el-dropdown-item command="Author">Author</el-dropdown-item>
-          <el-dropdown-item command="Affiliation">Affiliation</el-dropdown-item>
           <el-dropdown-item command="Publication">Publication</el-dropdown-item>
           <el-dropdown-item command="Keyword">Keyword</el-dropdown-item>
           <el-dropdown-item command="Advanced">Advanced</el-dropdown-item>

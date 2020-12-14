@@ -9,64 +9,6 @@
       </div>
       <Search></Search>
     </div>
-    <div class="body-bottom">
-      <el-row>
-        <el-col :span="24">
-          <strong class="rank-wrap-title">Hot Rank</strong>
-        </el-col>
-        <el-col :span="24">
-          <el-row class="rank-wrap" type="flex" justify="space-around">
-            <el-col :span="7" class="rank">
-              <el-row>
-                <el-col :span="24" class="rank-title">
-                  <strong>Author Hot Rank</strong>
-                </el-col>
-                <el-row>
-                  <el-col :span="3"><strong>Rank</strong></el-col>
-                  <el-col :span="15" :offset="1"><strong>Author Name</strong></el-col>
-                  <el-col :span="4" :offset="1"><strong>Hot</strong></el-col>
-                </el-row>
-                <el-row v-for="(data, index) in authorTableData" :key="index" class="rank-item">
-                  <el-col :span="3">{{index+1}}</el-col>
-                  <el-col :span="15" :offset="1" class="data-name-column"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name" :href="'/entity/author/'+data.id">{{data.name}}</a></el-tooltip></el-col>
-                  <el-col :span="4" :offset="1">{{data.value.toFixed(2)}}</el-col>
-                </el-row>
-              </el-row>
-            </el-col>
-            <el-col :span="7" class="rank">
-              <el-col :span="24" class="rank-title">
-                <strong>Affiliation Hot Rank</strong>
-              </el-col>
-              <el-row>
-                <el-col :span="3"><strong>Rank</strong></el-col>
-                <el-col :span="15" :offset="1"><strong>Affiliation Name</strong></el-col>
-                <el-col :span="4" :offset="1"><strong>Hot</strong></el-col>
-              </el-row>
-              <el-row v-for="(data, index) in affiliationTableData" :key="index" class="rank-item">
-                <el-col :span="3">{{index+1}}</el-col>
-                <el-col :span="15" :offset="1" class="data-name-column"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name" :href="'/entity/affiliation/'+data.id">{{data.name}}</a></el-tooltip></el-col>
-                <el-col :span="4" :offset="1">{{data.value.toFixed(2)}}</el-col>
-              </el-row>
-            </el-col>
-            <el-col :span="7" class="rank">
-              <el-col :span="24" class="rank-title">
-                <strong>Term Hot Rank</strong>
-              </el-col>
-              <el-row>
-                <el-col :span="3"><strong>Rank</strong></el-col>
-                <el-col :span="15" :offset="1"><strong>Term</strong></el-col>
-                <el-col :span="4" :offset="1"><strong>Hot</strong></el-col>
-              </el-row>
-              <el-row v-for="(data, index) in termTableData" :key="index" class="rank-item">
-                <el-col :span="3">{{index+1}}</el-col>
-                <el-col :span="15" :offset="1" class="data-name-column"><el-tooltip :content="data.name" placement="bottom-start" effect="dark" :open-delay="400"><a class="data-name" :href="'/graph/term/'+data.id">{{data.name}}</a></el-tooltip></el-col>
-                <el-col :span="4" :offset="1">{{data.value.toFixed(2)}}</el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-    </div>
   </div>
 </template>
 
