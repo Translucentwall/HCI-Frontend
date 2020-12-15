@@ -204,7 +204,7 @@ export default {
   top: 1px;
   left: 10%;
   display: block;
-  border: 2px outset #000000;
+  border: 2px solid #c4c7ce;
   border-radius: 7px;
 }
 .search-top{

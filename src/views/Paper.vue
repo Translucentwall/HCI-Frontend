@@ -18,41 +18,31 @@
         <div class="title">
           <span>{{paperVO.title}}</span>
         </div>
-        <div class="citation_wrap" v-if="paperVO.referenceCount > 0 || paperVO.citationCount > 0">
-          <div class="reference citation_box" v-if="paperVO.referenceCount > 0">
+        <div class="citation_wrap">
+          <div class="reference citation_box">
             <div class="citation_title">Reference</div>
             <div class="citation_count">{{paperVO.referenceCount}}</div>
           </div>
-          <div class="citation citation_box" v-if="paperVO.citationCount > 0">
+          <div class="citation citation_box">
             <div class="citation_title">Citation</div>
             <div class="citation_count">{{paperVO.citationCount}}</div>
           </div>
         </div>
         <div class="information">
-          <el-collapse v-model="activeCollapse" @change="handleChange">
+          <el-collapse class="no-line" v-model="activeCollapse" @change="handleChange">
             <el-collapse-item title="Abstract" name="1" class="block">
               <div class="abstract">
                 <div class="summary font-medium" v-if="paperVO.summary">
                   <div class="subtitle">Summary:</div>
                   {{paperVO.summary}}
                 </div>
-                <div class="publication font-medium" v-if="paperVO.publicationTitle">
-                  <div class="subtitle">Publication:</div>
-                  <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
-                </div>
-                <div class="publisher font-medium" v-if="paperVO.publisher">
-                  <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
-                </div>
                 <div class="DOI font-medium" v-if="paperVO.doi">
                   <span class="subtitle">DOI: </span>{{paperVO.doi}}
-                </div>
-                <div class="PDFLink font-medium" v-if="paperVO.pdflink">
-                  <span class="subtitle">PDF Link: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
                 </div>
               </div>
             </el-collapse-item>
             <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.author_affiliationVOS&&paperVO.author_affiliationVOS[0]">
-              <div class="author_affiliation" v-for="item in paperVO.author_affiliationVOS" v-if="item.author">
+              <div class="author_affiliation no-line" v-for="item in paperVO.author_affiliationVOS" v-if="item.author">
                 <a class="author" :href="'/entity/author/'+item.authorId">{{item.author}}</a>
                 <a class="affiliation" :href="'/entity/affiliation/'+item.affiliation.id" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</a>
               </div>
@@ -83,6 +73,18 @@
                 </div>
               </div>
             </el-collapse-item>
+            <el-collapse-item name="4" class="block" v-if="paperVO.publicationTitle||paperVO.publisher||paperVO.pdflink">
+              <div class="publication font-medium" v-if="paperVO.publicationTitle">
+                <div class="subtitle">Publication:</div>
+                <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
+              </div>
+              <div class="publisher font-medium" v-if="paperVO.publisher">
+                <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
+              </div>
+              <div class="PDFLink font-medium" v-if="paperVO.pdflink">
+                <span class="subtitle">PDF Link: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
+              </div>
+            </el-collapse-item>
           </el-collapse>
         </div>
 
@@ -100,7 +102,7 @@
             return{
                 id: 0,
                 paperVO: {},
-                activeCollapse: ['1', '2', '3']
+                activeCollapse: ['1', '2', '3','4']
             }
         },
         mounted() {
@@ -112,6 +114,10 @@
                     .then(res => {
                         if(res.success){
                             this.paperVO = res.content;
+                            let flag=this.paperVO.pdflink.indexOf("https");
+                            if(flag===-1){
+                              this.paperVO.pdflink="https://ieeexplore.ieee.org"+this.paperVO.pdflink;
+                            }
                             window.scrollTo(0,0);
                         }else{
                             this.$alert('Fail to get paper，please search again','Tips',{
@@ -266,4 +272,7 @@
     font-weight: bold;
     font-size: 20px;
    }
+  .no-line{
+    border: none;
+  }
 </style>
