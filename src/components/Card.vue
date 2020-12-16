@@ -6,8 +6,7 @@
     <div class="author-affiliation-wrap" v-if="simplePaperVO.author_simpleAffiliationVOS&&simplePaperVO.author_simpleAffiliationVOS[0]&&simplePaperVO.author_simpleAffiliationVOS[0].author!==''">
       <div v-for="(item,index) in simplePaperVO.author_simpleAffiliationVOS" class="author-affiliation" >
         <a class="author" :href="'/entity/author/'+item.authorId" v-html="item.author"></a>
-        <span v-if="index<simplePaperVO.author_simpleAffiliationVOS.length-2">, </span>
-        <span v-else-if="index===simplePaperVO.author_simpleAffiliationVOS.length-2"> and </span>
+        <span v-if="index<simplePaperVO.author_simpleAffiliationVOS.length-1">;</span>
       </div>
     </div>
     <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
@@ -61,6 +60,7 @@ export default {
   .title{
     color: #069;
     font-size: 24px;
+    font-weight: bold;
     text-decoration: none;
   }
   .title:hover{
@@ -69,13 +69,14 @@ export default {
   }
   .author-affiliation-wrap{
     display: flex;
+    flex-wrap: wrap;
     padding: 0 12px;
   }
   .author-affiliation{
     margin-right: 10px;
   }
   .author{
-    color: #000000;
+    color: #069;
     text-decoration: none;
   }
   .author:hover{
@@ -83,7 +84,7 @@ export default {
     text-decoration: underline;
   }
   .affiliation{
-    color: #000000;
+    color: #069;
     text-decoration: none;
   }
   .affiliation:hover{
@@ -94,7 +95,7 @@ export default {
     padding: 0 12px;
   }
   .publication{
-    color: #000000;
+    color: #069;
     text-decoration: none;
   }
   .publication:hover{
@@ -102,6 +103,7 @@ export default {
     text-decoration: underline;
   }
   .keyword-wrap{
+    cursor: pointer;
     padding: 0 12px;
   }
   .keyword{

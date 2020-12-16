@@ -20,7 +20,6 @@
             <span class="name">{{academicEntityVO.name}}</span>
             <hot-graph v-if="academicEntityVO.popTrend" :data="academicEntityVO.popTrend" :id="type + '' + id"></hot-graph>
           </div>
-          <hr v-if="academicEntityVO.refSum>-1"/>
         </el-col>
         <el-col :span="3" :offset="1" v-if="academicEntityVO.refSum>-1">
           <div class="reference citation_box">
@@ -41,7 +40,7 @@
                     <el-row class="entity-wrap">
                       <el-col :span="9">
                         <a class="entity" :title="author.name" :href="'/entity/author/' + author.id">
-                          {{'· ' +author.name}}
+                          {{author.name}}
                         </a>
                       </el-col>
                       <el-col :span="15">
@@ -59,7 +58,7 @@
                       <el-col :span="14">
                         <a class="entity" :title="affiliation.name" :href="'/entity/affiliation/' + affiliation.id">
 <!--                          {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}-->
-                          {{'· ' +affiliation.name}}
+                          {{affiliation.name}}
                         </a>
                       </el-col>
                       <el-col :span="10">
@@ -76,7 +75,7 @@
                     <el-row class="entity-wrap">
                       <el-col :span="conference.popTrend?12:24">
                         <a class="entity" :title="conference.name" :href="'/entity/issue/' + conference.id">
-                          {{'· ' +conference.name}}
+                          {{conference.name}}
                         </a>
                       </el-col>
                       <el-col :span="12" v-if="conference.popTrend">
@@ -101,7 +100,7 @@
                 <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
                     <el-tooltip :content="'More Relation Graph'" placement="bottom-start" effect="dark" :open-delay="400">
-                      <img src="../assets/graph-entry.png" class="graph_entry">
+                      <el-button type="primary" size="small" plain class="graph-button">Relation Graph Page</el-button>
                     </el-tooltip>
                   </router-link>
                 </div>
@@ -111,46 +110,60 @@
           </el-row>
         </el-col>
         <el-col :span="22" :offset="1" class="significantPaper_wrap">
-          <strong class="significantPaper_title">Significant Papers</strong>
+          <div style="display:flex;">
+            <strong class="significantPaper_title">Significant Papers</strong>
+            <div class="search-button">
+              <el-tooltip :content="'通过'+this.academicEntityVO.name+'搜索论文'" placement="bottom-start" effect="dark" :open-delay="400">
+                <el-button size="mini" plain icon="el-icon-search" @click="search"></el-button>
+              </el-tooltip>
+          </div>
+          </div>
           <hr/>
-          <div class="radio" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
-            <el-row>
-              <el-col :span="2">
-                <strong>Year: </strong>
-              </el-col>
-              <el-col :span="22">
-                <el-radio-group v-model="yearSelect">
-                  <el-radio :label="-1">All</el-radio>
-                  <el-radio v-for="(yearlyTerm, index) in academicEntityVO.yearlyTerms" :key="index" :label="yearlyTerm.year">
-                    {{yearlyTerm.year}}
-                  </el-radio>
-                </el-radio-group>
-              </el-col>
-            </el-row>
+          <div class="filter-list" v-if="(this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0)||(this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0)">
+            <div style="font-size: 15px">筛选条件：</div>
+            <div class="filter-box" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
+              <el-dropdown type="primary">
+              <span class="el-dropdown-link">
+                年份：<span v-if="yearSelect===-1">全部</span>
+                <span v-else>{{yearSelect}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+                <el-dropdown-menu class="el-menu">
+                  <el-radio-group size="medium" class="radio-group" v-model="yearSelect">
+                    <el-radio class="radio-single" :label="-1">全部</el-radio>
+                    <el-radio class="radio-single" v-for="(yearlyTerm, index) in academicEntityVO.yearlyTerms" :key="index" :label="yearlyTerm.year">
+                      {{yearlyTerm.year}}
+                    </el-radio>
+                  </el-radio-group>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+            <div class="filter-box" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
+              <el-dropdown type="primary">
+              <span class="el-dropdown-link">
+                研究方向：<span v-if="termSelect===-1">全部</span>
+                <span v-else><span v-for="termItem in showTermItems">
+                  <span v-if="termSelect===termItem.id">{{termItem.name}}</span>
+                </span></span><i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+                <el-dropdown-menu class="el-menu">
+                  <el-radio-group size="medium" class="radio-group" v-model="termSelect">
+                    <el-radio class="radio-single" :label="-1">全部</el-radio>
+                    <el-radio class="radio-single" v-for="(termItem, index) in showTermItems" :key="index" :label="termItem.id">
+                      {{termItem.name}}
+                    </el-radio>
+                  </el-radio-group>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </div>
-          <div class="radio" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
-            <el-row>
-              <el-col :span="2">
-                <strong>Term: </strong>
-              </el-col>
-              <el-col :span="22">
-                <el-radio-group v-model="termSelect">
-                  <el-radio :label="-1">All</el-radio>
-                  <el-radio v-for="(termItem, index) in showTermItems" :key="index" :label="termItem.id">
-                    {{termItem.name}}
-                  </el-radio>
-                </el-radio-group>
-              </el-col>
-            </el-row>
-            <hr/>
-          </div>
-          <Card
+          <hr/>
+                  <Card
           v-for="(significantPaper,index) in academicEntityVO.significantPapers"
           :key="index"
           :simple-paper-v-o="significantPaper"
           ></Card>
         </el-col>
-        <el-col :span="22" :offset="1" class="more"><a class="more-text" @click="search">More information about <strong>{{academicEntityVO.name}} ...</strong></a></el-col>
+<!--        <el-col :span="22" :offset="1" class="more"><a class="more-text" @click="search">Search papers by <strong>{{academicEntityVO.name}} </strong></a></el-col>-->
       </el-row>
     </div>
   </div>
@@ -486,8 +499,6 @@
   .body_bottom_top{
     padding-top: 10px;
     padding-bottom: 10px;
-    border-top: 1px solid #cccccc;
-    border-bottom: 1px solid #cccccc;
   }
   .entity-title{
     display: flex;
@@ -542,10 +553,15 @@
     left: 0;
   }
   .graph_entry{
-    width: 3vw;
+    width: 12vw;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 1vw;
+  }
+  .graph-button{
+    background: #069;
+    border: 4px;
+    color: white;
   }
   #cloud-wrap{
     width: 100%;
@@ -558,8 +574,25 @@
   .significantPaper_title{
     font-size: 24px;
   }
-  .radio{
-    margin: 10px 50px 0;
+  .search-button{
+    margin-left: 1vw;
+  }
+  .radio-group{
+    /*padding-left: 1vw;*/
+   /*padding-right: 1vw;*/
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .radio-single{
+    margin: 1vw;
+  }
+
+  .filter-list{
+    display: flex;
+  }
+  .filter-box{
+    display: block;
+    margin-left: 20px;
   }
   .column{
     text-align: left;
@@ -575,11 +608,20 @@
     color: #000000;
     text-decoration: underline;
   }
+  .el-dropdown-link {
+    font-size: 15px;
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
   .more{
     margin-top: 10px;
     text-align: left;
   }
   .more-text{
+    cursor: pointer;
     text-decoration: underline;
   }
   .more-text:hover{
