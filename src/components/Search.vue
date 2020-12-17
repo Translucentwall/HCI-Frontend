@@ -3,21 +3,21 @@
     <div class="search-top">
       <el-dropdown trigger="click" @command="handleMode">
         <el-button class="mode-button" type="primary">
-          <span v-if="mode==='All'">全部</span>
-          <span v-else-if="mode==='Title'">标题</span>
-          <span v-else-if="mode==='Author'">作者</span>
-          <span v-else-if="mode==='Publication'">刊物</span>
-          <span v-else-if="mode==='Keyword'">研究方向</span>
-          <span v-else-if="mode==='Advanced'">高级</span>
+          <span v-if="mode==='All'">全局搜索</span>
+          <span v-else-if="mode==='Title'">按标题搜索</span>
+          <span v-else-if="mode==='Author'">按作者搜索</span>
+          <span v-else-if="mode==='Publication'">按刊物搜索</span>
+          <span v-else-if="mode==='Keyword'">按研究方向搜索</span>
+          <span v-else-if="mode==='Advanced'">高级搜索</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="All">全部</el-dropdown-item>
-          <el-dropdown-item command="Title">标题</el-dropdown-item>
-          <el-dropdown-item command="Author">作者</el-dropdown-item>
-          <el-dropdown-item command="Publication">刊物</el-dropdown-item>
-          <el-dropdown-item command="Keyword">研究方向</el-dropdown-item>
-          <el-dropdown-item command="Advanced">高级</el-dropdown-item>
+          <el-dropdown-item command="All">全局搜索</el-dropdown-item>
+          <el-dropdown-item command="Title">按标题搜索</el-dropdown-item>
+          <el-dropdown-item command="Author">按作者搜索</el-dropdown-item>
+          <el-dropdown-item command="Publication">按刊物搜索</el-dropdown-item>
+          <el-dropdown-item command="Keyword">按研究方向搜索</el-dropdown-item>
+          <el-dropdown-item command="Advanced">高级搜索</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-input
