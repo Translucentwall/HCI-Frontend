@@ -3,22 +3,28 @@
     <div class="search-top">
       <el-dropdown trigger="click" @command="handleMode">
         <el-button class="mode-button" type="primary">
-          {{mode}}<i class="el-icon-arrow-down el-icon--right"></i>
+          <span v-if="mode==='All'">全部</span>
+          <span v-else-if="mode==='Title'">标题</span>
+          <span v-else-if="mode==='Author'">作者</span>
+          <span v-else-if="mode==='Publication'">刊物</span>
+          <span v-else-if="mode==='Keyword'">研究方向</span>
+          <span v-else-if="mode==='Advanced'">高级</span>
+          <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="All">All</el-dropdown-item>
-          <el-dropdown-item command="Title">Title</el-dropdown-item>
-          <el-dropdown-item command="Author">Author</el-dropdown-item>
-          <el-dropdown-item command="Publication">Publication</el-dropdown-item>
-          <el-dropdown-item command="Keyword">Keyword</el-dropdown-item>
-          <el-dropdown-item command="Advanced">Advanced</el-dropdown-item>
+          <el-dropdown-item command="All">全部</el-dropdown-item>
+          <el-dropdown-item command="Title">标题</el-dropdown-item>
+          <el-dropdown-item command="Author">作者</el-dropdown-item>
+          <el-dropdown-item command="Publication">刊物</el-dropdown-item>
+          <el-dropdown-item command="Keyword">研究方向</el-dropdown-item>
+          <el-dropdown-item command="Advanced">高级</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-input
         v-if="mode!=='Advanced'"
         class="search-input"
         v-model="content"
-        placeholder="Please input the search content..."
+        placeholder="请键入搜索内容..."
         @keydown.13.native="search"
         @keydown.229="handleCN">
       </el-input>
@@ -38,19 +44,19 @@
             {{advancedMode}}<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="Title">Title</el-dropdown-item>
-            <el-dropdown-item command="Author">Author</el-dropdown-item>
-            <el-dropdown-item command="Affiliation">Affiliation</el-dropdown-item>
-            <el-dropdown-item command="Publication">Publication</el-dropdown-item>
-            <el-dropdown-item command="Keyword">Keyword</el-dropdown-item>
-            <el-dropdown-item command="Year">Year</el-dropdown-item>
+            <el-dropdown-item command="Title">标题</el-dropdown-item>
+            <el-dropdown-item command="Author">作者</el-dropdown-item>
+            <el-dropdown-item command="Affiliation">机构</el-dropdown-item>
+            <el-dropdown-item command="Publication">刊物</el-dropdown-item>
+            <el-dropdown-item command="Keyword">研究方向</el-dropdown-item>
+            <el-dropdown-item command="Year">年份</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-input
           class="advanced-input"
           size="small"
           v-model="advancedContent"
-          placeholder="Please input the advanced search..."
+          placeholder="请键入高级搜索内容..."
           @keydown.13.native="add"
           @keydown.229="handleCN">
         </el-input>

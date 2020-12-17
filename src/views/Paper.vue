@@ -20,20 +20,20 @@
         </div>
         <div class="citation_wrap">
           <div class="reference citation_box">
-            <div class="citation_title">Reference</div>
+            <div class="citation_title">引用数</div>
             <div class="citation_count">{{paperVO.referenceCount}}</div>
           </div>
           <div class="citation citation_box">
-            <div class="citation_title">Citation</div>
+            <div class="citation_title">被引用数</div>
             <div class="citation_count">{{paperVO.citationCount}}</div>
           </div>
         </div>
         <div class="information">
           <el-collapse class="no-line" v-model="activeCollapse" @change="handleChange">
-            <el-collapse-item title="Abstract" name="1" class="block">
+            <el-collapse-item title="概况" name="1" class="block">
               <div class="abstract">
                 <div class="summary font-medium" v-if="paperVO.summary">
-                  <div class="subtitle">Summary:</div>
+                  <div class="subtitle">摘要:</div>
                   {{paperVO.summary}}
                 </div>
                 <div class="DOI font-medium" v-if="paperVO.doi">
@@ -41,33 +41,33 @@
                 </div>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.author_affiliationVOS&&paperVO.author_affiliationVOS[0]">
+            <el-collapse-item title="作者" name="2" class="block" v-if="paperVO.author_affiliationVOS&&paperVO.author_affiliationVOS[0]">
               <div class="author_affiliation no-line" v-for="item in paperVO.author_affiliationVOS" v-if="item.author">
                 <a class="author" :href="'/entity/author/'+item.authorId">{{item.author}}</a>
                 <a class="affiliation" :href="'/entity/affiliation/'+item.affiliation.id" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</a>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="Keywords" name="3" class="block" v-if="(paperVO.authorKeywords&&paperVO.authorKeywords[0])||(paperVO.ieeeterms&&paperVO.ieeeterms[0])||(paperVO.controlledTerms&&paperVO.controlledTerms[0])||(paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0])">
+            <el-collapse-item title="研究方向" name="3" class="block" v-if="(paperVO.authorKeywords&&paperVO.authorKeywords[0])||(paperVO.ieeeterms&&paperVO.ieeeterms[0])||(paperVO.controlledTerms&&paperVO.controlledTerms[0])||(paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0])">
               <div class="author_keywords keywords" v-if="paperVO.authorKeywords&&paperVO.authorKeywords[0]">
-                <div class="subtitle">Author Keywords</div>
+                <div class="subtitle">作者关键词</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.authorKeywords" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="IEEE_keywords keywords" v-if="paperVO.ieeeterms&&paperVO.ieeeterms[0]">
-                <div class="subtitle">IEEE Keywords</div>
+                <div class="subtitle">IEEE关键词</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.ieeeterms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="controlled_terms keywords" v-if="paperVO.controlledTerms&&paperVO.controlledTerms[0]">
-                <div class="subtitle">INSPEC: Controlled Indexing</div>
+                <div class="subtitle">INSPEC: 受控索引</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.controlledTerms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
               <div class="non_controlled_terms keywords" v-if="paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0]">
-                <div class="subtitle">INSPEC: Non-Controlled Indexing</div>
+                <div class="subtitle">INSPEC: 非受控索引</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.nonControlledTerms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
@@ -75,14 +75,14 @@
             </el-collapse-item>
             <el-collapse-item name="4" class="block" v-if="paperVO.publicationTitle||paperVO.publisher||paperVO.pdflink">
               <div class="publication font-medium" v-if="paperVO.publicationTitle">
-                <div class="subtitle">Publication:</div>
+                <div class="subtitle">刊物:</div>
                 <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
               </div>
               <div class="publisher font-medium" v-if="paperVO.publisher">
-                <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
+                <span class="subtitle">出版商: </span>{{paperVO.publisher}}
               </div>
               <div class="PDFLink font-medium" v-if="paperVO.pdflink">
-                <span class="subtitle">PDF Link: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
+                <span class="subtitle">PDF链接: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
               </div>
             </el-collapse-item>
           </el-collapse>

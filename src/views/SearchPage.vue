@@ -8,20 +8,26 @@
         <el-col :span="23" :offset="1">
           <div class="result-title-wrap">
             <div class="result-title">
-              Results for <span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:
+<!--              Results for <span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:-->
+              通过<span class="emphasize">{{resultTitleMode}}</span>模式，搜索<span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span>的结果:
             </div>
             <div v-if="simplePaperVO[0]" class="sort-mode-wrap">
-              <span class="sort-mode-before">sort by:</span>
+              <span class="sort-mode-before">排序条件:</span>
               <el-dropdown class="sort-mode" trigger="click" @command="handleSortMode">
                 <el-button class="sort-mode-button" type="primary">
-                  {{sortMode}}<i class="el-icon-arrow-down el-icon--right"></i>
+                  <span v-if="sortMode==='Relevance'">相关性</span>
+                  <span v-else-if="sortMode==='Newest'">从新到旧</span>
+                  <span v-else-if="sortMode==='Oldest'">从旧到新</span>
+                  <span v-else-if="sortMode==='Title A-Z'">标题 A-Z</span>
+                  <span v-else-if="sortMode==='Title Z-A'">标题 Z-A</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="Relevance">Relevance</el-dropdown-item>
-                  <el-dropdown-item command="Newest">Newest</el-dropdown-item>
-                  <el-dropdown-item command="Oldest">Oldest</el-dropdown-item>
-                  <el-dropdown-item command="Title A-Z">Title A-Z</el-dropdown-item>
-                  <el-dropdown-item command="Title Z-A">Title Z-A</el-dropdown-item>
+                  <el-dropdown-item command="Relevance">相关性</el-dropdown-item>
+                  <el-dropdown-item command="Newest">从新到旧</el-dropdown-item>
+                  <el-dropdown-item command="Oldest">从旧到新                                     </el-dropdown-item>
+                  <el-dropdown-item command="Title A-Z">标题 A-Z</el-dropdown-item>
+                  <el-dropdown-item command="Title Z-A">标题 Z-A</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -35,8 +41,8 @@
             >
             </Card>
           </div>
-          <div v-if="!simplePaperVO[0]" class="message">No Result...</div>
-          <el-button v-if="simplePaperVO[0]" class="result-more" @click="loadMore">load more...</el-button>
+          <div v-if="!simplePaperVO[0]" class="message">没有搜索结果...</div>
+          <el-button v-if="simplePaperVO[0]" class="result-more" @click="loadMore">加载更多</el-button>
         </el-col>
       </el-row>
     </div>

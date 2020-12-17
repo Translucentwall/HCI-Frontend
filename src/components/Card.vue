@@ -10,14 +10,14 @@
       </div>
     </div>
     <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
-      <span>publication: </span>
+      <span>刊物: </span>
       <a class="publication" :href="'/entity/issue/'+simplePaperVO.conferenceId">
         <span v-html="simplePaperVO.publicationTitle"></span>
       </a>
     </div>
     <div class="keyword-wrap" v-if="simplePaperVO.keywords&&simplePaperVO.keywords[0]">
       <span v-for="(word,index) in simplePaperVO.keywords" v-if="index < 5">
-        <span class="keyword" @click="searchItem(word)" v-html="word"></span>
+        <span class="研究方向" @click="searchItem(word)" v-html="word"></span>
       </span>
     </div>
   </div>

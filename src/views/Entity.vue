@@ -23,7 +23,8 @@
         </el-col>
         <el-col :span="3" :offset="1" v-if="academicEntityVO.refSum>-1">
           <div class="reference citation_box">
-            <div class="citation_title">Reference</div>
+            <div class="citation_title">被引用数</div>
+<!--            TODO：改为被引用数-->
             <div class="citation_count">{{academicEntityVO.refSum}}</div>
           </div>
         </el-col>
@@ -34,7 +35,7 @@
             <el-col>
             <el-tabs v-model="activeName" type="border-card">
               <el-tab-pane v-if="academicEntityVO.authors&&academicEntityVO.authors.length>0" name="author">
-                <span slot="label"><i class="el-icon-s-custom"></i> Authors</span>
+                <span slot="label"><i class="el-icon-s-custom"></i> 作者</span>
                 <el-row>
                   <el-col class="column" :span="12" v-for="(author, index) in academicEntityVO.authors" :key="index">
                     <el-row class="entity-wrap">
@@ -51,7 +52,7 @@
                 </el-row>
               </el-tab-pane>
               <el-tab-pane v-if="academicEntityVO.affiliations&&academicEntityVO.affiliations.length>0" name="affiliation">
-                <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
+                <span slot="label"><i class="el-icon-s-home"></i> 机构</span>
                 <el-row>
                   <el-col class="column" :span="12" v-for="(affiliation,index) in academicEntityVO.affiliations" :key="index">
                     <el-row  class="entity-wrap">
@@ -69,7 +70,7 @@
                 </el-row>
               </el-tab-pane>
               <el-tab-pane v-if="academicEntityVO.conferences&&academicEntityVO.conferences.length>0" name="conference">
-                <span slot="label"><i class="el-icon-time"></i> Conferences</span>
+                <span slot="label"><i class="el-icon-time"></i> 刊物</span>
                 <el-row>
                   <el-col class="column" :span="12" v-for="(conference,index) in academicEntityVO.conferences" :key="index">
                     <el-row class="entity-wrap">
@@ -86,7 +87,7 @@
                 </el-row>
               </el-tab-pane>
               <el-tab-pane name="cloud" v-if="academicEntityVO.terms&&academicEntityVO.terms.length>0">
-                <span slot="label"><i class="el-icon-cloudy"></i> Cloud</span>
+                <span slot="label"><i class="el-icon-cloudy"></i> 云图</span>
                 <div id="cloud-wrap">
                   <div class="svg" id="cloud"></div>
                 </div>
@@ -95,12 +96,12 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane name="graph">
-                <span slot="label"><i class="el-icon-connection"></i> Relation Graph</span>
+                <span slot="label"><i class="el-icon-connection"></i> 关系图</span>
                 <relation-graph v-if="id!==0&&activeName==='graph'" :eid="parseInt(id)" :etype="type" :size="size"></relation-graph>
                 <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
-                    <el-tooltip :content="'More Relation Graph'" placement="bottom-start" effect="dark" :open-delay="400">
-                      <el-button type="primary" size="small" plain class="graph-button">Relation Graph Page</el-button>
+                    <el-tooltip :content="'进入关系图页面，查看更多关系图'" placement="bottom-start" effect="dark" :open-delay="400">
+                      <el-button type="primary" size="small" plain class="graph-button">关系图页面</el-button>
                     </el-tooltip>
                   </router-link>
                 </div>
@@ -111,7 +112,7 @@
         </el-col>
         <el-col :span="22" :offset="1" class="significantPaper_wrap">
           <div style="display:flex;">
-            <strong class="significantPaper_title">Significant Papers</strong>
+            <strong class="significantPaper_title">代表作</strong>
             <div class="search-button">
               <el-tooltip :content="'通过'+this.academicEntityVO.name+'搜索论文'" placement="bottom-start" effect="dark" :open-delay="400">
                 <el-button size="mini" plain icon="el-icon-search" @click="search"></el-button>
@@ -141,9 +142,8 @@
               <el-dropdown type="primary">
               <span class="el-dropdown-link">
                 研究方向：<span v-if="termSelect===-1">全部</span>
-                <span v-else><span v-for="termItem in showTermItems">
-                  <span v-if="termSelect===termItem.id">{{termItem.name}}</span>
-                </span></span><i class="el-icon-arrow-down el-icon--right"></i>
+                <span v-else v-for="termItem in showTermItems" v-if="termSelect===termItem.id">
+                  {{termItem.name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
               </span>
                 <el-dropdown-menu class="el-menu">
                   <el-radio-group size="medium" class="radio-group" v-model="termSelect">
