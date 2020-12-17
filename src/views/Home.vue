@@ -1,11 +1,10 @@
 <template>
-  <div style="text-align: center">
+  <div class="bg" style="text-align: center">
     <div class="body-top">
-      <div class="img-wrap">
-        <img src="../assets/background-new.jpg" alt="This is a background picture." />
-      </div>
       <div class="system-name-wrap">
-        <span>Online grAph System for academIcS</span>
+        <div class="system-name">
+          <span>Online grAph System&nbsp;</span><span>for academIcS</span>
+        </div>
       </div>
       <Search></Search>
     </div>
@@ -48,28 +47,49 @@
 </script>
 
 <style scoped>
-  .body-top{
-    position: relative;
-  }
-  .img-wrap:after{
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 100%;
+  .bg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
     top: 0;
     left: 0;
-    /*box-shadow:0 0 50px 20px #ffffff inset;*/
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    background-image: url("../assets/teal_cube_background.jpg");
+    background-repeat: no-repeat;
+    background-color: #024349;
+    background-size: cover;
   }
-  img{
+  .body-top{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    flex: 1 1;
     width: 100%;
   }
-  .system-name-wrap{
-    position: absolute;
-    top: 36px;
-    left: 50px;
+  .system-name{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: center;
+    /*position: absolute;*/
+    /*top: 20vh;*/
+    /*left: 3vw;*/
     font-family: 'Arial Rounded MT Bold', serif;
-    font-size: 40px;
+    font-size: calc(1rem + 2.7vw);
     color: #ffffff;
+    height: 38vh;
+  }
+  .body-top .search-wrap {
+    /*top: 38vh;*/
+    position: unset;
+    left: unset;
+    top: unset;
   }
   .body-bottom{
     margin: 30px 30px 60px;
