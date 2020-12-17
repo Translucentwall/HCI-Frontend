@@ -3,14 +3,19 @@
     <div class="every">
       <div class="svg" id="forceDirected"></div>
       <div class="option" v-if="size==='large'">
-        <div class="option_name">{{changeType}}: <a class="center_name" :href="type<4?'/entity/'+this.$route.params.type+'/'+id: null">{{graphVO.centerName}}</a></div>
+        <div class="option_name">
+          <span v-if="changeType==='Author'">作者</span>
+          <span v-else-if="changeType==='Affiliation'">机构</span>
+          <span v-else-if="changeType==='Conference'">刊物</span>
+          <span v-else-if="changeType==='Term'">研究方向</span>
+          : <a class="center_name" :href="type<4?'/entity/'+this.$route.params.type+'/'+id: null">{{graphVO.centerName}}</a></div>
         <div v-if="type<4">
-          <input type="checkbox" v-model="showTotal">Show Total Graph
+          <input type="checkbox" v-model="showTotal">显示完整关系图
         </div>
         <el-input
           class="search-input"
           v-model="searchText"
-          placeholder="filter"
+          placeholder="筛选"
           @input="searchNodes">
         </el-input>
       </div>
@@ -55,7 +60,7 @@
         mounted () {
             this.id = this.eid;
             this.type = this.etype;
-            let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
+            let loadingInstance = Loading.service({ fullscreen: true, text:'加载中...'});
             getGraph(this.id,this.type)
                 .then(res=>{
                     this.graphVO = res;
@@ -87,8 +92,8 @@
             showTotal: function () {
                 if(this.showTotal&&!this.moreGraphReady&&this.type<4){
                     this.$notify.info({
-                        title: 'info',
-                        message: 'Total graph is preparing!',
+                        title: '状态',
+                        message: '正在载入完整关系图!',
                         duration: 0,
                         showClose: false
                     });
@@ -121,8 +126,8 @@
                     this.$notify.closeAll();
                     let that = this;
                     this.$notify.success({
-                        title: 'success',
-                        message: 'Total graph is ready!',
+                        title: '成功',
+                        message: '完整关系图载入完成!',
                         duration:1500,
                         onClose: function () {
                             if(that.showTotal){

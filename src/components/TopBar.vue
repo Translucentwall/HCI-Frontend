@@ -7,7 +7,7 @@
       @select="handleSelect"
       active-text-color="#000000"
     >
-      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='0 0 0 0'}">Home</el-menu-item>
+      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='0 0 0 0'}">主页</el-menu-item>
       <SearchInTopBar></SearchInTopBar>
     </el-menu>
   </div>

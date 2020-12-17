@@ -87,3 +87,6 @@
 .el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover{
   color: #000000;
 }
+.radio-single .el-radio__input{
+  display: none;
+}
