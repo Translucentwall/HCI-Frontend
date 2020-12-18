@@ -7,7 +7,7 @@
       @select="handleSelect"
       active-text-color="#000000"
     >
-      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='0 0 0 0'}">主页</el-menu-item>
+      <el-menu-item class="home" index="/home" style="border-bottom-color: #c4c7ce">主页</el-menu-item>
       <SearchInTopBar></SearchInTopBar>
     </el-menu>
   </div>
@@ -59,11 +59,17 @@
   .topBar{
     background-color: transparent;
     height: auto;
+    display: flex;
+
   }
   .topBar .home{
-    width: 10%;
+    width: 7%;
     height: auto;
-    line-height: 45px;
+    /*line-height: 45px;*/
+    margin: 0 1rem;
+    border: 2px solid #c4c7ce;
+    border-radius: 7px;
+    color: #ffffff;
   }
   .admin{
     width: 10%;

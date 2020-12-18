@@ -157,6 +157,9 @@
 <style scoped>
   .body-top{
     position: relative;
+    padding: 1rem 0;
+    background-image: url("../assets/teal_cube_background.jpg");
+    background-repeat: no-repeat;
   }
   .img-wrap:after{
     position: absolute;

@@ -206,9 +206,9 @@ export default {
 
 <style scoped>
 .search-wrap{
-  position: absolute;
-  top: 1px;
-  left: 10%;
+  /*position: absolute;*/
+  /*top: 1px;*/
+  /*left: 10%;*/
   display: block;
   border: 2px solid #c4c7ce;
   border-radius: 7px;
