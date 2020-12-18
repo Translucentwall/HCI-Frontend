@@ -9,7 +9,7 @@
           <div class="result-title-wrap">
             <div class="result-title">
 <!--              Results for <span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:-->
-              通过<span class="emphasize">{{resultTitleMode}}</span>模式，搜索<span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span>的结果:
+              通过<span class="emphasize">{{searchModeInChinese[resultTitleMode] }}</span>模式，搜索<span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span>的结果:
             </div>
             <div v-if="simplePaperVO[0]" class="sort-mode-wrap">
               <span class="sort-mode-before">排序条件:</span>
@@ -54,6 +54,7 @@
   import {search, getRank, searchable} from "../api/api"
   import RankList from "../components/RankList";
   import {Loading} from "element-ui";
+  import Search from "../components/Search";
 
   import TopBar from "../components/TopBar";
   export default {
@@ -90,7 +91,8 @@
                   'Publication': 'Publication-Paper',
                   'Keyword': 'Keyword-Paper',
                   'Advanced': 'Paper-Cited'
-              }
+              },
+            searchModeInChinese:Search.data().searchModeInChinese
           }
       },
       mounted() {

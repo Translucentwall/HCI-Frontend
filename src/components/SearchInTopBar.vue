@@ -3,21 +3,16 @@
     <div class="search-top">
       <el-dropdown trigger="click" @command="handleMode">
         <el-button class="mode-button" type="primary">
-          <span v-if="mode==='All'">全局搜索</span>
-          <span v-else-if="mode==='Title'">按标题搜索</span>
-          <span v-else-if="mode==='Author'">按作者搜索</span>
-          <span v-else-if="mode==='Publication'">按刊物搜索</span>
-          <span v-else-if="mode==='Keyword'">按研究方向搜索</span>
-          <span v-else-if="mode==='Advanced'">高级搜索</span>
+          {{searchModeInChinese[mode]}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="All">全局搜索</el-dropdown-item>
-          <el-dropdown-item command="Title">按标题搜索</el-dropdown-item>
-          <el-dropdown-item command="Author">按作者搜索</el-dropdown-item>
-          <el-dropdown-item command="Publication">按刊物搜索</el-dropdown-item>
-          <el-dropdown-item command="Keyword">按研究方向搜索</el-dropdown-item>
-          <el-dropdown-item command="Advanced">高级搜索</el-dropdown-item>
+          <el-dropdown-item command="All">{{searchModeInChinese['All']}}</el-dropdown-item>
+          <el-dropdown-item command="Title">{{searchModeInChinese['Title']}}</el-dropdown-item>
+          <el-dropdown-item command="Author">{{searchModeInChinese['Author']}}</el-dropdown-item>
+          <el-dropdown-item command="Publication">{{searchModeInChinese['Publication']}}</el-dropdown-item>
+          <el-dropdown-item command="Keyword">{{searchModeInChinese['Keyword']}}</el-dropdown-item>
+          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-input
@@ -83,6 +78,9 @@
 </template>
 
 <script>
+
+import Search from "./Search";
+
 export default {
   name: "SearchInTopBar",
   data(){
@@ -99,7 +97,8 @@ export default {
         'Affiliation': 'orange',
         'Publication': 'yellow',
         'Keyword': 'green',
-        'Year': 'light-blue'}
+        'Year': 'light-blue'},
+      searchModeInChinese:Search.data().searchModeInChinese
     }
   },
   props: {
