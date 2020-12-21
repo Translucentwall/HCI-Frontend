@@ -17,7 +17,7 @@
     </div>
     <div class="keyword-wrap" v-if="simplePaperVO.keywords&&simplePaperVO.keywords[0]">
       <span v-for="(word,index) in simplePaperVO.keywords" v-if="index < 5">
-        <span class="研究方向" @click="searchItem(word)" v-html="word"></span>
+        <span class="keyword" @click="searchItem(word)" v-html="word"></span>
       </span>
     </div>
   </div>
@@ -58,13 +58,15 @@ export default {
     padding: 0 20px 5px 2px;
   }
   .title{
-    color: #069;
+    /*color: #069;*/
+    color: #245;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
   }
   .title:hover{
-    color: #409eff;
+    /*color: #409eff;*/
+    color: #066;
     text-decoration: underline;
   }
   .author-affiliation-wrap{
@@ -76,11 +78,11 @@ export default {
     margin-right: 10px;
   }
   .author{
-    color: #069;
+    color: #245;
     text-decoration: none;
   }
   .author:hover{
-    color: #409eff;
+    color: #066;
     text-decoration: underline;
   }
   .affiliation{
@@ -95,11 +97,11 @@ export default {
     padding: 0 12px;
   }
   .publication{
-    color: #069;
+    color: #245;
     text-decoration: none;
   }
   .publication:hover{
-    color: #409eff;
+    color: #066;
     text-decoration: underline;
   }
   .keyword-wrap{
@@ -108,10 +110,10 @@ export default {
   }
   .keyword{
     margin-right: 20px;
-    color: #069;
+    color: #245;
   }
   .keyword:hover{
-    color: #409eff;
+    color: #066;
     text-decoration: underline;
   }
 </style>

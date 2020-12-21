@@ -37,7 +37,7 @@
                   {{paperVO.summary}}
                 </div>
                 <div class="DOI font-medium" v-if="paperVO.doi">
-                  <span class="subtitle">DOI: </span>{{paperVO.doi}}
+                  <span class="subtitle">DOI: </span><a :href="paperVO.doi" >{{paperVO.doi}}</a>
                 </div>
               </div>
             </el-collapse-item>
@@ -117,6 +117,9 @@
                             let flag=this.paperVO.pdflink.indexOf("https");
                             if(flag===-1){
                               this.paperVO.pdflink="https://ieeexplore.ieee.org"+this.paperVO.pdflink;
+                            }
+                            if(this.paperVO.doi){
+                              this.paperVO.doi="http://doi.org/"+this.paperVO.doi;
                             }
                             window.scrollTo(0,0);
                         }else{
@@ -216,10 +219,11 @@
   }
   .issue{
     text-decoration: none;
-    color: #000000;
+    color: #245;
   }
   .issue:hover{
-    color: #409eff;
+    color: #066;
+    text-decoration: underline;
   }
   .author_affiliation{
     display: block;
@@ -230,20 +234,22 @@
   .author{
     line-height: 20px;
     font-size: 20px;
-    color: #069;
+    color: #245;
     text-decoration: none;
   }
   .author:hover{
-    color: #409eff;
+    color: #066;
+    text-decoration: underline;
   }
   .affiliation{
     font-size: 14px;
     margin-left: 16px;
-    color: #000000;
+    color: #245;
     text-decoration: none;
   }
   .affiliation:hover{
-    color: #409eff;
+    color: #066;
+    text-decoration: underline;
   }
   .keywords{
     margin-right: 24px;
@@ -256,11 +262,12 @@
   }
   .keyword{
     margin-right: 14px;
-    color: #069;
+    color: #245;
     font-size: 15px;
   }
   .keyword:hover{
-    color: #409eff;
+    color: #066;
+    text-decoration: underline;
   }
   .block{
     text-align: left;

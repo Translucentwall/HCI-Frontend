@@ -34,6 +34,7 @@
   background-color: #000000;
   border: 1px solid #000000;
   color: #ffffff;
+  font-family: Noto Sans SC, sans-serif;
 }
 .el-button:hover{
   color: #ffffff;
@@ -90,3 +91,27 @@
 .radio-single .el-radio__input{
   display: none;
 }
+
+.radio-single .el-radio__label{
+  font-size: 14px;
+  padding-left: 10px;
+  font-family: Noto Sans SC, sans-serif;
+}
+
+.el-dropdown-menu__item{
+  list-style: none;
+  line-height: 36px;
+  padding: 0 20px;
+  margin: 0;
+  font-size: 14px;
+  color: #606266;
+  cursor: pointer;
+  outline: 0;
+  font-family: Noto Sans SC, sans-serif;
+}
+.el-radio__input.is-checked+.el-radio__label{
+  color: #245;
+  font-weight: bold;
+}
+
+
