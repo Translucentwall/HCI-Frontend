@@ -3,7 +3,7 @@
     <div class="card-tool-bar-wrap">
       <div class="card-tool-bar">
         <div class="tool-export" @click="copyBibtex(simplePaperVO.id)">
-          <span>BibTeX<i class="el-icon-paperclip" style="color: initial; font-size: initial"/></span>
+          <span>BibTeX<i class="iconfont icon-yinyong" style="color: #245; font-size: initial"/></span>
         </div>
       </div>
     </div>
@@ -194,13 +194,15 @@ export default {
         function () {
           _this.$notify.info({
             title: '',
-            message: `已复制${format}引用到剪贴板`
+            message: `已复制${format}引用到剪贴板`,
+            position:"top-left"
           })
         },
         function () {
           _this.$notify.warning({
             title: '',
-            message: `复制${format}引用异常，请稍后再试`
+            message: `复制${format}引用异常，请稍后再试`,
+            position:"top-left"
           })
         }
       )

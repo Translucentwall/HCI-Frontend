@@ -2,8 +2,7 @@
   <div>
     <div class="body_top">
       <div class="system-name-wrap">
-<!--        <span>Online grAph System for academIcS</span>-->
-        <span>OASIS</span>
+        <span style="font-family: Noto Sans SC, sans-serif">OASIS</span>
       </div>
     </div>
     <div class="body_bottom">
@@ -13,11 +12,16 @@
         <el-breadcrumb-item>{{paperVO.title}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="body_bottom_body">
-<!--        <div class="title">-->
-<!--          <span>{{paperVO.title}}</span>-->
-<!--        </div>-->
         <div class="citation_wrap">
-          <span class="title">{{paperVO.title}}</span>
+          <div class="title-left">
+              <span class="title">{{paperVO.title}}</span>
+            <div class="title-button" >
+              <i class="iconfont icon-yinyong bibtex" @click="copyBibTex(paperVO.id)">BibTex</i>
+              <a v-if="paperVO.pdflink" class="iconfont icon-pdf pdf" :href="paperVO.pdflink">PDF</a>
+<!--              <el-button icon="iconfont icon-yinyong">BibTex</el-button>-->
+<!--              <el-button icon="iconfont icon-pdf">PDF</el-button>-->
+            </div>
+          </div>
           <div class="reference citation_box">
             <div class="citation_title">引用数</div>
             <div class="citation_count">{{paperVO.referenceCount}}</div>
@@ -32,7 +36,6 @@
             <el-collapse-item title="摘要" name="1" class="block">
               <div class="abstract">
                 <div class="summary font-medium" v-if="paperVO.summary">
-<!--                  <div class="subtitle">摘要:</div>-->
                   {{paperVO.summary}}
                 </div>
               </div>
@@ -81,15 +84,14 @@
                 <span class="subtitle">出版商: </span>{{paperVO.publisher}}
               </div>
               <div class="DOI font-medium" v-if="paperVO.doi">
-                <span class="subtitle">DOI: </span><a :href="paperVO.doi" >{{paperVO.doi}}</a>
+                <span class="subtitle">DOI: </span><a :href="'http://doi.org/'+paperVO.doi" class="router-link" >http://doi.org/{{paperVO.doi}}</a>
               </div>
-              <div class="PDFLink font-medium" v-if="paperVO.pdflink">
-                <span class="subtitle">PDF链接: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
-              </div>
+<!--              <div class="PDFLink font-medium" v-if="paperVO.pdflink">-->
+<!--                <span class="subtitle">PDF链接: </span><a :href="'https://ieeexplore.ieee.org'+paperVO.pdflink">https://ieeexplore.ieee.org{{paperVO.pdflink}}</a>-->
+<!--              </div>-->
             </el-collapse-item>
           </el-collapse>
         </div>
-
       </div>
     </div>
   </div>
@@ -97,6 +99,7 @@
 
 <script>
     import {getPaper} from "../api/api";
+    import Card from "../components/Card";
 
     export default {
         name: "Paper",
@@ -104,7 +107,7 @@
             return{
                 id: 0,
                 paperVO: {},
-                activeCollapse: ['1', '2', '3']
+                activeCollapse: ['1', '2', '3', '4']
             }
         },
         mounted() {
@@ -116,13 +119,15 @@
                     .then(res => {
                         if(res.success){
                             this.paperVO = res.content;
-                            let flag=this.paperVO.pdflink.indexOf("https");
-                            if(flag===-1){
-                              this.paperVO.pdflink="https://ieeexplore.ieee.org"+this.paperVO.pdflink;
+                            if(this.paperVO.pdflink&&this.paperVO.pdflink!==""){
+                              let flag=this.paperVO.pdflink.indexOf("https");
+                              if(flag===-1){
+                                this.paperVO.pdflink="https://ieeexplore.ieee.org"+this.paperVO.pdflink;
+                              }
                             }
-                            if(this.paperVO.doi){
-                              this.paperVO.doi="http://doi.org/"+this.paperVO.doi;
-                            }
+                            // if(this.paperVO.doi){
+                            //   this.paperVO.doi="http://doi.org/"+this.paperVO.doi;
+                            // }
                             window.scrollTo(0,0);
                         }else{
                             this.$alert('Fail to get paper，please search again','Tips',{
@@ -157,6 +162,12 @@
                     item = contentTmp.replace(/<\/span><\/b>/g, '');
                 }
                 window.location.href = '/search/Keyword/'+item;
+            },
+            copyBibTex:function (id){
+              this.$notify.info({
+                message:"你自己来吧",
+                position:"top-left"
+              })
             }
         }
     }
@@ -185,18 +196,43 @@
     box-shadow: 6px 6px 20px 4px #e4e8ef;
     padding-top: 40px;
   }
+  .title-left{
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .title-button{
+    text-align: left;
+    padding: 2% 4% 0 4%;
+  }
   .title{
     text-align: left;
     font-size: 30px;
     font-weight: bold;
     padding: 0 4%;
-    flex-grow: 1;
+    /*flex-grow: 1;*/
+  }
+  .bibtex{
+    color: #224455;
+    margin-right: 2%;
+  }
+  .bibtex:hover{
+    color: #006666;
+    text-decoration: underline;
+  }
+  .pdf{
+    color: #B04C50;
+    text-decoration: none;
+  }
+  .pdf:hover{
+    color: #ff6347;
+    text-decoration: underline;
   }
   .citation_wrap{
     display: flex;
     justify-content: space-between;
 
-    height: 60px;
+    /*height: 60px;*/
     margin: 10px 50px 0 0;
   }
   .citation_box{
