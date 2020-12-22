@@ -1,11 +1,9 @@
 <template>
   <div>
     <div class="body_top">
-      <div class="top_img">
-        <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
-      </div>
       <div class="system-name-wrap">
-        <span>Online grAph System for academIcS</span>
+<!--        <span>Online grAph System for academIcS</span>-->
+        <span>OASIS</span>
       </div>
     </div>
     <div class="body_bottom">
@@ -15,10 +13,11 @@
         <el-breadcrumb-item>{{paperVO.title}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="body_bottom_body">
-        <div class="title">
-          <span>{{paperVO.title}}</span>
-        </div>
+<!--        <div class="title">-->
+<!--          <span>{{paperVO.title}}</span>-->
+<!--        </div>-->
         <div class="citation_wrap">
+          <span class="title">{{paperVO.title}}</span>
           <div class="reference citation_box">
             <div class="citation_title">引用数</div>
             <div class="citation_count">{{paperVO.referenceCount}}</div>
@@ -30,14 +29,11 @@
         </div>
         <div class="information">
           <el-collapse class="no-line" v-model="activeCollapse" @change="handleChange">
-            <el-collapse-item title="概况" name="1" class="block">
+            <el-collapse-item title="摘要" name="1" class="block">
               <div class="abstract">
                 <div class="summary font-medium" v-if="paperVO.summary">
-                  <div class="subtitle">摘要:</div>
+<!--                  <div class="subtitle">摘要:</div>-->
                   {{paperVO.summary}}
-                </div>
-                <div class="DOI font-medium" v-if="paperVO.doi">
-                  <span class="subtitle">DOI: </span><a :href="paperVO.doi" >{{paperVO.doi}}</a>
                 </div>
               </div>
             </el-collapse-item>
@@ -73,13 +69,19 @@
                 </div>
               </div>
             </el-collapse-item>
-            <el-collapse-item name="4" class="block" v-if="paperVO.publicationTitle||paperVO.publisher||paperVO.pdflink">
+            <el-collapse-item title="更多信息" name="4" class="block" v-if="paperVO.publicationTitle||paperVO.publisher||paperVO.pdflink">
               <div class="publication font-medium" v-if="paperVO.publicationTitle">
-                <div class="subtitle">刊物:</div>
-                <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
+                <span class="subtitle">刊物:</span>
+                <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, {{paperVO.publicationYear}}</a>
+              </div>
+              <div class="pages font-medium" v-if="paperVO.startPage&&paperVO.endPage">
+                <span class="subtitle">页码: </span>{{paperVO.startPage}} - {{paperVO.endPage}}
               </div>
               <div class="publisher font-medium" v-if="paperVO.publisher">
                 <span class="subtitle">出版商: </span>{{paperVO.publisher}}
+              </div>
+              <div class="DOI font-medium" v-if="paperVO.doi">
+                <span class="subtitle">DOI: </span><a :href="paperVO.doi" >{{paperVO.doi}}</a>
               </div>
               <div class="PDFLink font-medium" v-if="paperVO.pdflink">
                 <span class="subtitle">PDF链接: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
@@ -102,7 +104,7 @@
             return{
                 id: 0,
                 paperVO: {},
-                activeCollapse: ['1', '2', '3','4']
+                activeCollapse: ['1', '2', '3']
             }
         },
         mounted() {
@@ -162,14 +164,14 @@
 
 <style scoped>
   .body_top{
-    position: relative;
-  }
-  img{
-    width:100%
+    width: 100%;
+    background-image: url("../assets/teal_cube_background.jpg");
+    background-color: #024349;
+    background-repeat: no-repeat;
   }
   .system-name-wrap{
-    position: absolute;
-    top: 36px;
+    position: relative;
+    width: max-content;
     left: 50px;
     font-family: 'Arial Rounded MT Bold', serif;
     font-size: 40px;
@@ -188,34 +190,40 @@
     font-size: 30px;
     font-weight: bold;
     padding: 0 4%;
+    flex-grow: 1;
   }
   .citation_wrap{
+    display: flex;
+    justify-content: space-between;
+
     height: 60px;
     margin: 10px 50px 0 0;
   }
   .citation_box{
-    width: 80px;
-    height: 50px;
+    width: 70px;
+    height: 100%;
     background-color: #000000;
     color: #ffffff;
-    margin: 0 10px;
-    padding: 10px 0;
+    margin: 0 0 0 10px;
+    padding: 4px 0;
     border-radius: 3px;
     float: right;
+    box-sizing: border-box;
+    flex-shrink: 0;
   }
   .citation_title{
-    font-size: 14px;
+    font-size: 0.75rem;
     font-weight: bold;
   }
   .citation_count{
-    font-size: 28px;
+    font-size: 1.5rem;
   }
   .information{
-    margin: 0 5%;
+    margin: 0 50px 0 5%;
     padding: 20px 0;
   }
   .abstract{
-    margin-right: 24px;
+    /*margin-right: 24px;*/
   }
   .issue{
     text-decoration: none;
@@ -253,7 +261,7 @@
   }
   .keywords{
     margin-right: 24px;
-    border-bottom: 1px solid #ebeef5;
+    /*border-bottom: 1px solid #ebeef5;*/
     padding: 6px 0;
   }
   .keyword_wrap{
@@ -264,6 +272,7 @@
     margin-right: 14px;
     color: #245;
     font-size: 15px;
+    cursor: pointer;
   }
   .keyword:hover{
     color: #066;

@@ -1,11 +1,9 @@
 <template>
 <div>
-  <div class = "body_top">
-    <div class="top-img">
-      <img src="../assets/background-new2.jpg" alt="This is a background pic."/>
-    </div>
+  <div class="body_top">
     <div class="system-name-wrap">
-      <span>Online grAph System for academIcS</span>
+      <!--        <span>Online grAph System for academIcS</span>-->
+      <span>OASIS</span>
     </div>
   </div>
   <div class="body_bottom">
@@ -21,10 +19,10 @@
             <hot-graph v-if="academicEntityVO.popTrend" :data="academicEntityVO.popTrend" :id="type + '' + id"></hot-graph>
           </div>
         </el-col>
-        <el-col :span="3" :offset="1" v-if="academicEntityVO.refSum>-1">
+        <el-col :span="3" :offset="0" v-if="academicEntityVO.refSum>-1">
           <div class="reference citation_box">
-            <div class="citation_title">被引用数</div>
-            <div class="citation_count">{{academicEntityVO.refSum}}</div>
+            <span class="citation_title">被引用数 </span>
+            <span class="citation_count">{{academicEntityVO.refSum}}</span>
           </div>
         </el-col>
       </el-row>
@@ -113,7 +111,7 @@
           <div style="display:inline-flex;">
             <strong class="significantPaper_title">代表作</strong>
             <div class="search-button">
-              <el-tooltip :content="'通过'+this.academicEntityVO.name+'搜索论文'" placement="right" effect="light" :open-delay="400">
+              <el-tooltip :content="'去搜索'+this.academicEntityVO.name+'的论文'" placement="right" effect="light" :open-delay="200">
                 <i class="el-icon-search" @click="search"></i>
 <!--                <el-button size="mini" plain icon="el-icon-search" @click="search"></el-button>-->
               </el-tooltip>
@@ -477,14 +475,14 @@
 
 <style scoped>
   .body_top{
-    position: relative;
-  }
-  img{
-    width:100%
+    width: 100%;
+    background-image: url("../assets/teal_cube_background.jpg");
+    background-color: #024349;
+    background-repeat: no-repeat;
   }
   .system-name-wrap{
-    position: absolute;
-    top: 36px;
+    position: relative;
+    width: max-content;
     left: 50px;
     font-family: 'Arial Rounded MT Bold', serif;
     font-size: 40px;
@@ -512,13 +510,14 @@
     margin-right: 20px;
   }
   .citation_box{
-    width: 80px;
-    height: 50px;
+    width: 140px;
+    height: 100%;
     background-color: #000000;
     color: #ffffff;
-    padding: 10px 0;
+    padding: 4px 0;
     border-radius: 3px;
     text-align: center;
+    box-sizing: border-box;
   }
   .citation_title{
     font-size: 14px;
@@ -581,6 +580,7 @@
     margin-left: 1vw;
     height: 21px;
     margin-block: auto;
+    cursor: pointer;
   }
   .radio-group{
     /*padding-left: 1vw;*/

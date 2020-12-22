@@ -134,11 +134,11 @@
                   this.resultTitleContent = content;
                   this.displayBottom = true;
 
-                  this.tableMode = this.tableModeDic[this.mode];
-                  let tableMode = this.tableModeDic2[this.mode];
-                  getRank(tableMode, 1, true, 2013, 2019).then(res => {
-                      this.tableData = res.content.rankList;
-                  });
+                  // this.tableMode = this.tableModeDic[this.mode];
+                  // let tableMode = this.tableModeDic2[this.mode];
+                  // getRank(tableMode, 1, true, 2013, 2019).then(res => {
+                  //     this.tableData = res.content.rankList;
+                  // });
 
               });
               this.showSearch = true;
@@ -160,6 +160,7 @@
     position: relative;
     padding: 1rem 0;
     background-image: url("../assets/teal_cube_background.jpg");
+    background-color: #024349;
     background-repeat: no-repeat;
   }
   .img-wrap:after{
@@ -230,7 +231,7 @@
     padding-right: 15px;
   }
   .emphasize{
-    color: #b04c50;
+    color: #ff6347;
     margin: 0 8px;
   }
   .content{
