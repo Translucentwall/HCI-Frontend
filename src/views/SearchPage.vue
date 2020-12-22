@@ -5,7 +5,7 @@
     </div>
     <div class="body-bottom" v-if="displayBottom">
       <el-row>
-        <el-col :span="23" :offset="1">
+        <el-col :span="23" :offset="0">
           <div class="result-title-wrap">
             <div class="result-title">
 <!--              Results for <span class="emphasize content" :title="resultTitleContent">{{resultTitleContent}}</span> in <span class="emphasize">{{resultTitleMode}}</span>:-->
