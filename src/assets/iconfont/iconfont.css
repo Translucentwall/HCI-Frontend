@@ -1,0 +1,25 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1608638983717'); /* IE9 */
+  src: url('iconfont.eot?t=1608638983717#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPIAAsAAAAAB/QAAAN8AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqDXIMWATYCJAMMCwgABCAFhG0HNxvdBsieAe4i1bVI5Vo1SVowiJSnKB+y632zs5zZvU+4i8Aqd4G+gCpyZXTphPaW1rQIupyiJFQdgUL9lLvn9IGMmtqI/7rtv3uTaERZwmEUN1MWWAYhJ0kB7vNcTm+U+PyW5bj29KNegHFAgY01KbICCRRiazkcexUeXYeBABhvkchc/P6VKhGRUQRAtu1cTJVSZmJNLaEi5JKFAbkhUdsF4SFSqPY/Tz6sSwUEUgeZOG99UFKX9/x6UbPVbJVLQDKeE4C4DKCASIAIZCl1L5MN05Eopqtz9aUyESGMFbNa8cWGUqZ/eICAABlAqnUAEApGwUlJbCEI8NUiPetjKACQARzQDWAK2I5BkRKyNFhx1l2498q6oNOVfJnhX7m31uQsNbsYaL0exGEeLR93IU3OS/4d9YFrrmKBwpATlrG1qOALCF92scGxwQnm1vJmQnj5TWLpch5ji1vR7Q2MET7s1Li0ach5KJhdbGgAzI2NnA9fne62dC1qqetSPonWlqXs4oBTubvcxWUARbMXampyZiHh4TwxtJg4fl33MH08/DIUje012phWk9RjavvZMzPsPez1s8bxsdHWW38/W5tjNq0/2xv27vZHpnY9NVqPw5dDrD//rM0TNuNz3cj1jfwQ4TR7aXGk3+Ls2YSXzLcYfM+f+e+u9c5svTUpc+XGE6N8TsntqR+8kXQ95czdVkiPp9+DEHH3+2eHyTCesZtex/YO6uKy8luXqOSOp29x8+uvifYRAhhKd+EWUta+l/r9w+9g3h+3tc3MfyoXAQAfVar4QWvQrhJQCdBa8sckLRtEQ0YsNJrYFls5qhrK+zCBGRr8p3oAsPe5v9cJYiehShIMgcILlCqQFNmRkHCJkKlywEQoWc45OCCLRAMQ7gwCYWsaApOboGw9IkX2J0icfYPMtiiYJeWwIRdc21nBARR9VGBDAttlshmz+ZWg9gN5YIpuUuZzftD1tBjERcdmc09oozvGlIMhXx/yGWxxyYJidByaJsE+l3SU/fk237+eY2K2lL1ovpGsVEUBFxL5kAJskADbyYiNua19ldz7PyAuYBK5NYy66A/k8midgzjRYluQT2q7FeNanjkoxK0d4mPAFi5iAcXIiUyaJmBfeT8dkvnmtvVIXp3FQLMtbdXz+bXW820DYMiOtARCiQjl2G4nZPPsvk0slQI=') format('woff2'),
+  url('iconfont.woff?t=1608638983717') format('woff'),
+  url('iconfont.ttf?t=1608638983717') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1608638983717#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yinyong:before {
+  content: "\ec81";
+}
+
+.icon-pdf:before {
+  content: "\e67a";
+}
+

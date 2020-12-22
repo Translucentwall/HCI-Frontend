@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './main.css'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import './assets/iconfont/iconfont.css'
 
 
 Vue.component('VueSlider', VueSlider)
