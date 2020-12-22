@@ -17,7 +17,7 @@
       </el-dropdown>
       <el-input
         v-if="mode!=='Advanced'"
-        class="search-input"
+        class="search-input el-input__inner"
         v-model="content"
         placeholder="请键入搜索内容..."
         @keydown.13.native="search"
@@ -213,19 +213,32 @@
     top: 40%;
     left: 28vw;
     display: block;
+    border: 2px solid #c4c7ce;
+    border-radius: 7px;
   }
   .search-top{
     display: flex;
-    border: 2px solid #ffffff;
+    /*border: 2px solid #ffffff;*/
     border-radius: 4px;
+  }
+  .el-button{
+    border: 1px solid transparent;
+  }
+  .el-button:hover{
+    background: #066;
   }
   .mode-button{
     width: 9vw;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    font-family: Noto Sans SC, sans-serif;
   }
   .search-input{
     width: 31vw;
+  }
+  .el-input__inner{
+    height: 41px;
+    font-family: Noto Sans SC, sans-serif;
   }
   .advanced{
     display: flex;

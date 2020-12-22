@@ -32,7 +32,6 @@
               </el-dropdown>
             </div>
           </div>
-
           <div class="result-content">
             <Card
               v-for="(item, index) in simplePaperVO"
@@ -206,6 +205,7 @@
   }
   .sort-mode{
     margin-right: 50px;
+    font-family: Noto Sans SC, sans-serif;
   }
   .sort-mode-button{
     color: #000000;

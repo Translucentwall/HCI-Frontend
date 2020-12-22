@@ -248,13 +248,15 @@ export default {
     padding-left: 0.75rem;
   }
   .title{
-    color: #069;
+    /*color: #069;*/
+    color: #245;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
   }
   .title:hover{
-    color: #409eff;
+    /*color: #409eff;*/
+    color: #066;
     text-decoration: underline;
   }
   .author-affiliation-wrap{
@@ -266,22 +268,22 @@ export default {
     margin-right: 10px;
   }
   .author{
-    color: #069;
+    color: #245;
     text-decoration: none;
   }
   .author:hover{
-    color: #409eff;
+    color: #066;
     text-decoration: underline;
   }
   .publication-wrap{
     padding: 0 12px;
   }
   .publication{
-    color: #069;
+    color: #245;
     text-decoration: none;
   }
   .publication:hover{
-    color: #409eff;
+    color: #066;
     text-decoration: underline;
   }
   .keyword-wrap{
@@ -290,10 +292,10 @@ export default {
   }
   .keyword{
     margin-right: 20px;
-    color: #069;
+    color: #245;
   }
   .keyword:hover{
-    color: #409eff;
+    color: #066;
     text-decoration: underline;
   }
 </style>

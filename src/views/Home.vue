@@ -58,7 +58,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    overflow: auto;
+    overflow: hidden;
     background-image: url("../assets/teal_cube_background.jpg");
     background-repeat: no-repeat;
     background-color: #024349;

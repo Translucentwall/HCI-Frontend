@@ -24,7 +24,6 @@
         <el-col :span="3" :offset="1" v-if="academicEntityVO.refSum>-1">
           <div class="reference citation_box">
             <div class="citation_title">被引用数</div>
-<!--            TODO：改为被引用数-->
             <div class="citation_count">{{academicEntityVO.refSum}}</div>
           </div>
         </el-col>
@@ -100,8 +99,8 @@
                 <relation-graph v-if="id!==0&&activeName==='graph'" :eid="parseInt(id)" :etype="type" :size="size"></relation-graph>
                 <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
-                    <el-tooltip :content="'进入关系图页面，查看更多关系图'" placement="bottom-start" effect="dark" :open-delay="400">
-                      <el-button type="primary" size="small" plain class="graph-button">关系图页面</el-button>
+                    <el-tooltip :content="'进入关系图页面，查看更多关系图'" placement="bottom-start" effect="light" :open-delay="400">
+                      <el-button icon="el-icon-guide" class="graph-button"></el-button>
                     </el-tooltip>
                   </router-link>
                 </div>
@@ -111,11 +110,12 @@
           </el-row>
         </el-col>
         <el-col :span="22" :offset="1" class="significantPaper_wrap">
-          <div style="display:flex;">
+          <div style="display:inline-flex;">
             <strong class="significantPaper_title">代表作</strong>
             <div class="search-button">
-              <el-tooltip :content="'通过'+this.academicEntityVO.name+'搜索论文'" placement="bottom-start" effect="dark" :open-delay="400">
-                <el-button size="mini" plain icon="el-icon-search" @click="search"></el-button>
+              <el-tooltip :content="'通过'+this.academicEntityVO.name+'搜索论文'" placement="right" effect="light" :open-delay="400">
+                <i class="el-icon-search" @click="search"></i>
+<!--                <el-button size="mini" plain icon="el-icon-search" @click="search"></el-button>-->
               </el-tooltip>
           </div>
           </div>
@@ -377,6 +377,7 @@
               },
               renderCloudNew: function(){
                   let data = this.academicEntityVO.terms;
+                  let height=data.length>=20?600:data.length>=10?400:data.length>=5?300:200;
                   data.sort(function (a, b) {
                     return b.hot-a.hot;
                   });
@@ -422,6 +423,7 @@
                       }]
                   };
                   myChart.setOption(option);
+                  myChart.resize({height:height});
                   myChart.on('click', function (word) {
                       window.location.href = '/graph/term/' + word.data.id;
                   });
@@ -529,17 +531,17 @@
     margin: 10px 0;
   }
   .entity{
-    color: #409eff;
+    color: #245;
     text-decoration: none;
     cursor: pointer;
-    font-style: italic;
+    /*font-style: italic;*/
     font-weight: bold;
   }
   .entity:hover{
-    color: #000000;
+    color: #066;
     text-decoration: underline;
     cursor: pointer;
-    font-style: italic;
+    /*font-style: italic;*/
   }
   #pane-graph{
     position: relative;
@@ -553,14 +555,15 @@
     left: 0;
   }
   .graph_entry{
-    width: 12vw;
+    width: auto;
     position: absolute;
     top: 0;
-    right: 1vw;
+    right: 0;
   }
   .graph-button{
-    background: #069;
-    border: 4px;
+    background: #245;
+    border-radius: 3px;
+    border: none;
     color: white;
   }
   #cloud-wrap{
@@ -576,6 +579,8 @@
   }
   .search-button{
     margin-left: 1vw;
+    height: 21px;
+    margin-block: auto;
   }
   .radio-group{
     /*padding-left: 1vw;*/
@@ -611,7 +616,8 @@
   .el-dropdown-link {
     font-size: 15px;
     cursor: pointer;
-    color: #409EFF;
+    color: #245;
+    font-family: Noto Sans SC, sans-serif;
   }
   .el-icon-arrow-down {
     font-size: 12px;
@@ -625,10 +631,9 @@
     text-decoration: underline;
   }
   .more-text:hover{
-    color: #409eff;
+    color: #245;
   }
   .svg{
     width: 100%;
-    height: 600px;
   }
 </style>

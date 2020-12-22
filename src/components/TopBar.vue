@@ -71,6 +71,10 @@
     border-radius: 7px;
     color: #ffffff;
   }
+  .topBar .home:hover{
+    background: #066;
+    color: #ffffff;
+  }
   .admin{
     width: 10%;
   }
