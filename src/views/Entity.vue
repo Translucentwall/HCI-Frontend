@@ -115,7 +115,6 @@
             <div class="search-button">
               <el-tooltip :content="'通过'+this.academicEntityVO.name+'搜索论文'" placement="right" effect="light" :open-delay="400">
                 <i class="el-icon-search" @click="search"></i>
-<!--                <el-button size="mini" plain icon="el-icon-search" @click="search"></el-button>-->
               </el-tooltip>
           </div>
           </div>
