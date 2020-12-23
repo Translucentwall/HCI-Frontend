@@ -3,8 +3,22 @@
     <div class="card-tool-bar-wrap">
       <div class="card-tool-bar">
         <div class="tool-export" @click="copyBibtex(simplePaperVO.id)">
-          <span>BibTeX<i class="iconfont icon-yinyong" style="color: #245; font-size: initial"/></span>
+          <span>BibTeX <i class="icon iconfont icon-yinyong"/></span>
+          <br/>
+          点击复制
         </div>
+        <a :href="'https://ieeexplore.ieee.org' + simplePaperVO.pdfLink" target="_blank"
+           v-if="simplePaperVO.pdfLink&&simplePaperVO.pdfLink.indexOf('http')===-1">
+          <div class="tool-pdf">
+            <span>PDF <i class="icon iconfont icon-pdf"/></span>
+          </div>
+        </a>
+        <a :href="'http://doi.org/' + simplePaperVO.doi" target="_blank"
+           v-if="simplePaperVO.doi && simplePaperVO.doi!==''">
+          <div class="tool-doi">
+            <span>来源 <i class="icon el-icon-paperclip"/> </span>
+          </div>
+        </a>
       </div>
     </div>
     <div class="card-content">
@@ -37,6 +51,84 @@
 <script>
 import {getPaper} from "../api/api";
 
+const BibTexSpecialChars = [
+  ['{', '\\{'],
+  ['}', '\\}'],
+  ['$', '\\$'],
+  ['Ä', '{\\"A}'],
+  ['ä', '{\\"a}'],
+  ['Ë', '{\\"E}'],
+  ['ë', '{\\"e}'],
+  ['Ï', '{\\"I}'],
+  ['ï', '{\\"i}'],
+  ['Ö', '{\\"O}'],
+  ['ö', '{\\"o}'],
+  ['Ü', '{\\"U}'],
+  ['ü', '{\\"u}'],
+  ['Ÿ', '{\\"Y}'],
+  ['ÿ', '{\\"y}'],
+  ['ß', '{\\ss}'],
+  ['Ø', '{\\O}'],
+  ['ø', '{\\o}'],
+  ['Á', "{\\'A}"],
+  ['á', "{\\'a}"],
+  ['Ć', "{\\'C}"],
+  ['ć', "{\\'c}"],
+  ['É', "{\\'E}"],
+  ['é', "{\\'e}"],
+  ['Í', "{\\'I}"],
+  ['í', "{\\'i}"],
+  ['Ó', "{\\'O}"],
+  ['ó', "{\\'o}"],
+  ['Ú', "{\\'U}"],
+  ['ú', "{\\'u}"],
+  ['Ý', "{\\'Y}"],
+  ['ý', "{\\'y}"],
+  ['À', '{\\`A}'],
+  ['à', '{\\`a}'],
+  ['È', '{\\`E}'],
+  ['è', '{\\`e}'],
+  ['Ì', '{\\`I}'],
+  ['ì', '{\\`i}'],
+  ['Ò', '{\\`O}'],
+  ['ò', '{\\`o}'],
+  ['Ù', '{\\`U}'],
+  ['ù', '{\\`u}'],
+  ['Â', '{\\^A}'],
+  ['â', '{\\^a}'],
+  ['Ê', '{\\^E}'],
+  ['ê', '{\\^e}'],
+  ['Î', '{\\^I}'],
+  ['î', '{\\^i}'],
+  ['Ô', '{\\^O}'],
+  ['ô', '{\\^o}'],
+  ['Û', '{\\^u}'],
+  ['û', '{\\^u}'],
+  ['Ã', '{\\~A}'],
+  ['ã', '{\\~a}'],
+  ['Ñ', '{\\~N}'],
+  ['ñ', '{\\~n}'],
+  ['Õ', '{\\~O}'],
+  ['õ', '{\\~o}'],
+  ['Æ', '{\\aE}'],
+  ['æ', '{\\ae}'],
+  ['Œ', '{\\OE}'],
+  ['æ', '{\\oe}'],
+  ['Č', '{\\vC}'],
+  ['č', '{\\vc}'],
+  ['Š', '{\\vS}'],
+  ['š', '{\\vs}'],
+  ['ž', '{\\vz}'],
+  ['Å', '{\\AA}'],
+  ['å', '{\\aa}'],
+]
+
+function encodeBibTexComponent(str) {
+  return BibTexSpecialChars.reduce((curStr, [character, replacement]) => {
+    return curStr.replace(new RegExp(`[${character}]`, 'g'), replacement);
+  }, str + '');
+}
+
 export default {
   name: 'Card',
   data() {
@@ -49,79 +141,6 @@ export default {
     }
   },
   methods: {
-    BibTexSpecialChars: function () {
-      return [
-        ['{', '\\{'],
-        ['}', '\\}'],
-        ['$', '\\$'],
-        ['Ä', '{\\"A}'],
-        ['ä', '{\\"a}'],
-        ['Ë', '{\\"E}'],
-        ['ë', '{\\"e}'],
-        ['Ï', '{\\"I}'],
-        ['ï', '{\\"i}'],
-        ['Ö', '{\\"O}'],
-        ['ö', '{\\"o}'],
-        ['Ü', '{\\"U}'],
-        ['ü', '{\\"u}'],
-        ['Ÿ', '{\\"Y}'],
-        ['ÿ', '{\\"y}'],
-        ['ß', '{\\ss}'],
-        ['Ø', '{\\O}'],
-        ['ø', '{\\o}'],
-        ['Á', "{\\'A}"],
-        ['á', "{\\'a}"],
-        ['Ć', "{\\'C}"],
-        ['ć', "{\\'c}"],
-        ['É', "{\\'E}"],
-        ['é', "{\\'e}"],
-        ['Í', "{\\'I}"],
-        ['í', "{\\'i}"],
-        ['Ó', "{\\'O}"],
-        ['ó', "{\\'o}"],
-        ['Ú', "{\\'U}"],
-        ['ú', "{\\'u}"],
-        ['Ý', "{\\'Y}"],
-        ['ý', "{\\'y}"],
-        ['À', '{\\`A}'],
-        ['à', '{\\`a}'],
-        ['È', '{\\`E}'],
-        ['è', '{\\`e}'],
-        ['Ì', '{\\`I}'],
-        ['ì', '{\\`i}'],
-        ['Ò', '{\\`O}'],
-        ['ò', '{\\`o}'],
-        ['Ù', '{\\`U}'],
-        ['ù', '{\\`u}'],
-        ['Â', '{\\^A}'],
-        ['â', '{\\^a}'],
-        ['Ê', '{\\^E}'],
-        ['ê', '{\\^e}'],
-        ['Î', '{\\^I}'],
-        ['î', '{\\^i}'],
-        ['Ô', '{\\^O}'],
-        ['ô', '{\\^o}'],
-        ['Û', '{\\^u}'],
-        ['û', '{\\^u}'],
-        ['Ã', '{\\~A}'],
-        ['ã', '{\\~a}'],
-        ['Ñ', '{\\~N}'],
-        ['ñ', '{\\~n}'],
-        ['Õ', '{\\~O}'],
-        ['õ', '{\\~o}'],
-        ['Æ', '{\\aE}'],
-        ['æ', '{\\ae}'],
-        ['Œ', '{\\OE}'],
-        ['æ', '{\\oe}'],
-        ['Č', '{\\vC}'],
-        ['č', '{\\vc}'],
-        ['Š', '{\\vS}'],
-        ['š', '{\\vs}'],
-        ['ž', '{\\vz}'],
-        ['Å', '{\\AA}'],
-        ['å', '{\\aa}'],
-      ]
-    },
     searchItem: function (item) {
       let pattern = /<b><span style="color: #b04c50; ">/;
       if (pattern.test(item)) {
@@ -129,11 +148,6 @@ export default {
         item = contentTmp.replace(/<\/span><\/b>/g, '');
       }
       window.location.href = '/search/Keyword/' + item;
-    },
-    encodeBibTexComponent: function (str) {
-      return this.BibTexSpecialChars().reduce((curStr, [character, replacement]) => {
-        return curStr.replace(new RegExp(`[${character}]`, 'g'), replacement);
-      }, str + '');
     },
     copyBibtex: function (paperID) {
       let paper;
@@ -165,7 +179,7 @@ export default {
               .substr(0, 45)
             const authors = paper.author_affiliationVOS.map(aa => aa.author).join(' and ')
             const journal = hasJournal
-              ? `journal={${this.encodeBibTexComponent(paper.publicationTitle)}}`
+              ? `journal={${encodeBibTexComponent(paper.publicationTitle)}}`
               : undefined
             const year = paper.publicationYear ? `year={${paper.publicationYear}}` : undefined
             const startPage = paper.startPage
@@ -173,8 +187,8 @@ export default {
             const pages = startPage && endPage ? `pages={${startPage} \- ${endPage}}` : undefined
             const doi = paper.doi && paper.doi !== '' ? `doi={${paper.doi}}` : undefined
             const fields = [
-              `title={${this.encodeBibTexComponent(paper.title)}}`,
-              `author={${this.encodeBibTexComponent(authors)}}`,
+              `title={${encodeBibTexComponent(paper.title)}}`,
+              `author={${encodeBibTexComponent(authors)}}`,
               journal,
               year,
               pages,
@@ -182,7 +196,7 @@ export default {
             ].filter(f => !!f)
 
             const fieldsStr = fields.reduce((str, field) => `${str},\n  ${field || ''}`, '') + '\n'
-            const bibtex = `@article{${this.encodeBibTexComponent(id)}${fieldsStr}}`
+            const bibtex = `@article{${encodeBibTexComponent(id)}${fieldsStr}}`
             this.writeClipboard(bibtex, 'BibTeX', this)
           }
         }
@@ -195,20 +209,22 @@ export default {
           _this.$notify.info({
             title: '',
             message: `已复制${format}引用到剪贴板`,
-            position:"top-left"
+            position: "top-left"
           })
         },
         function () {
           _this.$notify.warning({
             title: '',
             message: `复制${format}引用异常，请稍后再试`,
-            position:"top-left"
+            position: "top-left"
           })
         }
       )
     }
   }
 }
+
+export {encodeBibTexComponent}
 </script>
 
 <style scoped>
@@ -235,7 +251,12 @@ export default {
   text-align: right;
 }
 
-.card-tool-bar > div {
+.card-tool-bar .icon {
+  color: #245;
+  font-size: initial;
+}
+
+.card-tool-bar > * {
   background: transparent;
   padding: 4px 0 3px 0.25rem;
   /*border-bottom: 1px solid #c4c7ce;*/
@@ -245,9 +266,10 @@ export default {
   flex-grow: 1;
   color: transparent;
   font-size: 0.75rem;
+  text-decoration: none;
 }
 
-.card-tool-bar > div:hover {
+.card-tool-bar > *:hover {
   background: #c4c7ce;
   color: inherit;
 }

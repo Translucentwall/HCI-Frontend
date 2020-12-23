@@ -1,8 +1,8 @@
 <template>
   <div class="hot-graph">
-    <span class="year">{{year}}</span>
+<!--    <span class="year">{{year}}</span>-->
     <span title="This is the chart of hot change.">
-      <svg width="155" height="30">
+      <svg width="155" height="43">
         <defs>
           <linearGradient :id="'gradient-' + id" x1="0" x2="0" y1="1" y2="0">
               <stop offset="10%" stop-color="#9be9a8"></stop>
@@ -11,15 +11,16 @@
               <stop offset="90%" stop-color="#216e39"></stop>
           </linearGradient>
           <mask :id="'sparkline-' + id" x="0" y="0" width="155" height="28" >
-            <polyline transform="translate(0, 28) scale(1,-1)"
+            <polyline transform="translate(11, 28) scale(1,-1)"
                       :points="points" fill="transparent" stroke="#8cc665" stroke-width="2">
             </polyline>
           </mask>
         </defs>
 
-        <g transform="translate(0, -4)">
-          <rect x="0" y="-2" width="155" height="30"
+        <g>
+          <rect x="11" y="0" width="155" height="30"
                 :style="'stroke: none; fill: url(#gradient-' + id + '); mask: url(#sparkline-' + id +')'"></rect>
+          <text x="0" y="38" fill="#aaa" font-size="12px">{{year}}</text>
         </g>
       </svg>
     </span>
@@ -81,6 +82,7 @@
 <style scoped>
   .hot-graph{
     min-width: 190px;
+    text-align: left;
   }
   .year{
     color: #aaaaaa;

@@ -483,7 +483,7 @@
     position: relative;
     width: max-content;
     left: 50px;
-    font-family: Noto Sans SC, sans-serif;
+    font-family: 'Arial Rounded MT Bold', sans-serif;
     font-size: 40px;
     color: #ffffff;
   }
