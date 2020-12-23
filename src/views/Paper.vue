@@ -2,7 +2,7 @@
   <div>
     <div class="body_top">
       <div class="system-name-wrap">
-        <span style="font-family: Noto Sans SC, sans-serif">OASIS</span>
+        <span>OASIS</span>
       </div>
     </div>
     <div class="body_bottom">
@@ -184,7 +184,7 @@
     position: relative;
     width: max-content;
     left: 50px;
-    font-family: 'Arial Rounded MT Bold', serif;
+    font-family: Noto Sans SC, sans-serif;
     font-size: 40px;
     color: #ffffff;
   }
