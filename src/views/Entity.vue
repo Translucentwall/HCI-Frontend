@@ -98,7 +98,7 @@
                 <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
                     <el-tooltip :content="'进入关系图页面，查看更多关系图'" placement="bottom-start" effect="light" :open-delay="400">
-                      <el-button icon="el-icon-guide" class="graph-button"></el-button>
+                      <el-button icon="iconfont icon-guanxitu" class="graph-button"></el-button>
                     </el-tooltip>
                   </router-link>
                 </div>
