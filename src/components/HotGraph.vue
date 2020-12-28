@@ -1,7 +1,7 @@
 <template>
   <div class="hot-graph">
 <!--    <span class="year">{{year}}</span>-->
-    <span title="This is the chart of hot change.">
+    <span title="热度变化曲线">
       <svg width="155" height="43">
         <defs>
           <linearGradient :id="'gradient-' + id" x1="0" x2="0" y1="1" y2="0">
@@ -33,7 +33,7 @@
         data(){
             return{
                 year: 2000,
-                points: ''
+                points: '',
             }
         },
         props: {
