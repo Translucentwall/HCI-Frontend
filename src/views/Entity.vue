@@ -586,6 +586,9 @@
    /*padding-right: 1vw;*/
     display: flex;
     flex-wrap: wrap;
+    max-height: 23vw;
+    overflow: auto;
+
   }
   .radio-single{
     margin: 1vw;
