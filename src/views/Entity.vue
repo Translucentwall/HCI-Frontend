@@ -380,6 +380,7 @@
                   });
                   let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
                   let echartData = [];
+                  echartData.push({name:"",id:-1,value:80})
                   data.forEach(function (d) {
                       echartData.push({
                         name: d.name,
