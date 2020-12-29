@@ -2,14 +2,13 @@
   <div>
     <div class="body_top">
       <div class="system-name-wrap">
-        <span>OASIS</span>
-      </div>
+        <span @click="goHome">OASIS</span>      </div>
     </div>
     <div class="body_bottom">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
         <el-breadcrumb-item :to="'/entity/issue/'+paperVO.conferenceId">
-          <span>{{ paperVO.publicationYear }} {{ paperVO.publicationTitle }}</span></el-breadcrumb-item>
+          <span>{{ paperVO.publicationTitle }}</span></el-breadcrumb-item>
         <el-breadcrumb-item>{{ paperVO.title }}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="body_bottom_body">
@@ -166,6 +165,9 @@ export default {
     }
   },
   methods: {
+    goHome: function(){
+      window.location.href = '/home';
+    },
     handleChange: function (val) {
       console.log(val);
     },
@@ -276,6 +278,7 @@ export default {
   font-family: 'Arial Rounded MT Bold', sans-serif;
   font-size: 40px;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .body_bottom {
@@ -346,7 +349,7 @@ export default {
 .citation_box {
   width: 70px;
   height: 100%;
-  background-color: #000000;
+  background-color: #245;
   color: #ffffff;
   margin: 0 0 0 10px;
   padding: 4px 0;

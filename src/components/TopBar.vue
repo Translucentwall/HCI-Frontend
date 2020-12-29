@@ -8,7 +8,9 @@
       active-text-color="#000000"
     >
       <el-menu-item class="home" index="/home" style="border-bottom-color: #c4c7ce">主页</el-menu-item>
-      <SearchInTopBar></SearchInTopBar>
+      <SearchInTopBar
+        :search-mode="searchMode"
+        :search-content="searchContent"></SearchInTopBar>
     </el-menu>
   </div>
 </template>
@@ -23,6 +25,16 @@
                 activeIndex: '1'
             };
         },
+      props: {
+        searchMode: {
+          type: String,
+          default: null
+        },
+        searchContent: {
+          type: String,
+          default: null
+        }
+      },
         mounted(){
             let path = this.$route.path;
             let mode = window.location.href.split('mode=');

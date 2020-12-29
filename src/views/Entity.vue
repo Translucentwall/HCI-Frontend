@@ -3,7 +3,7 @@
   <div class="body_top">
     <div class="system-name-wrap">
       <!--        <span>Online grAph System for academIcS</span>-->
-      <span>OASIS</span>
+      <span @click="goHome">OASIS</span>
     </div>
   </div>
   <div class="body_bottom">
@@ -95,12 +95,29 @@
               <el-tab-pane name="graph">
                 <span slot="label"><i class="el-icon-connection"></i> 关系图</span>
                 <relation-graph v-if="id!==0&&activeName==='graph'" :eid="parseInt(id)" :etype="type" :size="size"></relation-graph>
+                <el-tooltip effect="light">
+                  <div slot="content">
+                    1. 点击节点可以跳转到相应关系图页面<br>
+                    2. 长按节点可以拖拽<br>
+                    3. 实线代表节点间存在热度关系<br>
+                    4. 实线线条越粗代表热度值越大<br>
+                    5. 虚线代表节点间无热度关系
+                  </div>
+                  <i class="el-icon-question graph-helper"></i>
+                </el-tooltip>
                 <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
                     <el-tooltip :content="'进入关系图页面，查看更多关系图'" placement="bottom-start" effect="light" :open-delay="400">
-                      <el-button icon="el-icon-guide" class="graph-button"></el-button>
+                      <el-button icon="iconfont icon-guanxitu" class="graph-button"></el-button>
                     </el-tooltip>
                   </router-link>
+                </div>
+                <div class="example">
+                  <div class="example-wrap"><span>中心点</span><div class="circle purple"></div></div>
+                  <div class="example-wrap"><span>作者</span><div class="circle red"></div></div>
+                  <div class="example-wrap"><span>机构</span><div class="circle orange"></div></div>
+                  <div class="example-wrap"><span>关键字</span><div class="circle green"></div></div>
+                  <div class="example-wrap"><span>论文</span><div class="circle blue"></div></div>
                 </div>
               </el-tab-pane>
             </el-tabs>
@@ -120,11 +137,13 @@
           <div class="filter-list" v-if="(this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0)||(this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0)">
             <div style="font-size: 15px">筛选条件：</div>
             <div class="filter-box" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
-              <el-dropdown type="primary">
-              <span class="el-dropdown-link">
-                年份：<span v-if="yearSelect===-1">全部</span>
-                <span v-else>{{yearSelect}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
+              <el-dropdown type="primary" :hide-on-click="true">
+                <span class="el-dropdown-link">
+                  年份：
+                  <span v-if="yearSelect===-1">全部</span>
+                  <span v-else>{{yearSelect}}</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
                 <el-dropdown-menu class="el-menu">
                   <el-radio-group size="medium" class="radio-group" v-model="yearSelect">
                     <el-radio class="radio-single" :label="-1">全部</el-radio>
@@ -136,12 +155,12 @@
               </el-dropdown>
             </div>
             <div class="filter-box" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
-              <el-dropdown type="primary">
-              <span class="el-dropdown-link">
-                研究方向：<span v-if="termSelect===-1">全部</span>
-                <span v-else v-for="termItem in showTermItems" v-if="termSelect===termItem.id">
-                  {{termItem.name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
+              <el-dropdown type="primary" :hide-on-click="true">
+                <span class="el-dropdown-link">
+                  研究方向：<span v-if="termSelect===-1">全部</span>
+                  <span v-else v-for="termItem in showTermItems" v-if="termSelect===termItem.id">
+                    {{termItem.name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
                 <el-dropdown-menu class="el-menu">
                   <el-radio-group size="medium" class="radio-group" v-model="termSelect">
                     <el-radio class="radio-single" :label="-1">全部</el-radio>
@@ -154,10 +173,10 @@
             </div>
           </div>
           <hr/>
-                  <Card
-          v-for="(significantPaper,index) in academicEntityVO.significantPapers"
-          :key="index"
-          :simple-paper-v-o="significantPaper"
+          <Card
+            v-for="(significantPaper,index) in academicEntityVO.significantPapers"
+            :key="index"
+            :simple-paper-v-o="significantPaper"
           ></Card>
         </el-col>
 <!--        <el-col :span="22" :offset="1" class="more"><a class="more-text" @click="search">Search papers by <strong>{{academicEntityVO.name}} </strong></a></el-col>-->
@@ -279,8 +298,11 @@
                   });
           },
           methods: {
+              goHome: function(){
+                  window.location.href = '/home';
+              },
               toOtherEntity: function (type, id) {
-                  window.location.href='/entity/' + type + '/' + id;
+                  window.location.href = '/entity/' + type + '/' + id;
               },
               renderCloud: function () {
                   let data = this.academicEntityVO.terms;
@@ -381,6 +403,7 @@
                   });
                   let maxHot = Math.max.apply(Math,data.map(item => { return item.hot }));
                   let echartData = [];
+                  echartData.push({name:"",id:-1,value:80})
                   data.forEach(function (d) {
                       echartData.push({
                         name: d.name,
@@ -487,6 +510,7 @@
     font-family: 'Arial Rounded MT Bold', sans-serif;
     font-size: 40px;
     color: #ffffff;
+    cursor: pointer;
   }
   .body_bottom{
     margin: 20px 50px;
@@ -512,7 +536,7 @@
   .citation_box{
     width: 140px;
     height: 100%;
-    background-color: #000000;
+    background-color: #245;
     color: #ffffff;
     padding: 4px 0;
     border-radius: 3px;
@@ -565,6 +589,45 @@
     border: none;
     color: white;
   }
+  .graph-helper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #245;
+    font-size: x-large;
+  }
+  .example{
+    position: absolute;
+    top: 50px;
+    right: 0;
+  }
+  .example-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin: 4px 0 0 0.5ex;
+  }
+  .purple{
+    background-color: rgb(106, 0, 95);
+  }
+  .red{
+    background-color: rgb(214, 39, 40);
+  }
+  .orange{
+    background-color: rgb(255, 127, 14);
+  }
+  .green{
+    background-color: rgb(44, 160, 44);
+  }
+  .blue{
+    background-color: rgb(31, 119, 180);
+  }
+  .circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: 4px;
+  }
   #cloud-wrap{
     width: 100%;
     text-align: left;
@@ -587,6 +650,9 @@
    /*padding-right: 1vw;*/
     display: flex;
     flex-wrap: wrap;
+    max-height: 23vw;
+    overflow: auto;
+
   }
   .radio-single{
     margin: 1vw;

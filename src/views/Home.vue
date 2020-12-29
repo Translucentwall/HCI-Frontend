@@ -30,15 +30,15 @@
             let loadingInstance = Loading.service({ fullscreen: true, text:'Server not available, please wait for a moment...'});
             searchable().then(res=>{
                 if(res.success){
-                    getPopRank(1).then(res=>{
-                        this.authorTableData = res;
-                    });
-                    getPopRank(2).then(res=>{
-                        this.affiliationTableData = res;
-                    });
-                    getPopRank(4).then(res=>{
-                        this.termTableData = res;
-                    });
+                    // getPopRank(1).then(res=>{
+                    //     this.authorTableData = res;
+                    // });
+                    // getPopRank(2).then(res=>{
+                    //     this.affiliationTableData = res;
+                    // });
+                    // getPopRank(4).then(res=>{
+                    //     this.termTableData = res;
+                    // });
                     loadingInstance.close();
                 }
             });
@@ -127,5 +127,4 @@
     color: #409eff;
     text-decoration: underline;
   }
-
 </style>

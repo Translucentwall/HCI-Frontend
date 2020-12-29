@@ -6,7 +6,7 @@
         <div class="option_name">
           <span v-if="changeType==='Author'">作者</span>
           <span v-else-if="changeType==='Affiliation'">机构</span>
-          <span v-else-if="changeType==='Conference'">刊物</span>
+          <span v-else-if="changeType==='Issue'">刊物</span>
           <span v-else-if="changeType==='Term'">研究方向</span>
           : <a class="center_name" :href="type<4?'/entity/'+this.$route.params.type+'/'+id: null">{{graphVO.centerName}}</a></div>
         <div v-if="type<4">
@@ -20,6 +20,13 @@
           placeholder="筛选"
           @input="searchNodes">
         </el-input>
+        <div class="example">
+          <div class="example-wrap"><div class="circle purple"></div><span>中心点</span></div>
+          <div class="example-wrap"><div class="circle red"></div><span>作者</span></div>
+          <div class="example-wrap"><div class="circle orange"></div><span>机构</span></div>
+          <div class="example-wrap"><div class="circle green"></div><span>关键字</span></div>
+          <div class="example-wrap"><div class="circle blue"></div><span>论文</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -437,7 +444,7 @@
                     this.isSearching = true;
                     svg.selectAll('circle')
                         .style('fill', function (d) {
-                            if(d.entityName.indexOf(that.searchText)!==-1){
+                            if(d.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1){
                                 if(d.entityId===centerId&&d.entityType===centerType){
                                     return 'rgb(106,0,95)';
                                 }
@@ -458,7 +465,7 @@
                             }
                         })
                         .attr('stroke', function (d) {
-                            if(d.entityName.indexOf(that.searchText)!==-1){
+                            if(d.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1){
                                 return '#000000'
                             }else {
                                 return '#cccccc'
@@ -466,18 +473,18 @@
                         });
                     svg.selectAll('line')
                         .style('stroke-width', function(link) {
-                            if (link.source.entityName.indexOf(that.searchText)!==-1 || link.target.entityName.indexOf(that.searchText)!==-1) {
-                                return 2;
+                            if (link.source.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1 || link.target.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1) {
+                              return 2;
                             }
                         })
                         .style('stroke', function(link) {
-                            if (link.source.entityName.indexOf(that.searchText)!==-1 || link.target.entityName.indexOf(that.searchText)!==-1) {
+                            if (link.source.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1 || link.target.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1) {
                                 return '#000000';
                             }
                         });
                     svg.selectAll('text')
                         .text(function (d) {
-                            if(d.entityName.indexOf(that.searchText)!==-1){
+                            if(d.entityName.toLowerCase().indexOf(that.searchText.toLowerCase())!==-1){
                                 return d.entityName
                             }else{
                                 return ''
@@ -488,7 +495,7 @@
         }
     }
 </script>
-<style>
+<style scoped>
   #svgContainer{
     width: 100%;
     height: 400px;
@@ -502,12 +509,13 @@
     float: left;
     position: relative;
   }
+
   .svg{
     /*border: 1px solid #cccccc;*/
   }
   .option{
     position: fixed;
-    top: 40px;
+    top: 60px;
     left: 20px;
     text-align: left;
     min-width: 160px;
@@ -524,6 +532,7 @@
   }
   .search-input{
     width: 16vw;
+    margin-left: 0.5ex;
   }
   .center_name{
     color: #000000;
@@ -545,5 +554,31 @@
   }
   .paper{
     color: rgb(31, 119, 180);
+  }
+  .example-wrap{
+    display: flex;
+    align-items: center;
+    margin: 4px 0 0 0.5ex;
+  }
+  .purple{
+    background-color: rgb(106, 0, 95);
+  }
+  .red{
+    background-color: rgb(214, 39, 40);
+  }
+  .orange{
+    background-color: rgb(255, 127, 14);
+  }
+  .green{
+    background-color: rgb(44, 160, 44);
+  }
+  .blue{
+    background-color: rgb(31, 119, 180);
+  }
+  .circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 4px;
   }
 </style>

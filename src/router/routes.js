@@ -1,11 +1,12 @@
 import Home from '../views/Home'
-import Search from '../views/SearchPage'
+import SearchPage from '../views/SearchPage'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
 import AdminLogin from "../views/AdminLogin";
 import Entity from "../views/Entity";
 import Manage from "../views/Manage";
 import Graph from "../views/Graph";
+import AdvancedSearch from "../views/AdvancedSearch"
 
 export let routes = [
   {
@@ -22,9 +23,14 @@ export let routes = [
     component: Home
   },
   {
+    path: '/search/advanced',
+    name: 'AdvancedSearch',
+    component: AdvancedSearch
+  },
+  {
     path: '/search/:mode/:content',
     name: 'Search',
-    component: Search
+    component: SearchPage
   },
   {
     path: '/rank',
