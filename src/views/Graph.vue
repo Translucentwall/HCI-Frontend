@@ -1,7 +1,12 @@
 <template>
   <div>
+    <div class="body_top">
+      <div class="system-name-wrap">
+        <span @click="goHome">OASIS</span>
+      </div>
+    </div>
     <relation-graph v-if="id!==0" :eid="id" :etype="type" :size="size"></relation-graph>
-    <el-tooltip effect="light">
+    <el-tooltip class="tip" effect="light">
       <div slot="content">
         1. 点击节点可以跳转到相应关系图页面<br>
         2. 长按节点可以拖拽<br>
@@ -38,10 +43,32 @@
             if (this.id === undefined || this.type === undefined) {
               window.location.href = '/home';
             }
+        },
+        methods: {
+            goHome: function(){
+                window.location.href = '/home';
+            }
         }
     }
 </script>
 <style scoped>
+  .body_top{
+    width: 100%;
+    background-image: url("../assets/teal_cube_background.jpg");
+    background-color: #024349;
+    background-repeat: no-repeat;
+    position: fixed;
+    z-index: 200;
+  }
+  .system-name-wrap{
+    position: relative;
+    width: max-content;
+    left: 50px;
+    font-family: 'Arial Rounded MT Bold', sans-serif;
+    font-size: 40px;
+    color: #ffffff;
+    cursor: pointer;
+  }
   #svgContainer{
     width: 100%;
     height: 100%;
@@ -103,5 +130,10 @@
   }
   .paper{
     color: rgb(31, 119, 180);
+  }
+  .tip{
+    position: fixed;
+    top: 60px;
+    right: 20px;
   }
 </style>

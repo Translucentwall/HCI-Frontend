@@ -3,7 +3,7 @@
   <div class="body_top">
     <div class="system-name-wrap">
       <!--        <span>Online grAph System for academIcS</span>-->
-      <span>OASIS</span>
+      <span @click="goHome">OASIS</span>
     </div>
   </div>
   <div class="body_bottom">
@@ -112,6 +112,13 @@
                     </el-tooltip>
                   </router-link>
                 </div>
+                <div class="example">
+                  <div class="example-wrap"><span>中心点</span><div class="circle purple"></div></div>
+                  <div class="example-wrap"><span>作者</span><div class="circle red"></div></div>
+                  <div class="example-wrap"><span>机构</span><div class="circle orange"></div></div>
+                  <div class="example-wrap"><span>关键字</span><div class="circle green"></div></div>
+                  <div class="example-wrap"><span>论文</span><div class="circle blue"></div></div>
+                </div>
               </el-tab-pane>
             </el-tabs>
             </el-col>
@@ -130,11 +137,13 @@
           <div class="filter-list" v-if="(this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0)||(this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0)">
             <div style="font-size: 15px">筛选条件：</div>
             <div class="filter-box" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
-              <el-dropdown type="primary">
-              <span class="el-dropdown-link">
-                年份：<span v-if="yearSelect===-1">全部</span>
-                <span v-else>{{yearSelect}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
+              <el-dropdown type="primary" :hide-on-click="true">
+                <span class="el-dropdown-link">
+                  年份：
+                  <span v-if="yearSelect===-1">全部</span>
+                  <span v-else>{{yearSelect}}</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
                 <el-dropdown-menu class="el-menu">
                   <el-radio-group size="medium" class="radio-group" v-model="yearSelect">
                     <el-radio class="radio-single" :label="-1">全部</el-radio>
@@ -146,12 +155,12 @@
               </el-dropdown>
             </div>
             <div class="filter-box" v-if="this.academicEntityVO.yearlyTerms && this.academicEntityVO.yearlyTerms.length!==0">
-              <el-dropdown type="primary">
-              <span class="el-dropdown-link">
-                研究方向：<span v-if="termSelect===-1">全部</span>
-                <span v-else v-for="termItem in showTermItems" v-if="termSelect===termItem.id">
-                  {{termItem.name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
+              <el-dropdown type="primary" :hide-on-click="true">
+                <span class="el-dropdown-link">
+                  研究方向：<span v-if="termSelect===-1">全部</span>
+                  <span v-else v-for="termItem in showTermItems" v-if="termSelect===termItem.id">
+                    {{termItem.name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
                 <el-dropdown-menu class="el-menu">
                   <el-radio-group size="medium" class="radio-group" v-model="termSelect">
                     <el-radio class="radio-single" :label="-1">全部</el-radio>
@@ -164,10 +173,10 @@
             </div>
           </div>
           <hr/>
-                  <Card
-          v-for="(significantPaper,index) in academicEntityVO.significantPapers"
-          :key="index"
-          :simple-paper-v-o="significantPaper"
+          <Card
+            v-for="(significantPaper,index) in academicEntityVO.significantPapers"
+            :key="index"
+            :simple-paper-v-o="significantPaper"
           ></Card>
         </el-col>
 <!--        <el-col :span="22" :offset="1" class="more"><a class="more-text" @click="search">Search papers by <strong>{{academicEntityVO.name}} </strong></a></el-col>-->
@@ -288,8 +297,11 @@
                   });
           },
           methods: {
+              goHome: function(){
+                  window.location.href = '/home';
+              },
               toOtherEntity: function (type, id) {
-                  window.location.href='/entity/' + type + '/' + id;
+                  window.location.href = '/entity/' + type + '/' + id;
               },
               renderCloud: function () {
                   let data = this.academicEntityVO.terms;
@@ -497,6 +509,7 @@
     font-family: 'Arial Rounded MT Bold', sans-serif;
     font-size: 40px;
     color: #ffffff;
+    cursor: pointer;
   }
   .body_bottom{
     margin: 20px 50px;
@@ -581,6 +594,38 @@
     left: 0;
     color: #245;
     font-size: x-large;
+  }
+  .example{
+    position: absolute;
+    top: 50px;
+    right: 0;
+  }
+  .example-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin: 4px 0 0 0.5ex;
+  }
+  .purple{
+    background-color: rgb(106, 0, 95);
+  }
+  .red{
+    background-color: rgb(214, 39, 40);
+  }
+  .orange{
+    background-color: rgb(255, 127, 14);
+  }
+  .green{
+    background-color: rgb(44, 160, 44);
+  }
+  .blue{
+    background-color: rgb(31, 119, 180);
+  }
+  .circle{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: 4px;
   }
   #cloud-wrap{
     width: 100%;

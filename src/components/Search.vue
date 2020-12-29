@@ -74,6 +74,7 @@
         <i class="el-icon-close tag-delete" @click="remove(index)"></i>
       </div>
     </div>
+    <div class="advanced-entry" @click="goAdvancedSearch">高级搜索</div>
   </div>
 </template>
 
@@ -95,14 +96,14 @@
                   'Publication': 'yellow',
                   'Keyword': 'green',
                   'Year': 'light-blue'},
-              searchModeInChinese:{
-                'All':'全局搜索',
-                'Title': '按标题搜索',
-                'Author': '按作者搜索',
-                'Publication': '按刊物搜索',
-                'Keyword': '按研究方向搜索',
-                'Advanced': '高级搜索'
-              }
+                searchModeInChinese:{
+                  'All':'全局搜索',
+                  'Title': '按标题搜索',
+                  'Author': '按作者搜索',
+                  'Publication': '按刊物搜索',
+                  'Keyword': '按研究方向搜索',
+                  'Advanced': '高级搜索'
+                }
             }
         },
         props: {
@@ -124,6 +125,9 @@
             }
         },
         methods: {
+            goAdvancedSearch: function(){
+                window.location.href = '/search/advanced'
+            },
             handleMode(command) {
                 this.mode = command;
             },
@@ -209,16 +213,17 @@
 
 <style scoped>
   .search-wrap{
-    position: absolute;
-    top: 40%;
-    left: 28vw;
+    /*position: absolute;*/
+    /*top: 40%;*/
+    /*left: 28vw;*/
+    position: relative;
     display: block;
-    border: 2px solid #c4c7ce;
-    border-radius: 7px;
+
   }
   .search-top{
     display: flex;
     /*border: 2px solid #ffffff;*/
+    border: 2px solid #c4c7ce;
     border-radius: 4px;
   }
   .el-button{
@@ -317,5 +322,14 @@
   }
   .light-blue{
     background-color: #409eff;
+  }
+  .advanced-entry{
+    margin-top: 4px;
+    color: #ffffff;
+    text-align: right;
+    cursor: pointer;
+  }
+  .advanced-entry:hover{
+    text-decoration: underline;
   }
 </style>

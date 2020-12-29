@@ -1,7 +1,10 @@
 <template>
   <div style="text-align: center">
     <div class="body-top">
-      <TopBar></TopBar>
+      <TopBar
+        v-if="searchContent||mode==='Advanced'"
+        :search-mode="mode"
+        :search-content="searchContent"></TopBar>
     </div>
     <div class="body-bottom" v-if="displayBottom">
       <el-row>
@@ -41,7 +44,8 @@
             </Card>
           </div>
           <div v-if="!simplePaperVO[0]" class="message">没有搜索结果...</div>
-          <el-button v-if="simplePaperVO[0]" class="result-more" @click="loadMore">加载更多</el-button>
+          <el-button v-if="simplePaperVO[0]&&hasMore" class="result-more" @click="loadMore">加载更多</el-button>
+          <div v-if="simplePaperVO[0]&&!hasMore" class="message">已展示全部结果...</div>
         </el-col>
       </el-row>
     </div>
@@ -91,7 +95,8 @@
                   'Keyword': 'Keyword-Paper',
                   'Advanced': 'Paper-Cited'
               },
-            searchModeInChinese:Search.data().searchModeInChinese
+              hasMore: true,
+              searchModeInChinese:Search.data().searchModeInChinese
           }
       },
       mounted() {
@@ -124,11 +129,14 @@
                   this.searchContent = content;
 
               }
-
+              console.log(this.searchContent)
               this.currentPage = 1;
 
               this.simplePaperVO.length = 0;
               search(content, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+                  if(res.length<10){
+                      this.hasMore = false;
+                  }
                   this.simplePaperVO = res;
                   this.resultTitleMode = this.mode;
                   this.resultTitleContent = content;
@@ -146,6 +154,9 @@
           loadMore: function () {
               this.currentPage += 1;
               search(this.searchContent, this.mode, this.currentPage, this.sortMode, 10).then(res => {
+                  if(res.length<10){
+                      this.hasMore = false;
+                  }
                   for (let result in res){
                       this.simplePaperVO.push(res[result]);
                   }
