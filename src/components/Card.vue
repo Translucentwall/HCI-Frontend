@@ -32,7 +32,7 @@
           <span v-if="index<simplePaperVO.author_simpleAffiliationVOS.length-1">;</span>
         </div>
       </div>
-      <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
+      <div class="publication-wrap" v-if="simplePaperVO.publicationTitle&&simplePaperVO.conferenceId!==1797">
         <span>发表于 </span>
         <a class="publication" :href="'/entity/issue/'+simplePaperVO.conferenceId"
            v-html="simplePaperVO.publicationTitle" target="_blank">
