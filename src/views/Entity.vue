@@ -604,7 +604,7 @@
   .example-wrap{
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: flex-end;
     margin: 4px 0 0 0.5ex;
   }
   .purple{

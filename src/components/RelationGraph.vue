@@ -534,6 +534,13 @@
     width: 16vw;
     margin-left: 0.5ex;
   }
+  .search-input>>>.el-input__inner{
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 24px;
+    padding: 0 5px;
+  }
   .center_name{
     color: #000000;
   }
