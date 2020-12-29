@@ -8,7 +8,7 @@
           点击复制
         </div>
         <a :href="'https://ieeexplore.ieee.org' + simplePaperVO.pdfLink" target="_blank"
-           v-if="simplePaperVO.pdfLink&&simplePaperVO.pdfLink.indexOf('http')===-1">
+           v-if="simplePaperVO.pdfLink&&simplePaperVO.pdfLink.indexOf('arnumber')!==-1">
           <div class="tool-pdf">
             <span>PDF <i class="icon iconfont icon-pdf"/></span>
           </div>
@@ -23,19 +23,19 @@
     </div>
     <div class="card-content">
       <div class="title-wrap">
-        <a class="title" :href="'/paper/'+simplePaperVO.id" v-html="simplePaperVO.title"></a>
+        <a class="title" :href="'/paper/'+simplePaperVO.id" v-html="simplePaperVO.title" target="_blank"></a>
       </div>
       <div class="author-affiliation-wrap"
            v-if="simplePaperVO.author_simpleAffiliationVOS&&simplePaperVO.author_simpleAffiliationVOS[0]&&simplePaperVO.author_simpleAffiliationVOS[0].author!==''">
         <div v-for="(item,index) in simplePaperVO.author_simpleAffiliationVOS" class="author-affiliation">
-          <a class="author" :href="'/entity/author/'+item.authorId" v-html="item.author"></a>
+          <a class="author" :href="'/entity/author/'+item.authorId" v-html="item.author" target="_blank"></a>
           <span v-if="index<simplePaperVO.author_simpleAffiliationVOS.length-1">;</span>
         </div>
       </div>
       <div class="publication-wrap" v-if="simplePaperVO.publicationTitle">
         <span>发表于 </span>
         <a class="publication" :href="'/entity/issue/'+simplePaperVO.conferenceId"
-           v-html="simplePaperVO.publicationTitle">
+           v-html="simplePaperVO.publicationTitle" target="_blank">
           <!--          <span v-html="simplePaperVO.publicationTitle"></span>-->
         </a>
       </div>

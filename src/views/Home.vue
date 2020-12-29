@@ -3,7 +3,7 @@
     <div class="body-top">
       <div class="system-name-wrap">
         <div class="system-name">
-          <span>Online grAph System&nbsp;</span><span>for academIcS</span>
+          <span>__OASIS__</span>
         </div>
       </div>
       <Search></Search>

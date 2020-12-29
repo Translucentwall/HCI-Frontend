@@ -10,7 +10,9 @@
           <span v-else-if="changeType==='Term'">研究方向</span>
           : <a class="center_name" :href="type<4?'/entity/'+this.$route.params.type+'/'+id: null">{{graphVO.centerName}}</a></div>
         <div v-if="type<4">
-          <input type="checkbox" v-model="showTotal">显示完整关系图
+          <label>
+            <input type="checkbox" v-model="showTotal">
+          </label>显示完整关系图
         </div>
         <el-input
           class="search-input"

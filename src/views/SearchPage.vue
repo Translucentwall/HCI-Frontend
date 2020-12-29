@@ -100,6 +100,7 @@
               if(res.success){
                   loadingInstance.close();
                   let content = this.$route.params.content;
+                  document.title = `搜索 ${content} 的结果 - ${document.title}`
                   if(content !== null && content !== ''){
                       this.searchBegin();
                   }else{

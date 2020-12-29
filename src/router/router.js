@@ -21,6 +21,7 @@ router.beforeEach((to, from, next) => {
   //     next();
   //   }
   // }
+  document.title = 'OASIS'
   next();
 });
 

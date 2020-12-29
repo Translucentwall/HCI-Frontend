@@ -234,6 +234,7 @@
               let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
               getAcademicEntity(this.id,this.type)
                   .then(res => {
+                      document.title = res.name + ' - ' + document.title
                       res.yearlyTerms.sort(function (a, b) {
                           return b.year-a.year;
                       });

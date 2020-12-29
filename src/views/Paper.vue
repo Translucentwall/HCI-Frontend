@@ -17,10 +17,12 @@
           <div class="title-left">
             <span class="title">{{ paperVO.title }}</span>
             <div class="title-button">
-              <i class="iconfont icon-yinyong bibtex" @click="copyBibtex(paperVO.id)">复制BibTeX</i>
-              <a v-if="paperVO.pdflink" class="iconfont icon-pdf pdf" :href="paperVO.pdflink" target="_blank">PDF</a>
-              <a :href="'http://doi.org/' + paperVO.doi" class="el-icon-paperclip doi" target="_blank"
+              <i class="iconfont icon-yinyong tool bibtex" @click="copyBibtex(paperVO.id)">复制BibTeX</i>
+              <a v-if="paperVO.pdflink" class="iconfont icon-pdf tool pdf" :href="paperVO.pdflink" target="_blank">PDF</a>
+              <span v-else class="iconfont icon-pdf tool disabled">暂无PDF</span>
+              <a :href="'http://doi.org/' + paperVO.doi" class="el-icon-paperclip tool doi" target="_blank"
                  v-if="paperVO.doi && paperVO.doi!==''">来源</a>
+              <span v-else class="el-icon-paperclip tool disabled">暂无来源</span>
             </div>
           </div>
           <div class="reference citation_box">
@@ -130,6 +132,7 @@ export default {
         .then(res => {
           if (res.success) {
             this.paperVO = res.content;
+            document.title = this.paperVO.title + ' - ' + document.title
             if (this.paperVO.pdflink && this.paperVO.pdflink !== "") {
               let flag = this.paperVO.pdflink.indexOf("https");
               if (flag === -1) {
@@ -303,27 +306,35 @@ export default {
   padding: 0 4%;
 }
 
-.bibtex, .doi {
-  color: #224455;
+.tool {
+  text-decoration: none;
   margin-right: 2%;
   cursor: pointer;
-  text-decoration: none;
+}
+
+.tool:hover {
+  text-decoration: underline;
+}
+
+.bibtex, .doi {
+  color: #224455;
 }
 
 .bibtex:hover, .doi:hover {
   color: #006666;
-  text-decoration: underline;
 }
 
 .pdf {
   color: #B04C50;
-  text-decoration: none;
-  margin-right: 2%;
 }
 
 .pdf:hover {
   color: #ff6347;
-  text-decoration: underline;
+}
+
+.disabled {
+  color: #666666;
+  pointer-events: none;
 }
 
 .citation_wrap {

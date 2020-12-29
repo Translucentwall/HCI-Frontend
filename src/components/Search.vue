@@ -228,7 +228,7 @@
     background: #066;
   }
   .mode-button{
-    width: 9vw;
+    width: 11vw;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     font-family: Noto Sans SC, sans-serif;
