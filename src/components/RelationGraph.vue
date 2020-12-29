@@ -22,9 +22,9 @@
         </el-input>
         <div class="example">
           <div class="example-wrap"><div class="circle purple"></div><span>中心点</span></div>
+          <div class="example-wrap"><div class="circle green"></div><span>研究方向</span></div>
           <div class="example-wrap"><div class="circle red"></div><span>作者</span></div>
           <div class="example-wrap"><div class="circle orange"></div><span>机构</span></div>
-          <div class="example-wrap"><div class="circle green"></div><span>关键字</span></div>
           <div class="example-wrap"><div class="circle blue"></div><span>论文</span></div>
         </div>
       </div>

@@ -12,7 +12,7 @@
           <el-dropdown-item command="Author">{{searchModeInChinese['Author']}}</el-dropdown-item>
           <el-dropdown-item command="Publication">{{searchModeInChinese['Publication']}}</el-dropdown-item>
           <el-dropdown-item command="Keyword">{{searchModeInChinese['Keyword']}}</el-dropdown-item>
-          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>
+<!--          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>-->
         </el-dropdown-menu>
       </el-dropdown>
       <el-input

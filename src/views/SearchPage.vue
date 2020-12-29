@@ -2,8 +2,8 @@
   <div style="text-align: center">
     <div class="body-top">
       <TopBar
-        v-if="searchContent||mode==='Advanced'"
-        :search-mode="mode"
+        v-if="showSearch"
+        :search-mode="displayMode"
         :search-content="searchContent"></TopBar>
     </div>
     <div class="body-bottom" v-if="displayBottom">
@@ -68,6 +68,7 @@
               displayBottom: false,
               mode: 'All',
               simplePaperVO: [],
+              displayMode: 'All',
               searchContent: '',
               showSearch: false,
               currentPage: 1,
@@ -128,8 +129,10 @@
               this.mode = this.$route.params.mode;
               if (this.mode !== 'Advanced') {
                   this.searchContent = content;
-
+              }else{
+                  this.displayMode = 'All';
               }
+
               console.log(this.searchContent)
               this.currentPage = 1;
 
@@ -139,10 +142,9 @@
                       this.hasMore = false;
                   }
                   this.simplePaperVO = res;
-                  this.resultTitleMode = this.mode;
+                  this.resultTitleMode = this.$route.params.mode;
                   this.resultTitleContent = content;
                   this.displayBottom = true;
-
                   // this.tableMode = this.tableModeDic[this.mode];
                   // let tableMode = this.tableModeDic2[this.mode];
                   // getRank(tableMode, 1, true, 2013, 2019).then(res => {

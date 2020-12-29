@@ -11,6 +11,7 @@
       <SearchInTopBar
         :search-mode="searchMode"
         :search-content="searchContent"></SearchInTopBar>
+      <div class="advanced-entry" @click="goAdvancedSearch">高级搜索</div>
     </el-menu>
   </div>
 </template>
@@ -56,12 +57,15 @@
             }
         },
         methods: {
-            handleSelect(key, keyPath) {
-                window.location.href = keyPath[keyPath.length - 1];
-                // this.$router.push(url).catch(err =>{
-                //     console.log(err);
-                // });
-            }
+          handleSelect(key, keyPath) {
+            window.location.href = keyPath[keyPath.length - 1];
+            // this.$router.push(url).catch(err =>{
+            //   console.log(err);
+            // });
+          },
+          goAdvancedSearch: function(){
+            window.location.href = '/search/advanced'
+          }
         }
 
     }
@@ -101,6 +105,15 @@
   }
   .option-item:hover{
     color: #000000;
+    text-decoration: underline;
+  }
+  .advanced-entry{
+    margin: 20px 0 0 16px;
+    color: #ffffff;
+    text-align: right;
+    cursor: pointer;
+  }
+  .advanced-entry:hover{
     text-decoration: underline;
   }
 </style>

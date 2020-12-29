@@ -114,9 +114,9 @@
                 </div>
                 <div class="example">
                   <div class="example-wrap"><span>中心点</span><div class="circle purple"></div></div>
+                  <div class="example-wrap"><span>研究方向</span><div class="circle green"></div></div>
                   <div class="example-wrap"><span>作者</span><div class="circle red"></div></div>
                   <div class="example-wrap"><span>机构</span><div class="circle orange"></div></div>
-                  <div class="example-wrap"><span>关键字</span><div class="circle green"></div></div>
                   <div class="example-wrap"><span>论文</span><div class="circle blue"></div></div>
                 </div>
               </el-tab-pane>
