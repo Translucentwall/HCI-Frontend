@@ -95,6 +95,16 @@
               <el-tab-pane name="graph">
                 <span slot="label"><i class="el-icon-connection"></i> 关系图</span>
                 <relation-graph v-if="id!==0&&activeName==='graph'" :eid="parseInt(id)" :etype="type" :size="size"></relation-graph>
+                <el-tooltip effect="light">
+                  <div slot="content">
+                    1. 点击节点可以跳转到相应关系图页面<br>
+                    2. 长按节点可以拖拽<br>
+                    3. 实线代表节点间存在热度关系<br>
+                    4. 实线线条越粗代表热度值越大<br>
+                    5. 虚线代表节点间无热度关系
+                  </div>
+                  <i class="el-icon-question graph-helper"></i>
+                </el-tooltip>
                 <div class="graph_entry">
                   <router-link :to="'/graph/' + this.$route.params.type + '/' + this.$route.params.id">
                     <el-tooltip :content="'进入关系图页面，查看更多关系图'" placement="bottom-start" effect="light" :open-delay="400">
@@ -512,7 +522,7 @@
   .citation_box{
     width: 140px;
     height: 100%;
-    background-color: #000000;
+    background-color: #245;
     color: #ffffff;
     padding: 4px 0;
     border-radius: 3px;
@@ -564,6 +574,13 @@
     border-radius: 3px;
     border: none;
     color: white;
+  }
+  .graph-helper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #245;
+    font-size: x-large;
   }
   #cloud-wrap{
     width: 100%;

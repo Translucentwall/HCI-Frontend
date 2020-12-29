@@ -1,6 +1,18 @@
 <template>
   <div>
     <relation-graph v-if="id!==0" :eid="id" :etype="type" :size="size"></relation-graph>
+    <el-tooltip effect="light">
+      <div slot="content">
+        1. 点击节点可以跳转到相应关系图页面<br>
+        2. 长按节点可以拖拽<br>
+        3. 实线代表节点间存在热度关系<br>
+        4. 实线线条越粗代表热度值越大<br>
+        5. 虚线代表节点间无热度关系<br>
+        6. 勾选“显示完整关系图”可查看完整关系图<br>
+        7. 筛选框输入内容能够高亮对应的节点
+      </div>
+      <i class="el-icon-question graph-helper"></i>
+    </el-tooltip>
   </div>
 </template>
 <script>
@@ -64,6 +76,12 @@
   }
   .search-input{
     width: 16vw;
+  }
+  .graph-helper{
+    position: fixed;
+    top:40px;
+    right:20px;
+    font-size: x-large;
   }
   .center_name{
     color: #000000;

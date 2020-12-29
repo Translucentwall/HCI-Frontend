@@ -335,7 +335,7 @@ export default {
 .citation_box {
   width: 70px;
   height: 100%;
-  background-color: #000000;
+  background-color: #245;
   color: #ffffff;
   margin: 0 0 0 10px;
   padding: 4px 0;

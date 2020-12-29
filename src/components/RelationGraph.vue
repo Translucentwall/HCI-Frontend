@@ -500,6 +500,7 @@
     float: left;
     position: relative;
   }
+
   .svg{
     /*border: 1px solid #cccccc;*/
   }
