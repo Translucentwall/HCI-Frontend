@@ -451,7 +451,12 @@
               },
               search: function () {
                   let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
-                  window.location.href = '/search/'+typeDic2[this.type]+'/'+this.academicEntityVO.name;
+                  let name = this.academicEntityVO.name;
+                  let pattern = /[%\\/?+#&=]/;
+                  while(pattern.test(name)){
+                    name = name.replace(/[%\\/?+#&=]/g, ' ')
+                  }
+                  window.location.href = '/search/' + typeDic2[this.type] + '/'+name;
               },
               renderSignificantPaper: function () {
                   let that = this;
