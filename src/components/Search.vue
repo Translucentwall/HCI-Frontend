@@ -178,7 +178,7 @@
                         let pattern = /[%\\/?+#&=]/;
                         if(pattern.test(this.content)){
                             this.$message({
-                                message:'Search content can\'t include %,\\,/,?,+,#,&,=',
+                                message:'搜索内容中不能包含字符 %,\\,/,?,+,#,&,=',
                                 type: 'error',
                                 duration: 2000
                             });
@@ -191,7 +191,7 @@
                 }else{
                     if(!this.advancedSearch || this.advancedSearch.length === 0){
                         this.$message({
-                            message:'请添加有效进阶查询内容',
+                            message:'请添加有效的高级搜索内容',
                             type: 'error',
                             duration: 2000
                         });
@@ -221,7 +221,7 @@
                     let pattern = /[%\\/?+#&=]/;
                     if(pattern.test(this.content)){
                         this.$message({
-                            message:'Search content can\'t include %,\\,/,?,+,#,&,=',
+                            message:'搜索内容中不能包含字符 %,\\,/,?,+,#,&,=',
                             type: 'error',
                             duration: 2000
                         });
