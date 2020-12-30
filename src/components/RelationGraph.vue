@@ -188,11 +188,13 @@
                     .attr('width', width)
                     .attr('height', height);
                 // 通过布局来转换数据，然后进行绘制
+                let xcenter = width / 2, ycenter = height / 2
                 let simulation = d3.forceSimulation()
                     .nodes(nodes)
-                    .force('link', d3.forceLink(links).distance(nodes.length<200?200:100).id(d=>d.id))
-                    .force('charge', d3.forceManyBody())
-                    .force('center', d3.forceCenter(width / 2, height / 2));
+                    .force('center', d3.forceCenter(xcenter, ycenter))
+                    .force('charge', d3.forceManyBody().strength(-15))
+                    .force('collide', d3.forceCollide(6))
+                    .force('link', d3.forceLink(links).distance(nodes.length<200?166:66).id(d=>d.id))
 
                 // 添加连线
                 svg.selectAll('line')
@@ -314,7 +316,7 @@
                     .call(d3.drag()
                         .on('start', function (d) {
                             if (!d3.event.active) {
-                                simulation.alphaTarget(0.8).restart() // 设置衰减系数，对节点位置移动过程的模拟，数值越高移动越快，数值范围[0，1]
+                                simulation.alphaTarget(0.5).alphaDecay(0.0114).restart() // 设置衰减系数，对节点位置移动过程的模拟，数值越高移动越快，数值范围[0，1]
                             }
                             d.fx = d.x;
                             d.fy = d.y;
@@ -383,7 +385,7 @@
                         .attr('x2', function (d) { return d.target.x })
                         .attr('y2', function (d) { return d.target.y });
                 });
-                this.searchNodes();
+                // this.searchNodes();
             },
             searchNodes: function () {
                 let svg = d3.select('#forceDirected');
