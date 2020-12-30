@@ -144,11 +144,11 @@
             },
             createFilter(queryString) {
                 return (record) => {
-                    return (record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                    return (record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0&&record.mode === this.mode);
                 };
             },
             searchRecord: function(record){
-                window.location.href = '/search/' + record.mode + '/' + record.value;
+                window.location.href = '/search/' + record.mode + '/' + record.content;
             },
             goAdvancedSearch: function(){
                 window.location.href = '/search/advanced'
@@ -183,7 +183,20 @@
                                 duration: 2000
                             });
                         }else{
-                            this.records.push({value:this.content, mode: this.mode});
+                            let index = -1;
+                            for(let i = 0; i < this.records.length; i++){
+                                if(this.records[i].mode === this.mode&&this.records[i].content === this.content){
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if(index===-1){
+                                this.records.unshift({value:this.content+' - '+this.searchModeInChinese[this.mode], content:this.content ,mode:this.mode});
+                            }else{
+                                this.records.splice(index,1);
+                                this.records.unshift({value:this.content+' - '+this.searchModeInChinese[this.mode], content:this.content ,mode:this.mode});
+                            }
+                            this.records = this.records.slice(0,10);
                             sessionStorage.setItem('records', JSON.stringify(this.records));
                             window.location.href = '/search/' + this.mode + '/' + this.content;
                         }

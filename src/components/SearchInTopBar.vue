@@ -15,14 +15,23 @@
 <!--          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>-->
         </el-dropdown-menu>
       </el-dropdown>
-      <el-input
-        v-if="mode!=='Advanced'"
+<!--      <el-input-->
+<!--        v-if="mode!=='Advanced'"-->
+<!--        class="search-input"-->
+<!--        v-model="content"-->
+<!--        placeholder="请键入搜索内容..."-->
+<!--        @keydown.13.native="search"-->
+<!--        @keydown.229="handleCN">-->
+<!--      </el-input>-->
+      <el-autocomplete
         class="search-input"
+        :fetch-suggestions="querySearch"
         v-model="content"
         placeholder="请键入搜索内容..."
+        @select="searchRecord"
         @keydown.13.native="search"
         @keydown.229="handleCN">
-      </el-input>
+      </el-autocomplete>
       <div class="advanced" v-if="mode==='Advanced'">
         <el-dropdown trigger="click" @command="handleRelationMode">
           <el-button class="relation-mode" type="primary" size="small">
@@ -98,7 +107,8 @@ export default {
         'Publication': 'yellow',
         'Keyword': 'green',
         'Year': 'light-blue'},
-      searchModeInChinese:Search.data().searchModeInChinese
+      searchModeInChinese:Search.data().searchModeInChinese,
+      records: []
     }
   },
   props: {
@@ -118,8 +128,26 @@ export default {
     if(this.searchContent){
       this.content = this.searchContent;
     }
+    let records = sessionStorage.getItem('records');
+    if(records){
+      this.records = JSON.parse(records);
+    }
   },
   methods: {
+    querySearch(queryString, cb) {
+      let records = this.records;
+      let results = queryString ? records.filter(this.createFilter(queryString)) : records;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (record) => {
+        return (record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0&&record.mode === this.mode);
+      };
+    },
+    searchRecord: function(record){
+      window.location.href = '/search/' + record.mode + '/' + record.content;
+    },
     handleMode(command) {
       this.mode = command;
     },
@@ -150,6 +178,21 @@ export default {
               duration: 2000
             });
           }else{
+            let index = -1;
+            for(let i = 0; i < this.records.length; i++){
+              if(this.records[i].mode === this.mode&&this.records[i].content === this.content){
+                index = i;
+                break;
+              }
+            }
+            if(index===-1){
+              this.records.unshift({value:this.content+' - '+this.searchModeInChinese[this.mode], content:this.content ,mode:this.mode});
+            }else{
+              this.records.splice(index,1);
+              this.records.unshift({value:this.content+' - '+this.searchModeInChinese[this.mode], content:this.content ,mode:this.mode});
+            }
+            this.records = this.records.slice(0,10);
+            sessionStorage.setItem('records', JSON.stringify(this.records));
             window.location.href = '/search/' + this.mode + '/' + this.content;
           }
         }
