@@ -521,6 +521,7 @@
     left: 20px;
     text-align: left;
     min-width: 160px;
+    /*z-index: -1;*/
   }
   .option_name{
     margin-left: 0.5ex;
@@ -545,6 +546,7 @@
   }
   .center_name{
     color: #000000;
+    width: 300px;
   }
   .center_name:hover{
     color: #409eff;
