@@ -8,11 +8,14 @@
       active-text-color="#000000"
     >
       <el-menu-item class="home" index="/home" style="border-bottom-color: #c4c7ce">主页</el-menu-item>
+    </el-menu>
+    <div class="search">
       <SearchInTopBar
         :search-mode="searchMode"
         :search-content="searchContent"></SearchInTopBar>
       <div class="advanced-entry" @click="goAdvancedSearch">高级搜索</div>
-    </el-menu>
+
+    </div>
   </div>
 </template>
 
@@ -115,5 +118,10 @@
   }
   .advanced-entry:hover{
     text-decoration: underline;
+  }
+  .search{
+    position: absolute;
+    top: 15px;
+    left: 154px;
   }
 </style>

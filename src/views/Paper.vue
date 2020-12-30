@@ -56,21 +56,21 @@
                 <div class="subtitle">作者关键词</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.authorKeywords" class="keyword"
-                        @click="search(keyword)">{{ keyword }}</span>
+                        @click="search(keyword)" :title="'去搜索包含关键词 '+keyword+' 的论文'">{{ keyword }}</span>
                 </div>
               </div>
               <div class="IEEE_keywords keywords" v-if="paperVO.ieeeterms&&paperVO.ieeeterms[0]">
                 <div class="subtitle">IEEE关键词</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.ieeeterms" class="keyword"
-                        @click="search(keyword)">{{ keyword }}</span>
+                        @click="search(keyword)" :title="'去搜索包含关键词 '+keyword+' 的论文'">{{ keyword }}</span>
                 </div>
               </div>
               <div class="controlled_terms keywords" v-if="paperVO.controlledTerms&&paperVO.controlledTerms[0]">
                 <div class="subtitle">INSPEC: 受控索引</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.controlledTerms" class="keyword"
-                        @click="search(keyword)">{{ keyword }}</span>
+                        @click="search(keyword)" :title="'去搜索包含关键词 '+keyword+' 的论文'">{{ keyword }}</span>
                 </div>
               </div>
               <div class="non_controlled_terms keywords"
@@ -78,7 +78,7 @@
                 <div class="subtitle">INSPEC: 非受控索引</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.nonControlledTerms" class="keyword"
-                        @click="search(keyword)">{{ keyword }}</span>
+                        @click="search(keyword)" :title="'去搜索包含关键词 '+keyword+' 的论文'">{{ keyword }}</span>
                 </div>
               </div>
             </el-collapse-item>
