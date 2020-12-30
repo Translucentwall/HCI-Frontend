@@ -129,6 +129,7 @@
               this.mode = this.$route.params.mode;
               if (this.mode !== 'Advanced') {
                   this.searchContent = content;
+                  this.displayMode = this.mode;
               }else{
                   this.displayMode = 'All';
               }

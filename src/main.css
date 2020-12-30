@@ -52,6 +52,7 @@
 .el-input__inner{
   border-radius: 0;
   border: 0;
+  height: 41px;
 }
 .cell{
   text-align: center;

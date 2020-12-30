@@ -250,6 +250,7 @@
   }
   .option-wrap{
     text-align: right;
+    margin-bottom: 100px;
   }
   .reset{
     background-color: #ffffff;
