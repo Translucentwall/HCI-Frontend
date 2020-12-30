@@ -60,8 +60,8 @@
                 v-model="item.content"
                 placeholder="请键入搜索内容...">
               </el-input>
-              <i v-if="index>0" class="el-icon-circle-close" @click="deleteLine(index)"></i>
-              <i v-if="index===more.length-1" class="el-icon-circle-plus-outline" @click="addLine(index)"></i>
+              <i v-if="index>0" class="el-icon-circle-close" style="color: #ff6347" @click="deleteLine(index)"></i>
+              <i v-if="index===more.length-1" class="el-icon-circle-plus-outline" style="color: #055" @click="addLine(index)"></i>
             </div>
           </div>
         </div>
@@ -218,17 +218,18 @@
     margin-right: 40px;
   }
   .mode-button{
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #055;
     width: 164px;
+    border: none;
   }
+
   .prefix-button{
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #055;
     width: 100px;
+    border: none;
   }
   .input{
-    border: 1px solid #000000;
+    border: 2px solid #c4c7ce;
     border-radius: 4px;
     padding: 0 2px;
   }
@@ -253,7 +254,11 @@
     margin-bottom: 100px;
   }
   .reset{
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #B04C50;
+    border: none;
+  }
+  .search{
+    background-color: #245;
+    border: none;
   }
 </style>
