@@ -31,6 +31,12 @@
         @select="searchRecord"
         @keydown.13.native="search"
         @keydown.229="handleCN">
+        <template slot-scope="{item}">
+          <div style="display: flex; justify-content: space-between">
+            <span>{{item.content}}</span>
+            <span style="color: #777777;">{{searchModeInChinese[item.mode]}}</span>
+          </div>
+        </template>
       </el-autocomplete>
       <div class="advanced" v-if="mode==='Advanced'">
         <el-dropdown trigger="click" @command="handleRelationMode">

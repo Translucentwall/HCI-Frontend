@@ -119,4 +119,6 @@
   font-weight: bold;
 }
 
-
+.el-breadcrumb__inner a:hover, .el-breadcrumb__inner.is-link:hover{
+  color: #066;
+}
