@@ -541,7 +541,7 @@
   .citation_box{
     width: 140px;
     height: 100%;
-    background-color: #245;
+    background-color: #244;
     color: #ffffff;
     padding: 4px 0;
     border-radius: 3px;
@@ -559,7 +559,7 @@
     margin: 10px 0;
   }
   .entity{
-    color: #245;
+    color: #244;
     text-decoration: none;
     cursor: pointer;
     /*font-style: italic;*/
@@ -589,7 +589,7 @@
     right: 0;
   }
   .graph-button{
-    background: #245;
+    background: #244;
     border-radius: 3px;
     border: none;
     color: white;
@@ -598,7 +598,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    color: #245;
+    color: #244;
     font-size: x-large;
   }
   .example{
@@ -687,7 +687,7 @@
   .el-dropdown-link {
     font-size: 15px;
     cursor: pointer;
-    color: #245;
+    color: #244;
     font-family: Noto Sans SC, sans-serif;
   }
   .el-icon-arrow-down {
@@ -702,7 +702,7 @@
     text-decoration: underline;
   }
   .more-text:hover{
-    color: #245;
+    color: #066;
   }
   .svg{
     width: 100%;

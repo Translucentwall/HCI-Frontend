@@ -320,11 +320,11 @@ export default {
 }
 
 .bibtex, .doi {
-  color: #224455;
+  color: #244;
 }
 
 .bibtex:hover, .doi:hover {
-  color: #006666;
+  color: #066;
 }
 
 .pdf {
@@ -349,7 +349,7 @@ export default {
 .citation_box {
   width: 70px;
   height: 100%;
-  background-color: #245;
+  background-color: #244;
   color: #ffffff;
   margin: 0 0 0 10px;
   padding: 4px 0;
@@ -379,7 +379,7 @@ export default {
 
 .issue {
   text-decoration: none;
-  color: #245;
+  color: #244;
 }
 
 .issue:hover {
@@ -397,7 +397,7 @@ export default {
 .author {
   line-height: 20px;
   font-size: 20px;
-  color: #245;
+  color: #244;
   text-decoration: none;
 }
 
@@ -409,7 +409,7 @@ export default {
 .affiliation {
   font-size: 14px;
   margin-left: 16px;
-  color: #245;
+  color: #244;
   text-decoration: none;
 }
 
@@ -431,7 +431,7 @@ export default {
 
 .keyword {
   margin-right: 14px;
-  color: #245;
+  color: #244;
   font-size: 15px;
   cursor: pointer;
 }

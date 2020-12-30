@@ -254,7 +254,7 @@ export {encodeBibTexComponent}
 }
 
 .card-tool-bar .icon {
-  color: #245;
+  color: #044;
   font-size: initial;
 }
 
@@ -262,7 +262,7 @@ export {encodeBibTexComponent}
   background: transparent;
   padding: 4px 0 3px 0.25rem;
   /*border-bottom: 1px solid #c4c7ce;*/
-  border-left: 2px solid #245;
+  border-left: 4px solid #055;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
   flex-grow: 1;
@@ -282,7 +282,7 @@ export {encodeBibTexComponent}
 
 .title {
   /*color: #069;*/
-  color: #245;
+  color: #244;
   font-size: 24px;
   font-weight: bold;
   text-decoration: none;
@@ -305,7 +305,7 @@ export {encodeBibTexComponent}
 }
 
 .author {
-  color: #245;
+  color: #244;
   text-decoration: none;
 }
 
@@ -319,7 +319,7 @@ export {encodeBibTexComponent}
 }
 
 .publication {
-  color: #245;
+  color: #244;
   text-decoration: none;
 }
 

@@ -111,11 +111,11 @@
   font-family: Noto Sans SC, sans-serif;
 }
 .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{
-  color: #245;
+  color: #055;
   background-color: #dbffff;
 }
 .el-radio__input.is-checked+.el-radio__label{
-  color: #245;
+  color: #055;
   font-weight: bold;
 }
 
