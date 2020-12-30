@@ -153,7 +153,7 @@ export default {
           }
         })
         .catch(() => {
-          this.$alert('Fail to get paper，please search again', 'Tips', {
+          this.$alert('从服务器获取该论文信息失败，现为您跳回主页', '出错了', {
             type: 'error',
             confirmButtonText: 'confirm',
             showClose: false

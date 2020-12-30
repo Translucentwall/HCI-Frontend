@@ -7,8 +7,10 @@
           <br/>
           点击复制
         </div>
-        <a :href="'https://ieeexplore.ieee.org' + simplePaperVO.pdfLink" target="_blank"
-           v-if="simplePaperVO.pdfLink&&simplePaperVO.pdfLink.indexOf('arnumber')!==-1">
+        <a
+          :href="simplePaperVO.pdfLink.indexOf('http')===-1? 'https://ieeexplore.ieee.org' + simplePaperVO.pdfLink : simplePaperVO.pdfLink"
+          target="_blank"
+          v-if="simplePaperVO.pdfLink&&simplePaperVO.pdfLink.indexOf('arnumber')!==-1">
           <div class="tool-pdf">
             <span>PDF <i class="icon iconfont icon-pdf"/></span>
           </div>
