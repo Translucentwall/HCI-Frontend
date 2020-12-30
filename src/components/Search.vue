@@ -12,17 +12,18 @@
           <el-dropdown-item command="Author">{{searchModeInChinese['Author']}}</el-dropdown-item>
           <el-dropdown-item command="Publication">{{searchModeInChinese['Publication']}}</el-dropdown-item>
           <el-dropdown-item command="Keyword">{{searchModeInChinese['Keyword']}}</el-dropdown-item>
-          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>
+<!--          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>-->
         </el-dropdown-menu>
       </el-dropdown>
-      <el-input
-        v-if="mode!=='Advanced'"
-        class="search-input el-input__inner"
+      <el-autocomplete
+        class="search-input"
+        :fetch-suggestions="querySearch"
         v-model="content"
         placeholder="请键入搜索内容..."
+        @select="searchRecord"
         @keydown.13.native="search"
         @keydown.229="handleCN">
-      </el-input>
+      </el-autocomplete>
       <div class="advanced" v-if="mode==='Advanced'">
         <el-dropdown trigger="click" @command="handleRelationMode">
           <el-button class="relation-mode" type="primary" size="small">
@@ -103,7 +104,8 @@
                   'Publication': '按刊物搜索',
                   'Keyword': '按研究方向搜索',
                   'Advanced': '高级搜索'
-                }
+                },
+                records: []
             }
         },
         props: {
@@ -123,8 +125,31 @@
             if(this.searchContent){
                 this.content = this.searchContent;
             }
+            let records = sessionStorage.getItem('records');
+            if(records){
+                this.records = JSON.parse(records);
+            }
+            // this.records = [{value:'a', mode:'All'},
+            //   {value:'aaa', mode:'Title'},
+            //   {value:'bbb', mode:'All'},
+            //   {value:'abcd', mode:'Publication'}
+            // ]
         },
         methods: {
+            querySearch(queryString, cb) {
+                let records = this.records;
+                let results = queryString ? records.filter(this.createFilter(queryString)) : records;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (record) => {
+                    return (record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            searchRecord: function(record){
+                window.location.href = '/search/' + record.mode + '/' + record.value;
+            },
             goAdvancedSearch: function(){
                 window.location.href = '/search/advanced'
             },
@@ -158,6 +183,8 @@
                                 duration: 2000
                             });
                         }else{
+                            this.records.push({value:this.content, mode: this.mode});
+                            sessionStorage.setItem('records', JSON.stringify(this.records));
                             window.location.href = '/search/' + this.mode + '/' + this.content;
                         }
                     }

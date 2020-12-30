@@ -22,9 +22,9 @@
         </el-input>
         <div class="example">
           <div class="example-wrap"><div class="circle purple"></div><span>中心点</span></div>
+          <div class="example-wrap"><div class="circle green"></div><span>研究方向</span></div>
           <div class="example-wrap"><div class="circle red"></div><span>作者</span></div>
           <div class="example-wrap"><div class="circle orange"></div><span>机构</span></div>
-          <div class="example-wrap"><div class="circle green"></div><span>关键字</span></div>
           <div class="example-wrap"><div class="circle blue"></div><span>论文</span></div>
         </div>
       </div>
@@ -535,6 +535,13 @@
   .search-input{
     width: 16vw;
     margin-left: 0.5ex;
+  }
+  .search-input>>>.el-input__inner{
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 24px;
+    padding: 0 5px;
   }
   .center_name{
     color: #000000;

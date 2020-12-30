@@ -7,7 +7,7 @@
     <div class="body_bottom">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
-        <el-breadcrumb-item :to="'/entity/issue/'+paperVO.conferenceId">
+        <el-breadcrumb-item v-if="paperVO.publicationTitle!=='NA'" :to="'/entity/issue/'+paperVO.conferenceId">
           <span>{{ paperVO.publicationTitle }}</span></el-breadcrumb-item>
         <el-breadcrumb-item>{{ paperVO.title }}</el-breadcrumb-item>
       </el-breadcrumb>
@@ -84,7 +84,7 @@
             </el-collapse-item>
             <el-collapse-item title="更多信息" name="4" class="block"
                               v-if="paperVO.publicationTitle||paperVO.publisher||paperVO.pdflink">
-              <div class="publication font-medium" v-if="paperVO.publicationTitle">
+              <div class="publication font-medium" v-if="paperVO.publicationTitle&&paperVO.conferenceId!=1797">
                 <span class="subtitle">刊物:</span>
                 <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{ paperVO.publicationTitle }},
                   {{ paperVO.publicationYear }}</a>
@@ -153,7 +153,7 @@ export default {
           }
         })
         .catch(() => {
-          this.$alert('Fail to get paper，please search again', 'Tips', {
+          this.$alert('从服务器获取该论文信息失败，现为您跳回主页', '出错了', {
             type: 'error',
             confirmButtonText: 'confirm',
             showClose: false

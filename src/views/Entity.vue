@@ -114,9 +114,9 @@
                 </div>
                 <div class="example">
                   <div class="example-wrap"><span>中心点</span><div class="circle purple"></div></div>
+                  <div class="example-wrap"><span>研究方向</span><div class="circle green"></div></div>
                   <div class="example-wrap"><span>作者</span><div class="circle red"></div></div>
                   <div class="example-wrap"><span>机构</span><div class="circle orange"></div></div>
-                  <div class="example-wrap"><span>关键字</span><div class="circle green"></div></div>
                   <div class="example-wrap"><span>论文</span><div class="circle blue"></div></div>
                 </div>
               </el-tab-pane>
@@ -288,7 +288,7 @@
                       loadingInstance.close();
                   })
                   .catch(()=>{
-                      this.$alert('Fail to get entity，please search again', 'Tips',{
+                      this.$alert('从服务器获取该实体信息失败，现为您跳回主页', '出错了',{
                           type: 'error',
                           confirmButtonText: 'confirm',
                           showClose: false
@@ -451,7 +451,12 @@
               },
               search: function () {
                   let typeDic2= {1:"Author", 2:'Affiliation', 3:'Publication'}
-                  window.location.href = '/search/'+typeDic2[this.type]+'/'+this.academicEntityVO.name;
+                  let name = this.academicEntityVO.name;
+                  let pattern = /[%\\/?+#&=]/;
+                  while(pattern.test(name)){
+                    name = name.replace(/[%\\/?+#&=]/g, ' ')
+                  }
+                  window.location.href = '/search/' + typeDic2[this.type] + '/'+name;
               },
               renderSignificantPaper: function () {
                   let that = this;
@@ -604,7 +609,7 @@
   .example-wrap{
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: flex-end;
     margin: 4px 0 0 0.5ex;
   }
   .purple{

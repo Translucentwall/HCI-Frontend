@@ -12,12 +12,12 @@
           <el-dropdown-item command="Author">{{searchModeInChinese['Author']}}</el-dropdown-item>
           <el-dropdown-item command="Publication">{{searchModeInChinese['Publication']}}</el-dropdown-item>
           <el-dropdown-item command="Keyword">{{searchModeInChinese['Keyword']}}</el-dropdown-item>
-          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>
+<!--          <el-dropdown-item command="Advanced">{{searchModeInChinese['Advanced']}}</el-dropdown-item>-->
         </el-dropdown-menu>
       </el-dropdown>
       <el-input
         v-if="mode!=='Advanced'"
-        class="search-input el-input__inner"
+        class="search-input"
         v-model="content"
         placeholder="请键入搜索内容..."
         @keydown.13.native="search"
@@ -219,7 +219,7 @@ export default {
 }
 .mode-button{
   background: transparent;
-  width: 10vw;
+  width: 12vw;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   font-family: Noto Sans SC, sans-serif;
