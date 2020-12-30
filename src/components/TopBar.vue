@@ -123,5 +123,6 @@
     position: absolute;
     top: 15px;
     left: 154px;
+    display: flex;
   }
 </style>
